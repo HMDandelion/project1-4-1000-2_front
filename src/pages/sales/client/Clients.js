@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {callSalesClientsAPI} from "../../../apis/ClientAPICalls";
+import {callSalesClientAPI, callSalesClientsAPI} from "../../../apis/ClientAPICalls";
 import Card from "../../../components/card/Card";
 import {Box, Grid} from "@chakra-ui/react";
 import ColumnsTable from "../../../components/table/ComplexTable";
@@ -30,6 +30,10 @@ function Clients() {
         }
     ]
 
+    const tableTitle = "거래처 관리";     // 테이블 제목
+    const baseLink = "/sales/client";   // 상세조회 React 주소
+    const idAccessor = "clientCode";     // id로 사용할 컬럼 지정
+
     useEffect(() => {
         dispatch(callSalesClientsAPI({currentPage}));
     }, [currentPage]);
@@ -39,7 +43,8 @@ function Clients() {
             {
                 clients &&
                 <>
-                    <ColumnsTable columnsData={columns} tableData={clients.data}/>
+                    <ColumnsTable columnsData={columns} tableData={clients.data} tableTitle={tableTitle}
+                                  baseLink={baseLink} idAccessor={idAccessor}/>
                 </>
             }
         </>

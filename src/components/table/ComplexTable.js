@@ -19,26 +19,31 @@ import {
   useTable,
 } from "react-table";
 
-
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import Card from "../card/Card";
+import {useNavigate} from "react-router-dom";
+
 export default function ColumnsTable(props) {
-  const { columnsData, tableData } = props;
+  const { columnsData, tableData, tableTitle, baseLink, idAccessor } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
-  console.log("columns==============")
-  console.table(columns)
-  console.log("data==============")
-  console.table(data)
+  const navigate = useNavigate();
+
+  console.log("columns==============");
+  console.table(columns);
+  console.log("data==============");
+  console.table(data);
+
   const tableInstance = useTable(
     {
       columns,
       data,
+      getRowId: (row) => row[idAccessor]
     },
     useGlobalFilter,
     useSortBy,
-    usePagination
+    usePagination,
   );
 
   const {
@@ -53,6 +58,12 @@ export default function ColumnsTable(props) {
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
+
+  const handleRowClick = (row) => {
+    const link = `${baseLink}/${row.original[idAccessor]}`;
+    navigate(link);
+  };
+
   return (
 
     <Card
@@ -66,7 +77,7 @@ export default function ColumnsTable(props) {
           fontSize='22px'
           fontWeight='700'
           lineHeight='100%'>
-          Complex Table
+          {tableTitle}
         </Text>
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
@@ -95,7 +106,7 @@ export default function ColumnsTable(props) {
           {page.map((row, index) => {
             prepareRow(row);
             return (
-              <Tr {...row.getRowProps()} key={index}>
+              <Tr {...row.getRowProps()} key={index} onClick={() => handleRowClick(row)}>
                 {row.cells.map((cell, index) => {
                   let data = "";
                   if (cell.column.Header === "NAME") {
