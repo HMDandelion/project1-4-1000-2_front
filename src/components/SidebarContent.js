@@ -111,7 +111,7 @@ function SidebarContent(props) {
                                             pt='4px'
                                             pb='4px'>
                                             <Link as={NavLink}
-                                                  to="/123"
+                                                  to="/sales"
                                                   _activeLink={{ color: activeColor }}
                                             >
                                                 <WalletIcon h='24px' w='24px' pr='5px'/>
@@ -125,19 +125,19 @@ function SidebarContent(props) {
                                 <UnorderedList>
                                     <ListItem>
                                         <Link as={NavLink}
-                                              to="/123"
+                                              to="/sales/order"
                                               _activeLink={{color: activeColor}}
                                         >주문 관리</Link>
                                     </ListItem>
                                     <ListItem>
                                         <Link as={NavLink}
-                                              to="/123"
+                                              to="/sales/client"
                                               _activeLink={{color: activeColor}}
                                         >거래처 관리</Link>
                                     </ListItem>
                                     <ListItem>
                                         <Link as={NavLink}
-                                              to="/123"
+                                              to="/sales/estimate"
                                               _activeLink={{color: activeColor}}
                                         >견적 관리</Link>
                                     </ListItem>
