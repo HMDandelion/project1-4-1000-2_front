@@ -2,6 +2,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AdminLayout from "./layouts/AdminLayout";
 import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
+import ClientDetail from "./pages/sales/client/ClientDetail";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
                   <Route path="sales">
                       <Route path="client">
                           <Route index element={<Clients/>}/>
+                          <Route path=":clientCode" element={<ClientDetail/>}/>
                       </Route>
                   </Route>
               </Route>
