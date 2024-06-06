@@ -90,9 +90,30 @@ function Products() {
         }
     }, [currentPage,activeTab]);
 
+
     const processedProducts = products?.data?.content.map(product => ({
         ...product,
-        updatedAt: product.updatedAt ? product.updatedAt : '-'
+        updatedAt: product.updatedAt ? product.updatedAt : '-',
+        status: (() => {
+            switch(product.status) {
+                case 'in_production':
+                    return (
+                        <div className="status-container">
+                            <div className="status-circle green">&#10003;</div>
+                            <span className="status-text">생산가능</span>
+                        </div>
+                    );
+                case 'production_discontinued':
+                    return (
+                        <div className="status-container">
+                            <div className="status-circle red">&#10005;</div>
+                            <span className="status-text">생산중단</span>
+                        </div>
+                    );
+                default:
+                    return product.status;
+            }
+        })()
     }));
 
     const processedStocks = stocks?.data?.content.map(stock => ({
@@ -125,6 +146,22 @@ function Products() {
                     );
                 default:
                     return null;
+            }
+        })(),
+        type: (() => {
+            switch(stock.type) {
+                case 'products':
+                    return (
+                        <div>
+                            생산품
+                        </div>
+                    );
+                case 're_inspection':
+                    return (
+                        <div className="status-container">
+                            재생산품
+                        </div>
+                    );
             }
         })()
     }));
