@@ -69,7 +69,7 @@ function Products() {
             accessor: 'productName'
         },
         {
-            Header: '오늘 나왔는지 여부',
+            Header: '',
             accessor: 'isToday',
         }
     ]
@@ -181,7 +181,7 @@ function Products() {
             }
 
             {activeTab === 'inventory' && stocks &&
-                <ColumnsTable columnsData={stockColumns} tableData={processedStocks } tableTitle={stockTableTitle}
+                <ColumnsTable columnsData={stockColumns} tableData={processedStocks} tableTitle={stockTableTitle}
                               baseLink={stockBaseLink} idAccessor={stockIdAccessor}/>
             }
         </>

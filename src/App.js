@@ -4,6 +4,7 @@ import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
 import ClientDetail from "./pages/sales/client/ClientDetail";
 import Products from "./pages/inventory/product/Products";
+import Warehouses from "./pages/inventory/warehouse/Warehouses";
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
                   <Route path="inventory">
                       <Route path="product">
                           <Route index element={<Products/>}/>
+                      </Route>
+                      <Route path="warehouse">
+                          <Route index element={<Warehouses/>}/>
                       </Route>
                   </Route>
               </Route>
