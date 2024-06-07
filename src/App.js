@@ -14,6 +14,7 @@ function App() {
                       <Route path="client">
                           <Route index element={<Clients/>}/>
                           <Route path=":clientCode" element={<ClientDetail/>}/>
+
                       </Route>
                   </Route>
               </Route>
