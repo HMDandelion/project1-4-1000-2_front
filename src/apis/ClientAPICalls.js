@@ -1,9 +1,9 @@
-import {request} from "./api";
+import {authRequest, request} from "./api";
 import {getSalesClient, getSalesClients, success} from "../modules/ClientModules";
 
 export const callSalesClientsAPI = ({currentPage = 1}) => {
     return async (dispatch, getState) => {
-        const result = await request('GET', `/api/v1/clients?page=${currentPage}`);
+        const result = await authRequest.get(`/api/v1/clients?page=${currentPage}`);
 
         console.log("result : ", result);
         if(result.status === 200) {
@@ -14,7 +14,7 @@ export const callSalesClientsAPI = ({currentPage = 1}) => {
 
 export const callSalesClientAPI = ({ clientCode }) => {
     return async (dispatch, getState) => {
-        const result = await request('GET', `/api/v1/clients/${clientCode}`);
+        const result = await authRequest.get(`/api/v1/clients/${clientCode}`);
 
         console.log("result : ", result);
         if(result.status === 200) {
@@ -25,9 +25,7 @@ export const callSalesClientAPI = ({ clientCode }) => {
 
 export const callClientRegistAPI = ({clientRequest}) => {
     return async (dispatch, getState) => {
-        const result = await request('POST', `/api/v1/clients`,
-            {'Content-Type' : 'application/json' },
-            JSON.stringify(clientRequest));
+        const result = await authRequest.post(`/api/v1/clients`, clientRequest);
         console.log("result : ", result);
 
         if(result.status === 201) {
@@ -38,9 +36,7 @@ export const callClientRegistAPI = ({clientRequest}) => {
 
 export const callClientModifyAPI = ({clientCode, clientRequest}) => {
     return async (dispatch, getState) => {
-        const result = await request('PUT', `/api/v1/clients/${clientCode}`,
-            {'Content-Type' : 'application/json' },
-            JSON.stringify(clientRequest));
+        const result = await authRequest.post(`/api/v1/clients/${clientCode}`, clientRequest);
         console.log("result : ", result);
 
         if(result.status === 201) {
