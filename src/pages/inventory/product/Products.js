@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {callSalesClientsAPI} from "../../../apis/ClientAPICalls";
 import ColumnsTable from "../../../components/table/ComplexTable";
 import {callProductsAPI} from "../../../apis/ProductAPICalls";
-import {callStocksAPI} from "../../../apis/StockAPICalls";
+import {callStocksAPI, callTotalStockAPI} from "../../../apis/StockAPICalls";
 import "../../../Products.css"
 import {
     Button, Modal,
@@ -15,6 +15,7 @@ import {
     useDisclosure
 } from "@chakra-ui/react";
 import ProductSave from "../../../modals/products/ProductSave";
+import StockRatio from "../../../chart/StockRatio";
 
 function Products() {
     const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function Products() {
 
     const products = useSelector(state => state.productReducer.products);
     const stocks = useSelector(state => state.stockReducer.stocks);
+    const total = useSelector(state => state.stockReducer.total);
 
     const productColumns = [
         {
@@ -94,13 +96,25 @@ function Products() {
     const stockBaseLink = "/inventory/product";   // 상세조회 React 주소
     const stockIdAccessor = "stockCode";     // id로 사용할 컬럼 지정
 
+
     useEffect(() => {
+        dispatch(callTotalStockAPI());
         if(activeTab === 'products') {
             dispatch(callProductsAPI({currentPage}));
+            // dispatch(callTotalStockAPI());
         }else if (activeTab === 'inventory'){
             dispatch(callStocksAPI({currentPage}));
+            // dispatch(callTotalStockAPI());
         }
+        // dispatch(callTotalStockAPI());
     }, [currentPage,activeTab]);
+
+    // useEffect(() => {
+    //     dispatch(callTotalStockAPI());
+    // }, [currentPage,activeTab]);
+
+
+
 
 
     const processedProducts = products?.data?.content.map(product => ({
@@ -179,8 +193,16 @@ function Products() {
     }));
 
 
+        console.log("헤헤",processedProducts)
+
+    // console.log("상품 량",products.data.content);
+        console.log("총합",total);
+
     return (
         <>
+        {processedProducts && total &&
+            <StockRatio products={processedProducts} total={total}/>
+        }
             <div className="tabs">
                 <button onClick={() => setActiveTab('products')}>상품</button>
                 <button onClick={() => setActiveTab('inventory')}>재고</button>

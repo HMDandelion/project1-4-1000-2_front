@@ -6,8 +6,9 @@ const initialState = {};
 /* 액션 */
 const GET_INVENTORY_PRODUCTS = 'product/GET_INVENTORY_PRODUCTS';
 const SUCCESS = 'product/SUCCESS';
+const TOTAL = 'product/TOTAL';
 
-export const { product : {getInventoryProducts, success}} = createActions({
+export const { product : {getInventoryProducts, success, total}} = createActions({
     [GET_INVENTORY_PRODUCTS] : result => ({ products : result }),
     [SUCCESS] : () => ({success : true})
 });
@@ -15,7 +16,8 @@ export const { product : {getInventoryProducts, success}} = createActions({
 /* 리듀서 */
 const productReducer = handleActions({
     [GET_INVENTORY_PRODUCTS] : (state, {payload}) => payload,
-    [SUCCESS] : (state, {payload}) => payload
+    [SUCCESS] : (state, {payload}) => payload,
+    [TOTAL] : (state, {payload}) => payload
 }, initialState);
 
 export default productReducer;
