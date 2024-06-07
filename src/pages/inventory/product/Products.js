@@ -14,6 +14,7 @@ import {
     ModalHeader, ModalOverlay,
     useDisclosure
 } from "@chakra-ui/react";
+import ProductSave from "../../../modals/products/ProductSave";
 
 function Products() {
     const dispatch = useDispatch();
@@ -190,17 +191,11 @@ function Products() {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>상품 등록</ModalHeader>
+                    <ModalHeader color={"navy"}>상품 등록</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        {/* 상품 등록 양식 입력 */}
+                        <ProductSave onClose={onClose} />
                     </ModalBody>
-                    <ModalFooter>
-                        <Button colorScheme="orange" mr={3} onClick={onClose}>
-                            닫기
-                        </Button>
-                        <Button colorScheme="orange" >등록하기</Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
             {
