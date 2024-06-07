@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 // Custom components
 import Brand from "./SidebarBrand";
-import React from "react";
+import React, {useState} from "react";
 import {CartIcon, GlobeIcon, HomeIcon, RocketIcon, SupportIcon, WalletIcon} from "./icons/Icons";
 
 
@@ -23,6 +23,13 @@ function SidebarContent(props) {
         "secondaryGray.600",
         "secondaryGray.600"
     );
+    const [activeIndex, setActiveIndex] = useState(null);
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleAccordionClick = (index) => {
+        setActiveIndex(prevIndex => prevIndex === index ? null : index);
+        // setIsClicked(!isClicked);
+    };
 
     // SIDEBAR
     return (
@@ -49,25 +56,22 @@ function SidebarContent(props) {
                             <HomeIcon h='24px' w='24px' pr='5px'/>
                             대시보드</Link>
                     </Text>
-
                     <Accordion allowToggle>
-                        <AccordionItem border="none" color={inactiveColor}>
+                        <AccordionItem border="none" color={inactiveColor} isExpanded={activeIndex === 1}>
                             <h2>
-                                <AccordionButton>
+                                <AccordionButton onClick={() => handleAccordionClick(1)} color={activeIndex === 1 ? activeColor : inactiveColor}
+                                >
                                     <Box flex="1" textAlign="left">
                                         <Text
                                             fontSize={"md"}
                                             fontWeight='bold'
-                                            color={inactiveColor}
                                             mx='auto'
                                             pt='4px'
-                                            pb='4px'>
-                                            <Link as={NavLink}
-                                                to="/123"
-                                                _activeLink={{ color: activeColor }}
-                                            >
+                                            pb='4px'
+                                            color={activeIndex === 1 ? activeColor : inactiveColor}
+                                        >
                                                 <GlobeIcon h='24px' w='24px' pr='5px'/>
-                                                재고·유통</Link>
+                                                재고·유통
                                         </Text>
                                     </Box>
                                     <AccordionIcon />
@@ -99,23 +103,21 @@ function SidebarContent(props) {
                     </Accordion>
 
                     <Accordion allowToggle>
-                        <AccordionItem border="none" color={inactiveColor}>
+                        <AccordionItem border="none" color={inactiveColor} isExpanded={activeIndex === 2}>
                             <h2>
-                                <AccordionButton>
+                                <AccordionButton onClick={() => handleAccordionClick(2)} color={activeIndex === 2 ? activeColor : inactiveColor}
+                                >
                                     <Box flex="1" textAlign="left">
                                         <Text
                                             fontSize={"md"}
                                             fontWeight='bold'
-                                            color={inactiveColor}
                                             mx='auto'
                                             pt='4px'
-                                            pb='4px'>
-                                            <Link as={NavLink}
-                                                  to="/sales"
-                                                  _activeLink={{ color: activeColor }}
-                                            >
+                                            pb='4px'
+                                            color={activeIndex === 2 ? activeColor : inactiveColor}
+                                        >
                                                 <WalletIcon h='24px' w='24px' pr='5px'/>
-                                                영업·판매</Link>
+                                                영업·판매
                                         </Text>
                                     </Box>
                                     <AccordionIcon />
@@ -145,25 +147,22 @@ function SidebarContent(props) {
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
-
                     <Accordion allowToggle>
-                        <AccordionItem border="none" color={inactiveColor}>
+                        <AccordionItem border="none" color={inactiveColor} isExpanded={activeIndex === 3}>
                             <h2>
-                                <AccordionButton>
+                                <AccordionButton onClick={() => handleAccordionClick(3)} color={activeIndex === 3 ? activeColor : inactiveColor}
+                                >
                                     <Box flex="1" textAlign="left">
                                         <Text
                                             fontSize={"md"}
                                             fontWeight='bold'
-                                            color={inactiveColor}
                                             mx='auto'
                                             pt='4px'
-                                            pb='4px'>
-                                            <Link as={NavLink}
-                                                  to="/123"
-                                                  _activeLink={{ color: activeColor }}
-                                            >
-                                                <CartIcon h='24px' w='24px' pr='5px'/>
-                                                구매·발주</Link>
+                                            pb='4px'
+                                            color={activeIndex === 3 ? activeColor : inactiveColor}
+                                        >
+                                            <CartIcon h='24px' w='24px' pr='5px'/>
+                                            구매·발주
                                         </Text>
                                     </Box>
                                     <AccordionIcon />
@@ -181,25 +180,22 @@ function SidebarContent(props) {
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
-
                     <Accordion allowToggle>
-                        <AccordionItem border="none" color={inactiveColor}>
+                        <AccordionItem border="none" color={inactiveColor} isExpanded={activeIndex === 4}>
                             <h2>
-                                <AccordionButton>
+                                <AccordionButton onClick={() => handleAccordionClick(4)} color={activeIndex === 4 ? activeColor : inactiveColor}
+                                >
                                     <Box flex="1" textAlign="left">
                                         <Text
                                             fontSize={"md"}
                                             fontWeight='bold'
-                                            color={inactiveColor}
                                             mx='auto'
                                             pt='4px'
-                                            pb='4px'>
-                                            <Link as={NavLink}
-                                                  to="/123"
-                                                  _activeLink={{ color: activeColor }}
-                                            >
+                                            pb='4px'
+                                            color={activeIndex === 4 ? activeColor : inactiveColor}
+                                        >
                                                 <SupportIcon h='24px' w='24px' pr='5px'/>
-                                                생산·품질</Link>
+                                                생산·품질
                                         </Text>
                                     </Box>
                                     <AccordionIcon />
@@ -209,9 +205,15 @@ function SidebarContent(props) {
                                 <UnorderedList>
                                     <ListItem>
                                         <Link as={NavLink}
-                                              to="/123"
+                                              to="/production/plan"
                                               _activeLink={{color: activeColor}}
-                                        >생산 관리</Link>
+                                        >생산 계획 관리</Link>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Link as={NavLink}
+                                              to="/production/work-order"
+                                              _activeLink={{color: activeColor}}
+                                        >작업 지시서 관리</Link>
                                     </ListItem>
                                     <ListItem>
                                         <Link as={NavLink}
@@ -223,7 +225,6 @@ function SidebarContent(props) {
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
-
                 </Box>
             </Stack>
         </Flex>

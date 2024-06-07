@@ -2,6 +2,12 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AdminLayout from "./layouts/AdminLayout";
 import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
+import WorkOrders from "./pages/workOrder/WorkOrders";
+import WorkOrderRegist from "./pages/workOrder/WorkOrderRegist";
+import React from "react";
+import * as PropTypes from "prop-types";
+import ProtectedRoute from "./components/router/ProtectedRoute";
+import ClientDetail from "./pages/sales/client/ClientDetail";
 
 function App() {
   return (
@@ -12,7 +18,14 @@ function App() {
                   <Route path="sales">
                       <Route path="client">
                           <Route index element={<Clients/>}/>
+                          <Route path=":clientCode" element={<ClientDetail/>}/>
                       </Route>
+                  </Route>
+                  <Route path="production">
+                      <Route path="work-order">
+                          <Route index element={<WorkOrders/>}/>
+                      </Route>
+                      <Route path="work-order-regist" element={<ProtectedRoute authCheck={false}><WorkOrderRegist/></ProtectedRoute>}/>
                   </Route>
               </Route>
               <Route path="/login">
