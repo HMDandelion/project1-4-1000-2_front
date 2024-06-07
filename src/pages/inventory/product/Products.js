@@ -5,10 +5,21 @@ import ColumnsTable from "../../../components/table/ComplexTable";
 import {callProductsAPI} from "../../../apis/ProductAPICalls";
 import {callStocksAPI} from "../../../apis/StockAPICalls";
 import "../../../Products.css"
+import {
+    Button, Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader, ModalOverlay,
+    useDisclosure
+} from "@chakra-ui/react";
+
 function Products() {
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1);
     const [activeTab,setActiveTab] = useState('products');
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const products = useSelector(state => state.productReducer.products);
     const stocks = useSelector(state => state.stockReducer.stocks);
@@ -167,13 +178,31 @@ function Products() {
     }));
 
 
-
     return (
         <>
             <div className="tabs">
                 <button onClick={() => setActiveTab('products')}>상품</button>
                 <button onClick={() => setActiveTab('inventory')}>재고</button>
+                {activeTab === 'products' && (
+                    <Button colorScheme="orange" size="sm" onClick={onOpen} float="right">상품 등록</Button>
+                )}
             </div>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>상품 등록</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {/* 상품 등록 양식 입력 */}
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="orange" mr={3} onClick={onClose}>
+                            닫기
+                        </Button>
+                        <Button colorScheme="orange" >등록하기</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
             {
                 activeTab === 'products' && products &&
                 <ColumnsTable columnsData={productColumns} tableData={processedProducts} tableTitle={tableTitle}
