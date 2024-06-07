@@ -1,11 +1,14 @@
 // Chakra Imports
-import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, Link, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, Link as ChakraLink, Text, useColorModeValue } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import NavbarLinks from "./NavbarLinks";
+import {useLocation, Link as ReactRouterLink} from "react-router-dom";
 
 export default function Navbar(props) {
     const [ scrolled, setScrolled ] = useState(false);
+    const location = useLocation();
+    const pathNames = location.pathname.split('/').filter(x => x);
 
     useEffect(() => {
         window.addEventListener('scroll', changeNavbar);
@@ -17,7 +20,7 @@ export default function Navbar(props) {
 
     const { secondary, message, brandText } = props;
 
-    // Here are all the prop4s that may change depending on navbar's type or state.(secondary, variant, scrolled)
+    // Here are all the props that may change depending on navbar's type or state.(secondary, variant, scrolled)
     let mainText = useColorModeValue('navy.700', 'white');
     let secondaryText = useColorModeValue('gray.700', 'white');
     let navbarPosition = 'fixed';
@@ -35,6 +38,22 @@ export default function Navbar(props) {
         } else {
             setScrolled(false);
         }
+    };
+
+    // 메뉴와 서브메뉴 매핑
+    const menuMap = {
+        sales: {
+            label: '영업·판매'
+        },
+        client: {
+            label: '거래처 관리'
+        },
+        production: {
+            label: '생산·품질',
+        },
+        logistics: {
+            label: '재고·유통',
+        },
     };
 
     return (
@@ -89,20 +108,32 @@ export default function Navbar(props) {
                 mb={gap}>
                 <Box mb={{ sm: '8px', md: '0px' }}>
                     <Breadcrumb>
-                        <BreadcrumbItem color={secondaryText} fontSize='sm' mb='5px'>
-                            <BreadcrumbLink href='#' color={secondaryText}>
-                                Pages
-                            </BreadcrumbLink>
+                        <BreadcrumbItem key="/" color={secondaryText} fontSize='sm' mb='5px'>
+                            <ChakraLink as={ReactRouterLink} to="/">
+                                메인 대시보드
+                            </ChakraLink>
                         </BreadcrumbItem>
+                        {pathNames.map((segment, index) => {
+                            const to = `/${pathNames.slice(0, index + 1).join('/')}`;
+                            const isLastSegment = index === pathNames.length - 1;
 
-                        <BreadcrumbItem color={secondaryText} fontSize='sm' mb='5px'>
-                            <BreadcrumbLink href='#' color={secondaryText}>
-                                {brandText}
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
+                            if (index === 0 && segment === "") {
+                                return null;
+                            }
+                            const label = menuMap[segment]?.label;
+                            return (
+                                <BreadcrumbItem key={to} color={secondaryText} fontSize='sm' mb='5px'>
+                                    <ChakraLink as={ReactRouterLink} to={to}>
+                                        {label || segment}
+                                    </ChakraLink>
+                                    {!isLastSegment && ' / '}
+                                </BreadcrumbItem>
+                            );
+                        })}
                     </Breadcrumb>
+
                     {/* Here we create navbar brand, based on route name */}
-                    <Link
+                    <ChakraLink
                         color={mainText}
                         href='#'
                         bg='inherit'
@@ -119,7 +150,7 @@ export default function Navbar(props) {
                             boxShadow: 'none'
                         }}>
                         {brandText}
-                    </Link>
+                    </ChakraLink>
                 </Box>
                 <Box ms='auto' w={{ sm: '100%', md: 'unset' }}>
                     <NavbarLinks
