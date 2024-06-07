@@ -1,21 +1,33 @@
 import {
     Text,
-    Badge, useColorModeValue, Heading, Flex, Button
+    Badge,
+    useColorModeValue,
+    Heading,
+    Flex,
+    Button,
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton, ModalBody, ModalFooter
 } from "@chakra-ui/react";
 
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {callSalesClientAPI} from "../../../apis/ClientAPICalls";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import HorizonLine from "../../../components/common/HorizonLine";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import ViewDetailButton from "../../../components/button/ViewDetailButton";
 import OrderStatusButton from "../../../components/button/OrderStatusButton";
+import ClientRegist from "./ClientRegist";
 
 
 function ClientDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const dispatch = useDispatch();
     const { clientCode } = useParams();
@@ -51,9 +63,11 @@ function ClientDetail() {
                 <Text fontSize='3xl' fontWeight='800' color={textColor} m='10px'>
                     {client.clientName}
                 </Text>
-                <Button colorScheme='gray' size='xs'>
+                <Button colorScheme='gray' size='xs' onClick={onOpen}>
                     수정
                 </Button>
+                <ClientRegist isOpen={isOpen} onClose={onClose}/>
+
             </Flex>
 
             <Text fontWeight='bold' color={textColor}>
