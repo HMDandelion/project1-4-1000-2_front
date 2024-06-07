@@ -9,7 +9,7 @@ import {
   Th,
   Thead,
   Tr,
-  useColorModeValue,
+  useColorModeValue, Button,
 } from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import {
@@ -23,8 +23,7 @@ import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import Card from "../card/Card";
 import {useNavigate} from "react-router-dom";
 
-export default function ColumnsTable(props) {
-  const { columnsData, tableData, tableTitle, baseLink, idAccessor } = props;
+export default function ColumnsTable({ columnsData, tableData, tableTitle, baseLink, idAccessor, onOpen }) {
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
@@ -54,7 +53,6 @@ export default function ColumnsTable(props) {
     prepareRow,
     initialState,
   } = tableInstance;
-  initialState.pageSize = 5;
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
@@ -77,8 +75,11 @@ export default function ColumnsTable(props) {
           fontSize='22px'
           fontWeight='700'
           lineHeight='100%'>
-          {tableTitle}
+          {tableTitle && tableTitle}
         </Text>
+        <Button colorScheme='orange' size='xs' onClick={onOpen}>
+          등록
+        </Button>
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>

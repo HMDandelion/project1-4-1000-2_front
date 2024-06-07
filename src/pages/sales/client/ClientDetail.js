@@ -6,23 +6,18 @@ import {
     Flex,
     Button,
     useDisclosure,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton, ModalBody, ModalFooter
 } from "@chakra-ui/react";
 
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {callSalesClientAPI} from "../../../apis/ClientAPICalls";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import HorizonLine from "../../../components/common/HorizonLine";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import ViewDetailButton from "../../../components/button/ViewDetailButton";
 import OrderStatusButton from "../../../components/button/OrderStatusButton";
-import ClientRegist from "./ClientRegist";
+import ClientModify from "./ClientModify";
 
 
 function ClientDetail() {
@@ -31,21 +26,22 @@ function ClientDetail() {
 
     const dispatch = useDispatch();
     const { clientCode } = useParams();
-    const { client } = useSelector(state => state.clientReducer);
-
+    const { client, success } = useSelector(state => state.clientReducer);
 
     const [columnData, setColumnData] = useState([
         { headerName: "주문번호", valueGetter: (p) => p.data.orderCode, width: 100, resizable: false },
         { headerName: "주문일시", valueGetter: (p) => p.data.orderDatetime },
         { headerName: "마감기한", valueGetter: (p) => p.data.deadline },
         { headerName: "주문총액", valueGetter: (p) => p.data.totalPrice },
-        { headerName: "진행상태", cellRenderer: OrderStatusButton },
+        { headerName: "진행상태", cellRenderer: OrderStatusButton, width: 150 },
         { headerName: null, cellRenderer: (p) => ViewDetailButton(`/sales/orders/${p.data.orderCode}`), width: 100, resizable: false}
     ]);
 
     useEffect(() => {
         dispatch(callSalesClientAPI({clientCode}));
-    }, []);
+        onClose();
+    }, [success]);
+
 
     const getTotalPrice = (orders) => {
         return orders.reduce((total, order) => total + order.totalPrice, 0);
@@ -54,7 +50,6 @@ function ClientDetail() {
     const formatNumber = (number) => {
         return new Intl.NumberFormat('ko-KR').format(number);
     };
-
 
     return (
         client &&
@@ -66,8 +61,7 @@ function ClientDetail() {
                 <Button colorScheme='gray' size='xs' onClick={onOpen}>
                     수정
                 </Button>
-                <ClientRegist isOpen={isOpen} onClose={onClose}/>
-
+                <ClientModify isOpen={isOpen} onClose={onClose} client={client}/>
             </Flex>
 
             <Text fontWeight='bold' color={textColor}>

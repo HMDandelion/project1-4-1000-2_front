@@ -1,15 +1,20 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {callSalesClientAPI, callSalesClientsAPI} from "../../../apis/ClientAPICalls";
-import Card from "../../../components/card/Card";
-import {Box, Grid} from "@chakra-ui/react";
+import {callSalesClientsAPI} from "../../../apis/ClientAPICalls";
+
 import ColumnsTable from "../../../components/table/ComplexTable";
+import {Button, Flex, useDisclosure} from "@chakra-ui/react";
+import ClientRegist from "./ClientRegist";
+import {useNavigate} from "react-router-dom";
+import PagingBar from "../../../components/common/PagingBar";
 
 function Clients() {
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1);
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const {clients} = useSelector(state => state.clientReducer);
+    const {clients, success} = useSelector(state => state.clientReducer);
+
 
     const columns = [
         {
@@ -36,19 +41,21 @@ function Clients() {
 
     useEffect(() => {
         dispatch(callSalesClientsAPI({currentPage}));
-    }, [currentPage]);
+        onClose();
+    }, [currentPage, success]);
 
     return (
         <>
             {
                 clients &&
                 <>
+                    <ClientRegist isOpen={isOpen} onClose={onClose}/>
                     <ColumnsTable columnsData={columns} tableData={clients.data} tableTitle={tableTitle}
-                                  baseLink={baseLink} idAccessor={idAccessor}/>
+                                  baseLink={baseLink} idAccessor={idAccessor} onOpen={onOpen}/>
+                    <PagingBar pageInfo={clients.pageInfo} setCurrentPage={setCurrentPage}/>
                 </>
             }
         </>
-
 
     );
 }
