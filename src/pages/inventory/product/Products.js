@@ -231,8 +231,10 @@ function Products() {
     console.log("totalDestroy",totalDestroy)
     console.log("productDestroy",productDestroy)
 
-    let productPageInfo={};
     //페이징
+    let productPageInfo={};
+        let stockPageInfo = {};
+
     if(products){
     productPageInfo = {
         currentPage:products.data.pageable.pageNumber+1,
@@ -240,7 +242,16 @@ function Products() {
         endPage:10,
         maxPage:products.data.totalPages
     }
-    console.log("페이지정보",productPageInfo);
+    console.log("상품 페이지정보",productPageInfo);
+    }
+    if(stocks){
+        stockPageInfo = {
+            currentPage:stocks.data.pageable.pageNumber+1,
+            startPage:1,
+            endPage:10,
+            maxPage:stocks.data.totalPages
+        }
+        console.log("재고 페이지정보",stockPageInfo);
     }
     return (
         <>
@@ -273,14 +284,20 @@ function Products() {
                     </ModalContent>
                 </Modal>
                 {activeTab === 'products' && products && (
+                    <>
                     <ColumnsTable columnsData={productColumns} tableData={processedProducts} tableTitle={tableTitle}
                                   baseLink={baseLink} idAccessor={idAccessor}/>
+                        <PagingBar pageInfo={productPageInfo} setCurrentPage={setCurrentPage} />
+                    </>
                 )}
-                <PagingBar pageInfo={productPageInfo} setCurrentPage={setCurrentPage} />
+
 
                 {activeTab === 'inventory' && stocks && (
+                    <>
                     <ColumnsTable columnsData={stockColumns} tableData={processedStocks} tableTitle={stockTableTitle}
                                   baseLink={stockBaseLink} idAccessor={stockIdAccessor}/>
+                        <PagingBar pageInfo={stockPageInfo} setCurrentPage={setCurrentPage} />
+                    </>
                 )}
             </div>
         </>

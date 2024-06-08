@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import {
-    Button,
+    Button, FormControl, FormLabel, HStack, Input,
     Modal, ModalBody,
     ModalContent,
     ModalFooter,
     ModalHeader,
-    ModalOverlay,
+    ModalOverlay, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger, useColorModeValue,
     useDisclosure,
-    useToast
+    useToast, VStack
 } from "@chakra-ui/react";
 import {useDispatch} from "react-redux";
 import {callProductListAPI, callProductRegistAPI, callProductsAPI} from "../../apis/ProductAPICalls";
 import {useNavigate} from "react-router-dom";
 import {callProductTotalAPI, callStocksAPI, callTotalStockAPI} from "../../apis/StockAPICalls";
 import {callDestroysTotalAPI, callProductDestroyAPI} from "../../apis/StorageAPICalls";
+import DaumPostcodeEmbed from "react-daum-postcode";
 
 
 function ProductSave({ onClose }) {
+    const textColor = useColorModeValue("secondaryGray.900", "white");
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [productInfo, setProductInfo] = useState({
@@ -70,36 +72,29 @@ function ProductSave({ onClose }) {
 
     return(
         <>
-            <div>
-                <label htmlFor="productName">상품명:</label>
-                <input
-                    type="text"
-                    id="productName"
-                    name="productName"
-                    value={productInfo.productName}
-                    onChange={handleChange}
-                />
-            </div>
-            <div>
-                <label htmlFor="price">가격:</label>
-                <input
-                    type="number"
-                    id="price"
-                    name="price"
-                    value={productInfo.price}
-                    onChange={handleChange}
-                />
-            </div>
-            <div>
-                <label htmlFor="unit">단위:</label>
-                <input
-                    type="text"
-                    id="unit"
-                    name="unit"
-                    value={productInfo.unit}
-                    onChange={handleChange}
-                />
-            </div>
+            <ModalBody borderTop='1px solid' borderColor='secondaryGray.100' p='30px 40px'>
+            <VStack spacing={4} align="stretch">
+                <FormControl>
+                    <FormLabel fontWeight='800' color={textColor}>상품명</FormLabel>
+                    <Input placeholder="상품명을 입력하세요" _placeholder={{fontSize: 'sm'}}
+                           name='productName' value={productInfo.productName}
+                           onChange={handleChange}/>
+                </FormControl>
+                <FormControl>
+                    <FormLabel fontWeight='800' color={textColor}>가격</FormLabel>
+                    <Input type="number" placeholder="가격을 입력하세요" _placeholder={{fontSize: 'sm'}}
+                           name='price' value={productInfo.price}
+                           onChange={handleChange}/>
+                </FormControl>
+                <FormControl>
+                    <FormLabel fontWeight='800' color={textColor}>상품명</FormLabel>
+                    <Input placeholder="단위를 입력하세요" _placeholder={{fontSize: 'sm'}}
+                           name='unit' value={productInfo.unit}
+                           onChange={handleChange}/>
+                </FormControl>
+            </VStack>
+        </ModalBody>
+
             <ModalFooter>
             <Button colorScheme="orange" mr={3} onClick={handleSubmit}>등록하기</Button>
             <Button colorScheme="orange" onClick={onClose}>닫기</Button>
