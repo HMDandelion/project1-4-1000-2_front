@@ -59,7 +59,7 @@ function ProductSave({ onClose }) {
                         title: "등록 완료",
                         description: "상품이 성공적으로 등록되었습니다!",
                         status: "success",
-                        duration: 5000,
+                        duration: 3000,
                         isClosable: true,
                     });
                     onClose();

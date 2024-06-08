@@ -19,6 +19,7 @@ import StockRatio from "../../../chart/StockRatio";
 import DestroyRatio from "../../../chart/DestroyRatio";
 import {callDestroysTotalAPI, callProductDestroyAPI} from "../../../apis/StorageAPICalls";
 import PagingBar from "../../../components/common/PagingBar";
+import ProductUpdate from "../../../modals/products/ProductUpdate";
 
 function Products() {
     const dispatch = useDispatch();
@@ -26,6 +27,8 @@ function Products() {
     const [activeTab,setActiveTab] = useState('products');
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useState(true);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
 
     const products = useSelector(state => state.productReducer.products);
     const stocks = useSelector(state => state.stockReducer.stocks);
@@ -65,6 +68,10 @@ function Products() {
         {
             Header: '생산 상태',
             accessor: 'status'
+        },
+        {
+            Header: '',
+            accessor: 'edit'
         }
     ]
     const stockColumns = [
@@ -143,7 +150,12 @@ function Products() {
 
 
 
-
+// 상품 수정 버튼의 onClick 이벤트 핸들러
+    const handleEditClick = (product) => (event) => {
+        event.stopPropagation(); // 이벤트 버블링 방지
+        setSelectedProduct(product);
+        onOpen(); // 모달 열기 함수 호출
+    };
 
     const processedProducts = products?.data?.content.map(product => ({
         ...product,
@@ -167,7 +179,25 @@ function Products() {
                 default:
                     return product.status;
             }
+        })(),
+        edit: (() => {
+            return (
+                <div className="status-container">
+                    <Button colorScheme="orange" size="sm" onClick={handleEditClick(product)} float="right">상품 수정</Button>
+                    <Modal isOpen={isOpen} onClose={() => { onClose(); setSelectedProduct(null); }}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader color={"navy"}>상품 수정</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                {selectedProduct && <ProductUpdate onClose={() => { onClose(); setSelectedProduct(null); }} product={selectedProduct}/>}
+                            </ModalBody>
+                        </ModalContent>
+                    </Modal>
+                </div>
+            );
         })()
+
     }));
 
     const processedStocks = stocks?.data?.content.map(stock => ({
@@ -270,7 +300,9 @@ function Products() {
                     <button onClick={() => setActiveTab('products')}>상품</button>
                     <button onClick={() => setActiveTab('inventory')}>재고</button>
                     {activeTab === 'products' && (
-                        <Button colorScheme="orange" size="sm" onClick={onOpen} float="right">상품 등록</Button>
+                        <>
+                        <Button colorScheme="orange" size="sm" onClick={onOpen} float="right" ml={5}>상품 등록</Button>
+                        </>
                     )}
                 </div>
                 <Modal isOpen={isOpen} onClose={onClose}>
