@@ -10,7 +10,7 @@ import {
 
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {callSalesClientAPI} from "../../../apis/ClientAPICalls";
+import {callClientDeleteAPI, callSalesClientAPI} from "../../../apis/ClientAPICalls";
 import {useNavigate, useParams} from "react-router-dom";
 import HorizonLine from "../../../components/common/HorizonLine";
 import AgGrid from "../../../components/table/AgGrid";
@@ -18,15 +18,17 @@ import Card from "../../../components/card/Card";
 import ViewDetailButton from "../../../components/button/ViewDetailButton";
 import OrderStatusButton from "../../../components/button/OrderStatusButton";
 import ClientModify from "./ClientModify";
+import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 
 
 function ClientDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { clientCode } = useParams();
-    const { client, success } = useSelector(state => state.clientReducer);
+    const { client, success, deleted } = useSelector(state => state.clientReducer);
 
     const [columnData, setColumnData] = useState([
         { headerName: "주문번호", valueGetter: (p) => p.data.orderCode, width: 100, resizable: false },
@@ -42,6 +44,10 @@ function ClientDetail() {
         onClose();
     }, [success]);
 
+    useEffect(() => {
+        if(deleted === true) navigate('/sales/client');
+    }, [deleted]);
+
 
     const getTotalPrice = (orders) => {
         return orders.reduce((total, order) => total + order.totalPrice, 0);
@@ -51,6 +57,11 @@ function ClientDetail() {
         return new Intl.NumberFormat('ko-KR').format(number);
     };
 
+    const deleteAPI = (code) => {
+        callClientDeleteAPI({clientCode : code});
+    }
+
+
     return (
         client &&
         <>
@@ -58,9 +69,12 @@ function ClientDetail() {
                 <Text fontSize='3xl' fontWeight='800' color={textColor} m='10px'>
                     {client.clientName}
                 </Text>
-                <Button colorScheme='gray' size='xs' onClick={onOpen}>
-                    수정
-                </Button>
+                <div>
+                    <Button colorScheme='gray' size='xs' onClick={onOpen}>
+                        수정
+                    </Button>
+                    <DeleteAlertButton code={clientCode} deleteAPI={callClientDeleteAPI}/>
+                </div>
                 <ClientModify isOpen={isOpen} onClose={onClose} client={client}/>
             </Flex>
 
