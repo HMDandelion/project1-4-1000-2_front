@@ -1,4 +1,4 @@
-import {authRequest, request} from "./api";
+import {authRequest} from "./api";
 import {deleted, getSalesClient, getSalesClients, success} from "../modules/ClientModules";
 import {statusToastAlert} from "../utils/ToastUtils";
 

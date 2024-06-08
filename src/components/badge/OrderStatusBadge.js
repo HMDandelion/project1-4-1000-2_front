@@ -1,4 +1,4 @@
-import {Badge, Button} from "@chakra-ui/react";
+import {Badge} from "@chakra-ui/react";
 
 function OrderStatusBadge(value) {
     const getStatusText = (value) => {

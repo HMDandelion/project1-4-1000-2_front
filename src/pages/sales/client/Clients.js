@@ -2,8 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {callSalesClientsAPI} from "../../../apis/ClientAPICalls";
 
-import ColumnsTable from "../../../components/table/ComplexTable";
-import {Button, HStack, IconButton, useDisclosure} from "@chakra-ui/react";
+import {HStack} from "@chakra-ui/react";
 import ClientRegist from "./ClientRegist";
 import PagingBar from "../../../components/common/PagingBar";
 import SearchRadioButton from "../../../components/button/SearchRadioButton";
@@ -57,7 +56,6 @@ function Clients() {
     ]
 
     const handleRowClick = (row) => {
-        console.log("clicked row  : ", row);
         navigate(`/sales/client/detail`, {state: row.original.clientCode});
     }
 
