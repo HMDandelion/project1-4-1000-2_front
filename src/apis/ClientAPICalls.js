@@ -1,6 +1,5 @@
 import {authRequest, request} from "./api";
 import {deleted, getSalesClient, getSalesClients, success} from "../modules/ClientModules";
-import {createStandaloneToast} from "@chakra-ui/react";
 import {statusToastAlert} from "../utils/ToastUtils";
 
 export const callSalesClientsAPI = ({currentPage = 1}) => {

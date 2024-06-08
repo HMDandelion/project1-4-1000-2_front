@@ -56,6 +56,16 @@ export default function Navbar(props) {
         },
     };
 
+    const getPageTitle = (pathName) => {
+        for (let i = pathName.length - 1; i >= 0; i--) {
+            const part = pathName[i];
+            if (menuMap[part]) {
+                return menuMap[part].label;
+            }
+        }
+        return null;
+    }
+
     return (
         <Box
             position={navbarPosition}
@@ -132,7 +142,6 @@ export default function Navbar(props) {
                         })}
                     </Breadcrumb>
 
-                    {/* Here we create navbar brand, based on route name */}
                     <ChakraLink
                         color={mainText}
                         href='#'
@@ -149,7 +158,7 @@ export default function Navbar(props) {
                         _focus={{
                             boxShadow: 'none'
                         }}>
-                        {brandText}
+                        {getPageTitle(pathNames)}
                     </ChakraLink>
                 </Box>
                 <Box ms='auto' w={{ sm: '100%', md: 'unset' }}>

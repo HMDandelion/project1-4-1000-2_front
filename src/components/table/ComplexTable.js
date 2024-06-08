@@ -77,9 +77,6 @@ export default function ColumnsTable({ columnsData, tableData, tableTitle, baseL
           lineHeight='100%'>
           {tableTitle && tableTitle}
         </Text>
-        <Button colorScheme='orange' size='xs' onClick={onOpen}>
-          등록
-        </Button>
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>

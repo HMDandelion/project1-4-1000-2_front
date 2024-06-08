@@ -3,15 +3,15 @@ import {
     Modal,
     ModalContent,
     ModalFooter,
-    ModalOverlay,
+    ModalOverlay, useDisclosure,
 } from "@chakra-ui/react";
 import ClientForm from "./ClientForm";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {callClientModifyAPI, callClientRegistAPI} from "../../../apis/ClientAPICalls";
 import {useNavigate} from "react-router-dom";
 
-function ClientRegist({ isOpen, onClose }) {
+function ClientRegist() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const[ form, setForm ] = useState({
@@ -25,6 +25,9 @@ function ClientRegist({ isOpen, onClose }) {
         phoneThird: '',
         phone: ''
     });
+
+    // 등록 모달
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const { success } = useSelector(state => state.clientReducer);
 
@@ -45,18 +48,23 @@ function ClientRegist({ isOpen, onClose }) {
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay/>
-            <ModalContent>
-                <ClientForm client={form} setForm={setForm}/>
-                <ModalFooter justifyContent='center'>
-                    <Button colorScheme='orange' mx={1} onClick={onClickRegistHandler}>등록</Button>
-                    <Button variant='outline' mx={1} onClick={onClose}>
-                        취소
-                    </Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+        <>
+            <Button colorScheme='orange' size='sm' onClick={onOpen}>
+                등록
+            </Button>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ClientForm client={form} setForm={setForm}/>
+                    <ModalFooter justifyContent='center'>
+                        <Button colorScheme='orange' mx={1} onClick={onClickRegistHandler}>등록</Button>
+                        <Button variant='outline' mx={1} onClick={onClose}>
+                            취소
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
     );
 }
 
