@@ -15,7 +15,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import ViewDetailButton from "../../../components/button/ViewDetailButton";
-import OrderStatusButton from "../../../components/button/OrderStatusButton";
+import OrderStatusBadge from "../../../components/badge/OrderStatusBadge";
 import ClientModify from "./ClientModify";
 import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 
@@ -34,7 +34,7 @@ function ClientDetail() {
         { headerName: "주문일시", valueGetter: (p) => p.data.orderDatetime },
         { headerName: "마감기한", valueGetter: (p) => p.data.deadline },
         { headerName: "주문총액", valueGetter: (p) => p.data.totalPrice },
-        { headerName: "진행상태", cellRenderer: (p) => OrderStatusButton(p.data.status), width: 150 },
+        { headerName: "진행상태", cellRenderer: (p) => OrderStatusBadge(p.data.status), width: 150 },
         { headerName: null, cellRenderer: (p) => ViewDetailButton(`/sales/orders/${p.data.orderCode}`), width: 100, resizable: false}
     ]);
 

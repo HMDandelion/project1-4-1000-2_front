@@ -1,8 +1,8 @@
 import {Badge, Button} from "@chakra-ui/react";
 
-function OrderStatusButton(params) {
-    const getStatusText = (status) => {
-        switch (status) {
+function OrderStatusBadge(value) {
+    const getStatusText = (value) => {
+        switch (value) {
             case 'ORDER_RECEIVED':
                 return (
                     <Badge colorScheme='orange' size='xs'>주문접수</Badge>
@@ -19,8 +19,8 @@ function OrderStatusButton(params) {
     };
 
     return (
-        getStatusText(params.data.status)
+        getStatusText(value)
     );
 }
 
-export default OrderStatusButton;
+export default OrderStatusBadge;
