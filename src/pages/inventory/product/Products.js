@@ -2,7 +2,12 @@ import {useDispatch, useSelector} from "react-redux";
 import React, {Fragment, useEffect, useState} from "react";
 import {callSalesClientsAPI} from "../../../apis/ClientAPICalls";
 import ColumnsTable from "../../../components/table/ComplexTable";
-import {callProductListAPI, callProductsAPI} from "../../../apis/ProductAPICalls";
+import {
+    callProductListAPI,
+    callProductsAPI,
+    callProductUpdateAPI,
+    callProductUpdateStatusAPI
+} from "../../../apis/ProductAPICalls";
 import {callProductTotalAPI, callStocksAPI, callTotalStockAPI} from "../../../apis/StockAPICalls";
 import "../../../Products.css"
 import {
@@ -12,7 +17,7 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader, ModalOverlay,
-    useDisclosure
+    useDisclosure, useToast
 } from "@chakra-ui/react";
 import ProductSave from "../../../modals/products/ProductSave";
 import StockRatio from "../../../chart/StockRatio";
@@ -20,6 +25,7 @@ import DestroyRatio from "../../../chart/DestroyRatio";
 import {callDestroysTotalAPI, callProductDestroyAPI} from "../../../apis/StorageAPICalls";
 import PagingBar from "../../../components/common/PagingBar";
 import ProductUpdate from "../../../modals/products/ProductUpdate";
+import {useNavigate} from "react-router-dom";
 
 function Products() {
     const dispatch = useDispatch();
@@ -28,6 +34,7 @@ function Products() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const navigate = useNavigate();
 
 
     const products = useSelector(state => state.productReducer.products);
@@ -38,7 +45,7 @@ function Products() {
     const totalDestroy = useSelector(state => state.storageReducer.destroys);
     const productDestroy = useSelector(state => state.storageReducer.productDestroy);
 
-
+    const toast = useToast();
 
     const productColumns = [
         {
@@ -72,6 +79,10 @@ function Products() {
         {
             Header: '',
             accessor: 'edit'
+        },
+        {
+            Header:'',
+            accessor:'delete'
         }
     ]
     const stockColumns = [
@@ -135,27 +146,39 @@ function Products() {
     }, [currentPage, activeTab]);
 
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true);
-    //         await dispatch(callProductListAPI());
-    //         setLoading(false);
-    //     };
-    //
-    //     fetchData();
-    // }, [currentPage, activeTab]);
-    // useEffect(() => {
-    //     dispatch(callTotalStockAPI());
-    // }, [currentPage,activeTab]);
-
-
-
 // 상품 수정 버튼의 onClick 이벤트 핸들러
     const handleEditClick = (product) => (event) => {
         event.stopPropagation(); // 이벤트 버블링 방지
         setSelectedProduct(product);
         onOpen(); // 모달 열기 함수 호출
     };
+    // 상품 수정 버튼의 onClick 이벤트 핸들러
+    const handleDeleteClick = (product) => (event) => {
+        event.stopPropagation();
+        setSelectedProduct(product);
+        dispatch(callProductUpdateStatusAPI({
+            onSuccess: async () => {
+                toast({
+                    title: "상품 생산 상태 변경 완료",
+                    description: "상품 생산 상태가 성공적으로 수정되었습니다!",
+                    status: "success",
+                    duration: 1000,
+                    isClosable: true,
+                });
+                await dispatch(callProductsAPI({ currentPage: 1 }));
+                await dispatch(callProductListAPI());
+                await dispatch(callProductTotalAPI());
+                await dispatch(callTotalStockAPI());
+                await dispatch(callDestroysTotalAPI());
+                await dispatch(callProductDestroyAPI());
+
+                onClose();
+                navigate('/inventory/product', {replace: true});
+            },
+            selectedProduct:product.productCode
+        }));
+    };
+
 
     const processedProducts = products?.data?.content.map(product => ({
         ...product,
@@ -182,8 +205,14 @@ function Products() {
         })(),
         edit: (() => {
             return (
-                <div className="status-container">
-                    <Button colorScheme="orange" size="sm" onClick={handleEditClick(product)} float="right">상품 수정</Button>
+                <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button colorScheme="orange" size="sm" onClick={handleEditClick(product)} style={{ marginRight: '8px' }}>상품 수정</Button>
+                    {product.status === 'in_production' && (
+                        <Button colorScheme="red" size="sm" onClick={handleDeleteClick(product)}>생산 중단</Button>
+                    )}
+                    {product.status === 'production_discontinued' && (
+                        <Button colorScheme="green" size="sm" onClick={handleDeleteClick(product)}>재 생산</Button>
+                    )}
                     <Modal isOpen={isOpen} onClose={() => { onClose(); setSelectedProduct(null); }}>
                         <ModalOverlay />
                         <ModalContent>
@@ -196,8 +225,8 @@ function Products() {
                     </Modal>
                 </div>
             );
-        })()
-
+        })(),
+        delete: null // '상품 삭제' 버튼이 'edit' 함수 내부에 통합되었으므로, 별도의 'delete' 필드는 필요 없습니다.
     }));
 
     const processedStocks = stocks?.data?.content.map(stock => ({

@@ -64,7 +64,7 @@ function ProductUpdate({ onClose, product }) {
                         title: "수정 완료",
                         description: "상품 정보가 성공적으로 수정되었습니다!",
                         status: "success",
-                        duration: 5000,
+                        duration: 1000,
                         isClosable: true,
                     });
                     onClose(); // 모달 창 닫기
@@ -79,7 +79,7 @@ function ProductUpdate({ onClose, product }) {
                 title: "오류 발생",
                 description: "상품 정보 수정 중 오류가 발생했습니다.",
                 status: "error",
-                duration: 5000,
+                duration: 1000,
                 isClosable: true,
             });
         }

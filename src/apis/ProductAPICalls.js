@@ -51,6 +51,25 @@ export const callProductUpdateAPI = ({ updateRequest,onSuccess,productCode }) =>
     }
 };
 
+export const callProductUpdateStatusAPI = ({ onSuccess,selectedProduct }) => {
+
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('DELETE',`${DEFAULT_URL}/${selectedProduct}`,{'Content-Type':'application/json'});
+            console.log('callProductUpdateStatusAPI result : ',result);
+
+            if(result.status === 204) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('상품 삭제 실패:', result);
+            }
+        } catch (error) {
+            console.error('상품 삭제 중 오류 발생:', error);
+        }
+    }
+};
+
 export const callProductListAPI = () => {
     return async (dispatch, getState) =>{
         const result = await request('GET', `/api/v1/products`);
