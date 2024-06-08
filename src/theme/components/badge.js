@@ -3,7 +3,7 @@ export const badgeStyles = {
   components: {
     Badge: {
       baseStyle: {
-        borderRadius: "10px",
+        borderRadius: "8px",
         lineHeight: "100%",
         padding: "7px",
         paddingLeft: "12px",
@@ -11,7 +11,7 @@ export const badgeStyles = {
       },
       variants: {
         outline: () => ({
-          borderRadius: "16px",
+          borderRadius: "8px",
         }),
         brand: (props) => ({
           bg: mode("brand.500", "brand.400")(props),

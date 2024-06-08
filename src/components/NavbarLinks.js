@@ -15,10 +15,12 @@ import {
 } from '@chakra-ui/react';
 // Custom Components
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useEffect} from 'react';
 // Assets
 import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { FaEthereum } from 'react-icons/fa';
+import {callLogoutAPI} from "../apis/AuthAPICalls";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function NavbarLinks(props) {
 	const { secondary } = props;
@@ -36,6 +38,17 @@ export default function NavbarLinks(props) {
 		'14px 17px 40px 4px rgba(112, 144, 176, 0.06)'
 	);
 	const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
+
+	const dispatch = useDispatch();
+
+	const { success } = useSelector(state => state.authReducer);
+
+	useEffect(() => {
+		if(success === true) {
+			window.location.replace('/');
+		}
+	}, [success]);
+
 	return (
 		<Flex
 			w={{ sm: '100%', md: 'auto' }}
@@ -178,23 +191,25 @@ export default function NavbarLinks(props) {
 							fontSize="sm"
 							fontWeight="700"
 							color={textColor}>
-							👋&nbsp; Hey, Adela
+							👋&nbsp; 이름이랑 부서직급
 						</Text>
 					</Flex>
 					<Flex flexDirection="column" p="10px">
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
-							<Text fontSize="sm">Profile Settings</Text>
+							<Text fontSize="sm">여기 사번 띄우고</Text>
 						</MenuItem>
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
-							<Text fontSize="sm">Newsletter Settings</Text>
+							<Text fontSize="sm">여기 이메일 띄워야지</Text>
 						</MenuItem>
 						<MenuItem
 							_hover={{ bg: 'none' }}
 							_focus={{ bg: 'none' }}
 							color="red.400"
 							borderRadius="8px"
-							px="14px">
-							<Text fontSize="sm">Log out</Text>
+							px="14px"
+							onClick={ () => dispatch(callLogoutAPI())}
+						>
+							<Text fontSize="sm">로그아웃</Text>
 						</MenuItem>
 					</Flex>
 				</MenuList>
