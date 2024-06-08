@@ -16,16 +16,20 @@ function SelectMenu({onSearch, menuList}) {
                 <InputLeftAddon borderRadius='30px'>
                     <Menu>
                         <MenuButton fontWeight='600' fontSize='14px' color='secondaryGray.600'>
-                            {selectedOption}<ChevronDownIcon ml='5px'/>
+                            {selectedOption}
+                            {menuList.length > 1 && <ChevronDownIcon ml='5px'/>}
                         </MenuButton>
-                        <MenuList>
-                            {
-                                 menuList && menuList.map( menu =>
-                                    <MenuItem fontWeight='600' fontSize='14px' color='secondaryGray.600'
-                                              onClick={() => setSelectedOption(menu)}>{menu}</MenuItem>
-                                )
-                            }
-                        </MenuList>
+                        {
+                            menuList.length > 1 &&
+                            <MenuList>
+                                {
+                                    menuList.map( menu =>
+                                        <MenuItem fontWeight='600' fontSize='14px' color='secondaryGray.600'
+                                                  onClick={() => setSelectedOption(menu)}>{menu}</MenuItem>
+                                    )
+                                }
+                            </MenuList>
+                        }
                     </Menu>
                 </InputLeftAddon>
                 <Input placeholder='검색어 입력' onChange={e => setSearchText(e.target.value)}
