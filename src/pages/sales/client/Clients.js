@@ -8,7 +8,6 @@ import ClientRegist from "./ClientRegist";
 import PagingBar from "../../../components/common/PagingBar";
 import SearchRadioButton from "../../../components/button/SearchRadioButton";
 import SelectMenu from "../../../components/common/SelectMenu";
-import {SearchIcon} from "@chakra-ui/icons";
 
 function Clients() {
     const dispatch = useDispatch();

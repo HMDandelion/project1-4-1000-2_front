@@ -5,14 +5,13 @@ import {
     Heading,
     Flex,
     Button,
-    useDisclosure,
+    useDisclosure, Divider,
 } from "@chakra-ui/react";
 
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {callClientDeleteAPI, callSalesClientAPI} from "../../../apis/ClientAPICalls";
 import {useNavigate, useParams} from "react-router-dom";
-import HorizonLine from "../../../components/common/HorizonLine";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import ViewDetailButton from "../../../components/button/ViewDetailButton";
@@ -35,7 +34,7 @@ function ClientDetail() {
         { headerName: "주문일시", valueGetter: (p) => p.data.orderDatetime },
         { headerName: "마감기한", valueGetter: (p) => p.data.deadline },
         { headerName: "주문총액", valueGetter: (p) => p.data.totalPrice },
-        { headerName: "진행상태", cellRenderer: OrderStatusButton, width: 150 },
+        { headerName: "진행상태", cellRenderer: (p) => OrderStatusButton(p.data.status), width: 150 },
         { headerName: null, cellRenderer: (p) => ViewDetailButton(`/sales/orders/${p.data.orderCode}`), width: 100, resizable: false}
     ]);
 
@@ -87,7 +86,7 @@ function ClientDetail() {
             <Text fontWeight='bold' color={textColor}>
                 <Badge fontSize='sm' m='2px 5px' colorScheme='orange'>주소</Badge><span>{client.address} {client.addressDetail}</span>
             </Text>
-            <HorizonLine/>
+            <Divider mt='20px'/>
 
             <Card>
                 <Heading fontSize='xl' color={textColor} pb='15px'>
