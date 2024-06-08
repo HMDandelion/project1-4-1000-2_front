@@ -11,8 +11,8 @@ const rootReducer = combineReducers({
     productReducer,
     stockReducer,
     warehouseReducer,
-    storageReducer
-    authReducer, clientReducer
+    storageReducer,
+    authReducer
 });
 
 export default rootReducer;

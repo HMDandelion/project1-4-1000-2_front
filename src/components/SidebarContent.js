@@ -69,7 +69,7 @@ function SidebarContent(props) {
                                                 to="/inventory"
                                                 _activeLink={{ color: activeColor }}
                                             >
-                                                <FaTruck h="24px" w="24px" pr="5px" />
+                                                <GlobeIcon h="24px" w="24px" pr="5px" />
                                                 재고·유통
                                             </Link>
                                         </Text>

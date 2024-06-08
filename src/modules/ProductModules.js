@@ -1,23 +1,34 @@
-/* 초기 값 */
-import {createActions, handleActions} from "redux-actions";
+import { createActions, handleActions } from "redux-actions";
 
-const initialState = {};
+const initialState = {
+    // products: [],
+    // success: false,
+    // productList: []
+};
 
-/* 액션 */
 const GET_INVENTORY_PRODUCTS = 'product/GET_INVENTORY_PRODUCTS';
 const SUCCESS = 'product/SUCCESS';
-const TOTAL = 'product/TOTAL';
+const GET_INVENTORY_PRODUCT_LIST = 'product/GET_INVENTORY_PRODUCT_LIST';
 
-export const { product : {getInventoryProducts, success, total}} = createActions({
-    [GET_INVENTORY_PRODUCTS] : result => ({ products : result }),
-    [SUCCESS] : () => ({success : true})
+export const { product: { getInventoryProducts, success, getInventoryProductList } } = createActions({
+    [GET_INVENTORY_PRODUCTS]: result => ({ products: result }),
+    [SUCCESS]: () => ({ success: true }),
+    [GET_INVENTORY_PRODUCT_LIST]: result => ({ productList: result })
 });
 
-/* 리듀서 */
 const productReducer = handleActions({
-    [GET_INVENTORY_PRODUCTS] : (state, {payload}) => payload,
-    [SUCCESS] : (state, {payload}) => payload,
-    [TOTAL] : (state, {payload}) => payload
+    [GET_INVENTORY_PRODUCTS]: (state, { payload }) => ({
+        ...state, // 현재 state 복사
+        products: payload.products // products 속성 업데이트
+    }),
+    [SUCCESS]: (state, { payload }) => ({
+        ...state, // 현재 state 복사
+        success: payload.success // success 속성 업데이트
+    }),
+    [GET_INVENTORY_PRODUCT_LIST]: (state, { payload }) => ({
+        ...state, // 현재 state 복사
+        productList: payload.productList // productList 속성 업데이트
+    })
 }, initialState);
 
 export default productReducer;

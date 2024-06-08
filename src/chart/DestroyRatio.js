@@ -21,18 +21,21 @@ ChartJS.register(
     Legend
 );
 
-function StockRatio({ products, total, productTotal }) {
-    const labels = products.map(product => product.productName);
+function DestroyRatio({ totalDestroy,productDestroy }) {
 
-    const accumulateQuantities = productTotal.data.map(item => item.accumulateQuantity);
-    const ratio = productTotal.data.map(item => item.ratio);
+    console.log("투니버스",productDestroy);
+    console.log("엔믹스",totalDestroy);
+    const labels = productDestroy.map(product => product.productName);
+
+    const ratio = productDestroy.map(item => item.ratio);
+    const destroyQuantity = productDestroy.map(item => item.destroyQuantity);
 
     const data = {
         labels: labels,
         datasets: [
             {
                 label: '',
-                data: accumulateQuantities,
+                data: destroyQuantity,
                 backgroundColor: "orange",
                 borderColor: "orange",
                 datalabels: {
@@ -77,11 +80,11 @@ function StockRatio({ products, total, productTotal }) {
 
     return (
         <Box p={5} borderWidth="1px" borderRadius="lg" width="40%" height="40%">
-            <Text fontSize="lg" color="gray.500">총 누적 재고량</Text>
-            <Text fontSize="4xl" fontWeight="bold" color="navy">{total.data}</Text>
+            <Text fontSize="lg" color="gray.500">총 파손률</Text>
+            <Text fontSize="4xl" fontWeight="bold" color="navy">{totalDestroy}%</Text>
             <Bar data={data} options={options} plugins={[ChartDataLabels]} />
         </Box>
     );
 }
 
-export default StockRatio;
+export default DestroyRatio;

@@ -1,9 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {callSalesClientsAPI} from "../../../apis/ClientAPICalls";
 import ColumnsTable from "../../../components/table/ComplexTable";
-import {callProductsAPI} from "../../../apis/ProductAPICalls";
-import {callStocksAPI, callTotalStockAPI} from "../../../apis/StockAPICalls";
+import {callProductListAPI, callProductsAPI} from "../../../apis/ProductAPICalls";
+import {callProductTotalAPI, callStocksAPI, callTotalStockAPI} from "../../../apis/StockAPICalls";
 import "../../../Products.css"
 import {
     Button, Modal,
@@ -16,16 +16,26 @@ import {
 } from "@chakra-ui/react";
 import ProductSave from "../../../modals/products/ProductSave";
 import StockRatio from "../../../chart/StockRatio";
+import DestroyRatio from "../../../chart/DestroyRatio";
+import {callDestroysTotalAPI, callProductDestroyAPI} from "../../../apis/StorageAPICalls";
+import PagingBar from "../../../components/common/PagingBar";
 
 function Products() {
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1);
     const [activeTab,setActiveTab] = useState('products');
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [loading, setLoading] = useState(true);
 
     const products = useSelector(state => state.productReducer.products);
     const stocks = useSelector(state => state.stockReducer.stocks);
     const total = useSelector(state => state.stockReducer.total);
+    const productTotal = useSelector(state => state.stockReducer.productTotal);
+    const productList = useSelector(state => state.productReducer.productList);
+    const totalDestroy = useSelector(state => state.storageReducer.destroys);
+    const productDestroy = useSelector(state => state.storageReducer.productDestroy);
+
+
 
     const productColumns = [
         {
@@ -96,19 +106,37 @@ function Products() {
     const stockBaseLink = "/inventory/product";   // 상세조회 React 주소
     const stockIdAccessor = "stockCode";     // id로 사용할 컬럼 지정
 
-
     useEffect(() => {
-        dispatch(callTotalStockAPI());
-        if(activeTab === 'products') {
-            dispatch(callProductsAPI({currentPage}));
-            // dispatch(callTotalStockAPI());
-        }else if (activeTab === 'inventory'){
-            dispatch(callStocksAPI({currentPage}));
-            // dispatch(callTotalStockAPI());
-        }
-        // dispatch(callTotalStockAPI());
-    }, [currentPage,activeTab]);
+        const fetchData = async () => {
+            setLoading(true);
+            await dispatch(callProductTotalAPI());
+            await dispatch(callTotalStockAPI());
+            await dispatch(callProductListAPI());
 
+            await dispatch(callDestroysTotalAPI());
+            await dispatch(callProductDestroyAPI());
+            console.log("버튼 상태 ",activeTab)
+            if (activeTab === 'products') {
+                await dispatch(callProductsAPI({ currentPage }));
+            } else if (activeTab === 'inventory') {
+                await dispatch(callStocksAPI({ currentPage }));
+            }
+            setLoading(false);
+        };
+
+        fetchData();
+    }, [currentPage, activeTab]);
+
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true);
+    //         await dispatch(callProductListAPI());
+    //         setLoading(false);
+    //     };
+    //
+    //     fetchData();
+    // }, [currentPage, activeTab]);
     // useEffect(() => {
     //     dispatch(callTotalStockAPI());
     // }, [currentPage,activeTab]);
@@ -193,45 +221,71 @@ function Products() {
     }));
 
 
-        console.log("헤헤",processedProducts)
+        console.log("products",productList)
 
-    // console.log("상품 량",products.data.content);
-        console.log("총합",total);
+    console.log("상품 량",products);
+        console.log("total",total);
+        console.log("productTotal",productTotal);
+        console.log("stocks",stocks)
 
+    console.log("totalDestroy",totalDestroy)
+    console.log("productDestroy",productDestroy)
+
+    let productPageInfo={};
+    //페이징
+    if(products){
+    productPageInfo = {
+        currentPage:products.data.pageable.pageNumber+1,
+        startPage:1,
+        endPage:10,
+        maxPage:products.data.totalPages
+    }
+    console.log("페이지정보",productPageInfo);
+    }
     return (
         <>
-        {processedProducts && total &&
-            <StockRatio products={processedProducts} total={total}/>
-        }
-            <div className="tabs">
-                <button onClick={() => setActiveTab('products')}>상품</button>
-                <button onClick={() => setActiveTab('inventory')}>재고</button>
-                {activeTab === 'products' && (
-                    <Button colorScheme="orange" size="sm" onClick={onOpen} float="right">상품 등록</Button>
+            <div style={{ backgroundColor: '#ffffff', margin: '10px', padding: '10px', borderRadius: '5px' }}>
+                {productList && total && productTotal && (
+                        <StockRatio products={productList.data} total={total} productTotal={productTotal}/>
                 )}
             </div>
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader color={"navy"}>상품 등록</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <ProductSave onClose={onClose} />
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
-            {
-                activeTab === 'products' && products &&
-                <ColumnsTable columnsData={productColumns} tableData={processedProducts} tableTitle={tableTitle}
-                              baseLink={baseLink} idAccessor={idAccessor}/>
-            }
+            <div style={{ backgroundColor: '#ffffff', margin: '10px', padding: '10px', borderRadius: '5px' }}>
+                {totalDestroy &&  productDestroy &&(
+                    <DestroyRatio totalDestroy={totalDestroy.data} productDestroy={productDestroy.data}/>
+                )}
+            </div>
+            <div style={{ backgroundColor: '#ffffff', margin: '10px', padding: '10px', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                <div className="tabs">
+                    <button onClick={() => setActiveTab('products')}>상품</button>
+                    <button onClick={() => setActiveTab('inventory')}>재고</button>
+                    {activeTab === 'products' && (
+                        <Button colorScheme="orange" size="sm" onClick={onOpen} float="right">상품 등록</Button>
+                    )}
+                </div>
+                <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                        <ModalHeader color={"navy"}>상품 등록</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <ProductSave onClose={onClose} />
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+                {activeTab === 'products' && products && (
+                    <ColumnsTable columnsData={productColumns} tableData={processedProducts} tableTitle={tableTitle}
+                                  baseLink={baseLink} idAccessor={idAccessor}/>
+                )}
+                <PagingBar pageInfo={productPageInfo} setCurrentPage={setCurrentPage} />
 
-            {activeTab === 'inventory' && stocks &&
-                <ColumnsTable columnsData={stockColumns} tableData={processedStocks} tableTitle={stockTableTitle}
-                              baseLink={stockBaseLink} idAccessor={stockIdAccessor}/>
-            }
+                {activeTab === 'inventory' && stocks && (
+                    <ColumnsTable columnsData={stockColumns} tableData={processedStocks} tableTitle={stockTableTitle}
+                                  baseLink={stockBaseLink} idAccessor={stockIdAccessor}/>
+                )}
+            </div>
         </>
     );
+
 }
 
 export default Products;

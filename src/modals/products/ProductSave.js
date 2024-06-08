@@ -10,8 +10,10 @@ import {
     useToast
 } from "@chakra-ui/react";
 import {useDispatch} from "react-redux";
-import {callProductRegistAPI, callProductsAPI} from "../../apis/ProductAPICalls";
+import {callProductListAPI, callProductRegistAPI, callProductsAPI} from "../../apis/ProductAPICalls";
 import {useNavigate} from "react-router-dom";
+import {callProductTotalAPI, callStocksAPI, callTotalStockAPI} from "../../apis/StockAPICalls";
+import {callDestroysTotalAPI, callProductDestroyAPI} from "../../apis/StorageAPICalls";
 
 
 function ProductSave({ onClose }) {
@@ -43,7 +45,13 @@ function ProductSave({ onClose }) {
             registRequest: productInfo,
             onSuccess: () => {
                 // 상품 등록 성공 시 데이터 재로딩
-                dispatch(callProductsAPI({currentPage: 1})).then(() => {
+                dispatch(callProductsAPI({currentPage: 1}))
+                    .then(dispatch(callProductListAPI()))
+                    .then(dispatch(callProductTotalAPI()))
+                    .then(dispatch(callTotalStockAPI()))
+                    .then(dispatch(callDestroysTotalAPI()))
+                    .then(dispatch(callProductDestroyAPI()))
+                    .then(() => {
                     setIsRegistered(true); // 등록 성공 시 isRegistered 상태를 true로 설정
                     toast({ // 등록 성공 알림 메시지 표시
                         title: "등록 완료",

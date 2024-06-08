@@ -3,7 +3,7 @@ import {getSalesClient, getSalesClients} from "../modules/ClientModules";
 import {getInventoryProducts} from "../modules/ProductModules";
 import {getInventoryStocks} from "../modules/StockModules";
 import {getInventoryWarehouses} from "../modules/WarehouseModules";
-import {getStorageMove} from "../modules/StorageModules";
+import {getDestroys, getProductDestroy, getStorageMove} from "../modules/StorageModules";
 
 const DEFAULT_URL = `/api/v1/storage`;
 export const callWarehouseMove =(warehouseCode) =>{
@@ -17,3 +17,26 @@ export const callWarehouseMove =(warehouseCode) =>{
         }
     }
 }
+
+export const callDestroysTotalAPI =() =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `${DEFAULT_URL}/destroy`);
+
+        console.log("result : ", result);
+        if(result.status === 200) {
+            dispatch(getDestroys(result));
+        }
+    }
+}
+
+export const callProductDestroyAPI =() =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `${DEFAULT_URL}/product/destroy`);
+
+        console.log("result : ", result);
+        if(result.status === 200) {
+            dispatch(getProductDestroy(result));
+        }
+    }
+}
+

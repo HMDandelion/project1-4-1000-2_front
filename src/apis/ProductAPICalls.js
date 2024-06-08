@@ -1,6 +1,6 @@
 import {request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
-import {getInventoryProducts, success} from "../modules/ProductModules";
+import {getInventoryProductList, getInventoryProducts, success} from "../modules/ProductModules";
 
 const DEFAULT_URL = `/api/v1/product`;
 export const callProductsAPI =({currentPage = 1}) =>{
@@ -31,6 +31,17 @@ export const callProductRegistAPI = ({ registRequest,onSuccess }) => {
         }
     }
 };
+
+export const callProductListAPI = () => {
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `/api/v1/products`);
+
+        console.log("상품리스트 : ", result);
+        if(result.status === 200) {
+            dispatch(getInventoryProductList(result));
+        }
+    }
+}
 
 
 
