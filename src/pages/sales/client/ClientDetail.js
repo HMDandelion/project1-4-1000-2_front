@@ -11,7 +11,7 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import {callClientDeleteAPI, callSalesClientAPI} from "../../../apis/ClientAPICalls";
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import ViewDetailButton from "../../../components/button/ViewDetailButton";
@@ -26,7 +26,8 @@ function ClientDetail() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { clientCode } = useParams();
+    const location = useLocation();
+    const clientCode = location.state;
     const { client, success, deleted } = useSelector(state => state.clientReducer);
 
     const [columnData, setColumnData] = useState([
@@ -55,11 +56,6 @@ function ClientDetail() {
     const formatNumber = (number) => {
         return new Intl.NumberFormat('ko-KR').format(number);
     };
-
-    const deleteAPI = (code) => {
-        callClientDeleteAPI({clientCode : code});
-    }
-
 
     return (
         client &&

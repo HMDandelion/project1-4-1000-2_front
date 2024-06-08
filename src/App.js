@@ -16,7 +16,11 @@ function App() {
                   <Route path="sales">
                       <Route path="client">
                           <Route index element={<ProtectedRoute loginCheck={true}><Clients/></ProtectedRoute>}/>
-                          <Route path=":clientCode" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
+                          <Route path="detail" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
+                      </Route>
+                      <Route path="estimate">
+                          <Route index element={<ProtectedRoute loginCheck={true}><Clients/></ProtectedRoute>}/>
+                          <Route path=":estimateCode" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
                       </Route>
                   </Route>
               </Route>

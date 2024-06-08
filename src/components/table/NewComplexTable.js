@@ -23,17 +23,15 @@ import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import Card from "../card/Card";
 import {useNavigate} from "react-router-dom";
 
-export default function ColumnsTable({columnsData, tableData, tableTitle, baseLink, idAccessor}) {
+export default function ComplexTable({columnsData, tableData, tableTitle, onRowClick}) {
 
     const columns = useMemo(() => columnsData, [columnsData]);
     const data = useMemo(() => tableData, [tableData]);
-    const navigate = useNavigate();
 
     const tableInstance = useTable(
         {
             columns,
-            data,
-            getRowId: (row) => row[idAccessor]
+            data
         },
         useGlobalFilter,
         useSortBy,
@@ -51,11 +49,6 @@ export default function ColumnsTable({columnsData, tableData, tableTitle, baseLi
 
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
-
-    const handleRowClick = (row) => {
-        const link = `${baseLink}/${row.original[idAccessor]}`;
-        navigate(link);
-    };
 
     return (
         <Card
@@ -98,7 +91,7 @@ export default function ColumnsTable({columnsData, tableData, tableTitle, baseLi
                     {page.map((row, index) => {
                         prepareRow(row);
                         return (
-                            <Tr {...row.getRowProps()} key={index} onClick={() => handleRowClick(row)}>
+                            <Tr {...row.getRowProps()} key={index} onClick={() => onRowClick(row)}>
                                 {row.cells.map((cell, index) => {
                                     return (
                                         <Td
