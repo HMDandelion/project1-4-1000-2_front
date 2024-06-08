@@ -8,6 +8,7 @@ import Warehouses from "./pages/inventory/warehouse/Warehouses";
 import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
 import ProtectedRoute from "./components/router/ProtectedRoute";
+import ProductDetail from "./pages/inventory/product/ProductDetail";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                   <Route path="inventory">
                       <Route path="product">
                           <Route index element={<Products/>}/>
+                          <Route path=":productCode"element={<ProductDetail/>}/>
                       </Route>
                       <Route path="warehouse">
                           <Route index element={<Warehouses/>}/>

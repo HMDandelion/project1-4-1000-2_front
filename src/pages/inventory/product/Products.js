@@ -26,12 +26,15 @@ import {callDestroysTotalAPI, callProductDestroyAPI} from "../../../apis/Storage
 import PagingBar from "../../../components/common/PagingBar";
 import ProductUpdate from "../../../modals/products/ProductUpdate";
 import {useNavigate} from "react-router-dom";
+import ProductSave2 from "../../../modals/products/ProductSave2";
+import ProductUpdat2 from "../../../modals/products/ProductUpdat2";
 
 function Products() {
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1);
     const [activeTab,setActiveTab] = useState('products');
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
+    const { isOpen: isSaveModalOpen, onOpen: onSaveModalOpen, onClose: onSaveModalClose } = useDisclosure();
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const navigate = useNavigate();
@@ -79,10 +82,6 @@ function Products() {
         {
             Header: '',
             accessor: 'edit'
-        },
-        {
-            Header:'',
-            accessor:'delete'
         }
     ]
     const stockColumns = [
@@ -150,9 +149,13 @@ function Products() {
     const handleEditClick = (product) => (event) => {
         event.stopPropagation(); // 이벤트 버블링 방지
         setSelectedProduct(product);
-        onOpen(); // 모달 열기 함수 호출
+        onEditModalOpen(); // 수정 모달 열기 함수 호출
     };
-    // 상품 수정 버튼의 onClick 이벤트 핸들러
+// 상품 등록 버튼의 onClick 이벤트 핸들러
+    const handleSaveClick = () => {
+        onSaveModalOpen(); // 등록 모달 열기 함수 호출
+    };
+    // 상품 생산상태 변화 버튼의 onClick 이벤트 핸들러
     const handleDeleteClick = (product) => (event) => {
         event.stopPropagation();
         setSelectedProduct(product);
@@ -172,7 +175,7 @@ function Products() {
                 await dispatch(callDestroysTotalAPI());
                 await dispatch(callProductDestroyAPI());
 
-                onClose();
+                onEditModalClose ();
                 navigate('/inventory/product', {replace: true});
             },
             selectedProduct:product.productCode
@@ -213,20 +216,20 @@ function Products() {
                     {product.status === 'production_discontinued' && (
                         <Button colorScheme="green" size="sm" onClick={handleDeleteClick(product)}>재 생산</Button>
                     )}
-                    <Modal isOpen={isOpen} onClose={() => { onClose(); setSelectedProduct(null); }}>
-                        <ModalOverlay />
-                        <ModalContent>
-                            <ModalHeader color={"navy"}>상품 수정</ModalHeader>
-                            <ModalCloseButton />
-                            <ModalBody>
-                                {selectedProduct && <ProductUpdate onClose={() => { onClose(); setSelectedProduct(null); }} product={selectedProduct}/>}
-                            </ModalBody>
-                        </ModalContent>
-                    </Modal>
+                    {/*<Modal isOpen={isOpen} onClose={() => { onClose(); setSelectedProduct(null); }}>*/}
+                    {/*    <ModalOverlay />*/}
+                    {/*    <ModalContent>*/}
+                    {/*        <ModalHeader color={"navy"}>상품 수정</ModalHeader>*/}
+                    {/*        <ModalCloseButton />*/}
+                    {/*        <ModalBody>*/}
+                    {/*            {selectedProduct && <ProductUpdate onClose={() => { onClose(); setSelectedProduct(null); }} product={selectedProduct}/>}*/}
+                    {/*        </ModalBody>*/}
+                    {/*    </ModalContent>*/}
+                    {/*</Modal>*/}
+                    <ProductUpdat2 isOpen={isEditModalOpen} onClose={() => { onEditModalClose(); setSelectedProduct(null); }} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
                 </div>
             );
-        })(),
-        delete: null // '상품 삭제' 버튼이 'edit' 함수 내부에 통합되었으므로, 별도의 'delete' 필드는 필요 없습니다.
+        })()
     }));
 
     const processedStocks = stocks?.data?.content.map(stock => ({
@@ -330,20 +333,12 @@ function Products() {
                     <button onClick={() => setActiveTab('inventory')}>재고</button>
                     {activeTab === 'products' && (
                         <>
-                        <Button colorScheme="orange" size="sm" onClick={onOpen} float="right" ml={5}>상품 등록</Button>
+                            <Button colorScheme="orange" size="sm" onClick={handleSaveClick} float="right" ml={5}>상품 등록</Button>
+                            <ProductSave2 isOpen={isSaveModalOpen} onClose={onSaveModalClose} />
                         </>
                     )}
                 </div>
-                <Modal isOpen={isOpen} onClose={onClose}>
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader color={"navy"}>상품 등록</ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody>
-                            <ProductSave onClose={onClose} />
-                        </ModalBody>
-                    </ModalContent>
-                </Modal>
+
                 {activeTab === 'products' && products && (
                     <>
                     <ColumnsTable columnsData={productColumns} tableData={processedProducts} tableTitle={tableTitle}

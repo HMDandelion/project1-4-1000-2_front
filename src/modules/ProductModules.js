@@ -1,19 +1,21 @@
 import { createActions, handleActions } from "redux-actions";
 
 const initialState = {
-    // products: [],
-    // success: false,
-    // productList: []
+
 };
 
 const GET_INVENTORY_PRODUCTS = 'product/GET_INVENTORY_PRODUCTS';
 const SUCCESS = 'product/SUCCESS';
 const GET_INVENTORY_PRODUCT_LIST = 'product/GET_INVENTORY_PRODUCT_LIST';
+const GET_INVENTORY_PRODUCT = 'product/GET_INVENTORY_PRODUCT';
+const GET_INVENTORY_PRODUCT_BOM = 'product/GET_INVENTORY_PRODUCT_BOM';
 
-export const { product: { getInventoryProducts, success, getInventoryProductList } } = createActions({
+export const { product: { getInventoryProducts, success, getInventoryProductList,getInventoryProduct,getInventoryProductBom} } = createActions({
     [GET_INVENTORY_PRODUCTS]: result => ({ products: result }),
     [SUCCESS]: () => ({ success: true }),
-    [GET_INVENTORY_PRODUCT_LIST]: result => ({ productList: result })
+    [GET_INVENTORY_PRODUCT_LIST]: result => ({ productList: result }),
+    [GET_INVENTORY_PRODUCT]: result => ({ product: result }),
+    [GET_INVENTORY_PRODUCT_BOM]: result => ({ bom: result })
 });
 
 const productReducer = handleActions({
@@ -28,6 +30,14 @@ const productReducer = handleActions({
     [GET_INVENTORY_PRODUCT_LIST]: (state, { payload }) => ({
         ...state, // 현재 state 복사
         productList: payload.productList // productList 속성 업데이트
+    }),
+    [GET_INVENTORY_PRODUCT]: (state, { payload }) => ({
+        ...state, // 현재 state 복사
+        product: payload.product
+    }),
+    [GET_INVENTORY_PRODUCT_BOM]: (state, { payload }) => ({
+        ...state, // 현재 state 복사
+        bom: payload.bom
     })
 }, initialState);
 

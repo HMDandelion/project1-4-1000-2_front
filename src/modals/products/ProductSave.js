@@ -87,7 +87,7 @@ function ProductSave({ onClose }) {
                            onChange={handleChange}/>
                 </FormControl>
                 <FormControl>
-                    <FormLabel fontWeight='800' color={textColor}>상품명</FormLabel>
+                    <FormLabel fontWeight='800' color={textColor}>단위</FormLabel>
                     <Input placeholder="단위를 입력하세요" _placeholder={{fontSize: 'sm'}}
                            name='unit' value={productInfo.unit}
                            onChange={handleChange}/>
