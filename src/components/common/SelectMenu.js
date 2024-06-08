@@ -2,9 +2,12 @@ import {IconButton, Input, InputGroup, InputLeftAddon, Menu, MenuButton, MenuIte
 import {ChevronDownIcon, SearchIcon} from "@chakra-ui/icons";
 import React, {useState} from "react";
 
-function SelectMenu({selectedOption, setSelectedOption, menuList}) {
-    const handleMenuItemClick = (option) => {
-        setSelectedOption(option);
+function SelectMenu({onSearch, menuList}) {
+    const [selectedOption, setSelectedOption] = useState(menuList[0]);
+    const [searchText, setSearchText] = useState('');
+
+    const handleSearchClick = () => {
+        onSearch(selectedOption, searchText);
     };
 
     return (
@@ -19,14 +22,17 @@ function SelectMenu({selectedOption, setSelectedOption, menuList}) {
                             {
                                  menuList && menuList.map( menu =>
                                     <MenuItem fontWeight='600' fontSize='14px' color='secondaryGray.600'
-                                              onClick={() => handleMenuItemClick(menu)}>{menu}</MenuItem>
+                                              onClick={() => setSelectedOption(menu)}>{menu}</MenuItem>
                                 )
                             }
                         </MenuList>
                     </Menu>
                 </InputLeftAddon>
-                <Input borderRadius='30px' w='200px' variant='outline' placeholder='검색어 입력' bg='secondaryGray.300'/>
-                <IconButton aria-label='Search database' icon={<SearchIcon />} ml='5px' bg='secondaryGray.300'/>
+                <Input placeholder='검색어 입력' onChange={e => setSearchText(e.target.value)}
+                       variant='outline' bg='secondaryGray.300' borderRadius='30px' w='200px' />
+                <IconButton aria-label='Search database' icon={<SearchIcon />}
+                            onClick={handleSearchClick}
+                            ml='5px' bg='secondaryGray.300'/>
             </InputGroup>
         </>
     );

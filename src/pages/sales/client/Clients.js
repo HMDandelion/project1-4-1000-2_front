@@ -8,9 +8,12 @@ import ClientRegist from "./ClientRegist";
 import PagingBar from "../../../components/common/PagingBar";
 import SearchRadioButton from "../../../components/button/SearchRadioButton";
 import SelectMenu from "../../../components/common/SelectMenu";
+import ComplexTable from "../../../components/table/NewComplexTable";
+import {useNavigate} from "react-router-dom";
 
 function Clients() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {clients, success} = useSelector(state => state.clientReducer);
 
     // 페이지네이션
@@ -21,7 +24,14 @@ function Clients() {
 
     // 검색 옵션
     const menuList = ['거래처명', '대표명'];
-    const [selectedOption, setSelectedOption] = useState(menuList[0]);
+    const [searchParams, setSearchParams] = useState({
+        selectedOption : menuList[0],
+        searchText : '',
+    });
+
+    const handleSearch = (selectedOption, searchText) => {
+        setSearchParams({ selectedOption, searchText });
+    };
 
     // 필터 검색
     const [isChecked, setIsChecked] = useState(false);
@@ -45,9 +55,11 @@ function Clients() {
             accessor: 'phone'
         }
     ]
-    // const tableTitle = "거래처 관리";     // 테이블 제목
-    const baseLink = "/sales/client";   // 상세조회 React 주소
-    const idAccessor = "clientCode";     // id로 사용할 컬럼 지정
+
+    const handleRowClick = (row) => {
+        console.log("clicked row  : ", row);
+        navigate(`/sales/client/detail`, {state: row.original.clientCode});
+    }
 
     return (
         <>
@@ -56,11 +68,10 @@ function Clients() {
                 <>
                     <HStack spacing='10px'>
                         <SearchRadioButton isChecked={isChecked} setIsChecked={setIsChecked} text='주문 진행중'/>
-                        <SelectMenu selectedOption={selectedOption} setSelectedOption={setSelectedOption} menuList={menuList}/>
+                        <SelectMenu onSearch={handleSearch} menuList={menuList}/>
                         <ClientRegist/>
                     </HStack>
-                    <ColumnsTable columnsData={columns} tableData={clients.data}
-                                  baseLink={baseLink} idAccessor={idAccessor}/>
+                    <ComplexTable columnsData={columns} tableData={clients.data} onRowClick={handleRowClick}/>
                     <PagingBar pageInfo={clients.pageInfo} setCurrentPage={setCurrentPage}/>
                 </>
             }
