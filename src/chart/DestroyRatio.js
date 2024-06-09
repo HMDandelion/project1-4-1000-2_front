@@ -79,7 +79,7 @@ function DestroyRatio({ totalDestroy,productDestroy }) {
     };
 
     return (
-        <Box p={5} borderWidth="1px" borderRadius="lg" width="40%" height="40%">
+        <Box p={5} borderWidth="1px" borderRadius="lg" width="100%" height="40%">
             <Text fontSize="lg" color="gray.500">총 파손률</Text>
             <Text fontSize="4xl" fontWeight="bold" color="navy">{totalDestroy}%</Text>
             <Bar data={data} options={options} plugins={[ChartDataLabels]} />

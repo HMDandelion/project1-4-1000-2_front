@@ -1,7 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {Fragment, useEffect, useState} from "react";
-import {callSalesClientsAPI} from "../../../apis/ClientAPICalls";
-import ColumnsTable from "../../../components/table/ComplexTable";
 import {
     callProductListAPI,
     callProductsAPI,
@@ -29,7 +27,6 @@ import {useNavigate} from "react-router-dom";
 
 import ProductUpdat from "../../../modals/products/ProductUpdat";
 import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
-import ClientDetail from "../../sales/client/ClientDetail";
 import ProductClient from "../../../modals/products/ProductClient";
 
 function Products() {
@@ -342,29 +339,38 @@ function Products() {
         <>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ flex: 1, margin: '10px' }}>
-                    <div style={{ backgroundColor: '#ffffff', padding: '10px', borderRadius: '5px' }}>
+                    <div style={{ backgroundColor: '#ffffff', padding: '10px', borderRadius: '5px', width: '100%' }}>
                         {productList && total && productTotal && (
-                            <StockRatio products={productList.data} total={total} productTotal={productTotal}/>
+                            <StockRatio
+                                products={productList.data}
+                                total={total}
+                                productTotal={productTotal}
+                                style={{ width: '100%' }}
+                            />
                         )}
                     </div>
-                    <div style={{ backgroundColor: '#ffffff', padding: '10px', borderRadius: '5px', marginTop: '10px' }}>
+                    <div style={{ backgroundColor: '#ffffff', padding: '10px', borderRadius: '5px', marginTop: '10px', width: '100%' }}>
                         {totalDestroy && productDestroy && (
-                            <DestroyRatio totalDestroy={totalDestroy.data} productDestroy={productDestroy.data}/>
+                            <DestroyRatio
+                                totalDestroy={totalDestroy.data}
+                                productDestroy={productDestroy.data}
+                                style={{ width: '100%' }}
+                            />
                         )}
                     </div>
                 </div>
-                <div style={{ flex: 1, margin: '10px' }}>
+                <div style={{ flex: 1, margin: '100px', display: 'flex', alignItems: 'center' }}>
                     {todayStock && (
-                        <div style={{ color: 'navy', marginTop: '10px', textAlign: 'left' }}>
-                            <div style={{ fontSize: '2em', fontWeight: 'bold' }}>{todayStock.data.today}일</div>
-                            <div style={{ fontSize: '2em', color: 'navy', fontWeight: 'bold' }}>
-                <span style={{ color: 'orange', fontSize: '4em', fontWeight: 'bold' }}>
-                    {todayStock.data.todayCase}
-                </span>
+                        <div style={{ color: 'navy', textAlign: 'left' }}>
+                            <div style={{ fontSize: '2.65em', fontWeight: 'bold' }}>{todayStock.data.today}일</div>
+                            <div style={{ fontSize: '2.65em', color: 'navy', fontWeight: 'bold' }}>
+                            <span style={{ color: 'orange', fontSize: '4em', fontWeight: 'bold' }}>
+                                {todayStock.data.todayCase}
+                            </span>
                                 건의 재고와<br/>
                                 <span style={{ color: 'orange', fontSize: '4em', fontWeight: 'bold' }}>
-                    {todayStock.data.todayQuantity}
-                </span>
+                                {todayStock.data.todayQuantity}
+                            </span>
                                 재고 수량이 추가 되었습니다.
                             </div>
                         </div>
@@ -401,6 +407,7 @@ function Products() {
             </div>
         </>
     );
+
 
 
 }
