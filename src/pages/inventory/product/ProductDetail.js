@@ -1,11 +1,16 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import {callSalesClientAPI} from "../../../apis/ClientAPICalls";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import StockRatio from "../../../chart/StockRatio";
 import {callProductTotalAPI, callStocksAPI, callTotalStockAPI} from "../../../apis/StockAPICalls";
-import {callProductAPI, callProductBomAPI, callProductListAPI, callProductsAPI} from "../../../apis/ProductAPICalls";
-import {callDestroysTotalAPI, callProductDestroyAPI} from "../../../apis/StorageAPICalls";
+import {
+    callBomDeleteAPI,
+    callProductAPI,
+    callProductBomAPI,
+    callProductListAPI,
+    callProductsAPI
+} from "../../../apis/ProductAPICalls";
 import {
     Badge,
     Button,
@@ -15,15 +20,11 @@ import {
     ModalOverlay,
     Text,
     useColorModeValue,
-    useDisclosure
+    useDisclosure, useToast
 } from "@chakra-ui/react";
-import ClientModify from "../../sales/client/ClientModify";
 import HorizonLine from "../../../components/common/HorizonLine";
-import ColumnsTable from "../../../components/table/ComplexTable";
-import ProductSave from "../../../modals/products/ProductSave";
 import BomSave from "../../../modals/products/BomSave";
 import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
-import ProductUpdat from "../../../modals/products/ProductUpdat";
 import BomUpdate from "../../../modals/products/BomUpdate";
 function ProductDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -34,11 +35,12 @@ function ProductDetail() {
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const navigate = useNavigate();
 
     const product = useSelector(state => state.productReducer.product);
     const bom = useSelector(state => state.productReducer.bom);
     const spec = useSelector(state => state.productReducer.state);
-
+    const toast = useToast();
 
 
 
@@ -89,6 +91,35 @@ function ProductDetail() {
         onEditModalOpen(); // 수정 모달 열기 함수 호출
     };
 
+    // 상품 삭제
+    const handleDeleteClick = (bom) => (event) => {
+        event.stopPropagation();
+        setSelectedProduct(bom);
+        dispatch(callBomDeleteAPI({
+            onSuccess: async () => {
+                toast({
+                    title: "BOM 삭제",
+                    description: "BOM이 삭제 되었습니다!",
+                    status: "success",
+                    duration: 1000,
+                    isClosable: true,
+                });
+                // await dispatch(callProductsAPI({ currentPage: 1 }));
+                // await dispatch(callProductListAPI());
+                // await dispatch(callProductTotalAPI());
+                // await dispatch(callTotalStockAPI());
+                // await dispatch(callDestroysTotalAPI());
+                // await dispatch(callProductDestroyAPI());
+                await dispatch(callProductBomAPI({currentPage,productCode}));
+                await dispatch(callProductAPI({productCode}));
+                onEditModalClose();
+                navigate(`/inventory/product/${productCode}`, {replace: true});
+            },
+            selectedBom:bom.bomCode
+        }));
+    };
+
+
     let processedBoms;
     if(bom) {
         processedBoms = bom.map(el => ({
@@ -102,6 +133,7 @@ function ProductDetail() {
                             onEditModalClose();
                             setSelectedProduct(null);
                         }} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct}/>
+                        <Button colorScheme="red" size="sm" onClick={handleDeleteClick(el)}>BOM 삭제</Button>
                     </div>
                 );
             })()

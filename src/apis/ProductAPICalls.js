@@ -127,6 +127,25 @@ export const callProductUpdateStatusAPI = ({ onSuccess,selectedProduct }) => {
     }
 };
 
+export const callBomDeleteAPI = ({ onSuccess,selectedBom }) => {
+
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('DELETE',`/api/v1/bom/${selectedBom}`,{'Content-Type':'application/json'});
+            console.log('callBomDeleteAPI result : ',result);
+
+            if(result.status === 204) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('BOM 삭제 실패:', result);
+            }
+        } catch (error) {
+            console.error('BOM 삭제 중 오류 발생:', error);
+        }
+    }
+};
+
 export const callProductListAPI = () => {
     return async (dispatch, getState) =>{
         const result = await request('GET', `/api/v1/products`);
