@@ -6,7 +6,7 @@ import {
     getInventoryProduct,
     getInventoryProductBom,
     getInventoryProductList,
-    getInventoryProducts, getSpec, getSpecPaging,
+    getInventoryProducts, getProductClient, getSpec, getSpecPaging,
     success
 } from "../modules/ProductModules";
 
@@ -278,5 +278,18 @@ export const callMaterailsAPI =() =>{
         }
     }
 }
+
+export const callProductClient =({productCode}) =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `${DEFAULT_URL}/client/${productCode}`);
+
+        console.log("callProductClient : ", result);
+        if(result.status === 200) {
+            dispatch(getProductClient(result));
+        }
+    }
+}
+
+
 
 

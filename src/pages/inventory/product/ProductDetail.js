@@ -228,7 +228,7 @@ function ProductDetail() {
 
     return (
         <>
-            {product &&
+            {product && specPaging &&
                 <div style={{ backgroundColor: '#ffffff', margin: '10px', padding: '10px', borderRadius: '5px' }}>
                     <Flex justify='space-between'>
                         <Text fontSize='3xl' fontWeight='800' color={textColor} m='10px'>

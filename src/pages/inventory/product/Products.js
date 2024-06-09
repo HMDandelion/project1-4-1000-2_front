@@ -29,6 +29,8 @@ import {useNavigate} from "react-router-dom";
 
 import ProductUpdat from "../../../modals/products/ProductUpdat";
 import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
+import ClientDetail from "../../sales/client/ClientDetail";
+import ProductClient from "../../../modals/products/ProductClient";
 
 function Products() {
     const dispatch = useDispatch();
@@ -36,6 +38,7 @@ function Products() {
     const [activeTab,setActiveTab] = useState('products');
     const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
     const { isOpen: isSaveModalOpen, onOpen: onSaveModalOpen, onClose: onSaveModalClose } = useDisclosure();
+    const { isOpen: isClientModalOpen, onOpen: onClientModalOpen, onClose: onClientModalClose } = useDisclosure();
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const navigate = useNavigate();
@@ -79,6 +82,10 @@ function Products() {
         {
             Header: '생산 상태',
             accessor: 'status'
+        },
+        {
+            Header: '거래처',
+            accessor: 'clients'
         },
         {
             Header: '',
@@ -153,6 +160,13 @@ function Products() {
         setSelectedProduct(product);
         onEditModalOpen(); // 수정 모달 열기 함수 호출
     };
+
+    //상품의 거래처 onClick이벤트 핸들러
+    const handleClientDetail = (product) =>(event) =>{
+        event.stopPropagation();
+        setSelectedProduct(product);
+        onClientModalOpen();
+    }
 // 상품 등록 버튼의 onClick 이벤트 핸들러
     const handleSaveClick = () => {
         onSaveModalOpen(); // 등록 모달 열기 함수 호출
@@ -211,20 +225,30 @@ function Products() {
         edit: (() => {
             return (
                 <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button colorScheme="orange" size="sm" onClick={handleEditClick(product)} style={{ marginRight: '8px' }}>상품 수정</Button>
+                    <Button colorScheme="orange"size='xs' onClick={handleEditClick(product)} style={{ marginRight: '8px' }}>상품 수정</Button>
                     {product.status === 'in_production' && (
                         <>
-                        <Button colorScheme="red" size="sm" onClick={handleDeleteClick(product)}>생산 중단</Button>
+                        <Button colorScheme="red"size='xs' onClick={handleDeleteClick(product)}>생산 중단</Button>
                         </>
                     )}
                     {product.status === 'production_discontinued' && (
                         <>
-                        <Button colorScheme="green" size="sm" onClick={handleDeleteClick(product)}>재 생산</Button>
+                        <Button colorScheme="green" size='xs' onClick={handleDeleteClick(product)}>재 생산</Button>
                         </>
                         )}
                     <ProductUpdat isOpen={isEditModalOpen} onClose={() => { onEditModalClose(); setSelectedProduct(null); }} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
                 </div>
             );
+        })(),
+        clients:(() => {
+           return(
+               <div>
+                   <Button colorScheme='gray' size='xs' onClick={handleClientDetail(product)}>
+                       상세보기
+                   </Button>
+                   <ProductClient isOpen={isClientModalOpen} selectedProduct={selectedProduct}  onClose={() => { onClientModalClose(); }} setSelectedProduct={setSelectedProduct} />
+               </div>
+           )
         })()
     }));
 
@@ -329,7 +353,7 @@ function Products() {
                     <button onClick={() => setActiveTab('inventory')}>재고</button>
                     {activeTab === 'products' && (
                         <>
-                            <Button colorScheme="orange" size="sm" onClick={handleSaveClick} float="right" ml={5}>상품 등록</Button>
+                            <Button colorScheme="orange" size='xs' onClick={handleSaveClick} float="right" ml={5}>상품 등록</Button>
                             <ProductSave isOpen={isSaveModalOpen} onClose={onSaveModalClose} />
                         </>
                     )}
