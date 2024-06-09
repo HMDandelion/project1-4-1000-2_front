@@ -10,9 +10,9 @@ import {
     useColorModeValue, useDisclosure, useToast, VStack
 } from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {callProductListAPI, callProductsAPI, callProductUpdateAPI} from "../../apis/ProductAPICalls";
+import {callMaterailsAPI, callProductListAPI, callProductsAPI, callProductUpdateAPI} from "../../apis/ProductAPICalls";
 import {callProductTotalAPI, callTotalStockAPI} from "../../apis/StockAPICalls";
 import {callDestroysTotalAPI, callProductDestroyAPI} from "../../apis/StorageAPICalls";
 
@@ -30,6 +30,7 @@ function ProductUpdat({isOpen,onClose,selectedProduct, setSelectedProduct}){
     const toast = useToast(); // Chakra UI의 Toast를 사용하여 알림 메시지 표시
     const {  onOpen, onClose: onModalClose } = useDisclosure();
 
+
     useEffect(() => {
         if (selectedProduct) {
             setProductInfo({
@@ -46,6 +47,7 @@ function ProductUpdat({isOpen,onClose,selectedProduct, setSelectedProduct}){
             [name]: value
         });
     };
+
 
     const handleSubmit = async () => {
         if (!productInfo.productName || productInfo.price <= 0 || !productInfo.unit) {

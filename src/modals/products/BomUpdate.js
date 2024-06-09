@@ -6,14 +6,14 @@ import {
     ModalCloseButton,
     ModalContent, ModalFooter,
     ModalHeader,
-    ModalOverlay,
+    ModalOverlay, Select,
     useColorModeValue, useDisclosure, useToast, VStack
 } from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {
-    callBomUpdateAPI,
+    callBomUpdateAPI, callMaterailsAPI,
     callProductAPI,
     callProductBomAPI,
     callProductListAPI,
@@ -36,6 +36,17 @@ function BomUpdate({productCode,bom,isOpen,onClose,selectedProduct, setSelectedP
     const [isUpdated, setIsUpdated] = useState(false);
     const toast = useToast();
     const {  onOpen, onClose: onModalClose } = useDisclosure();
+    const materials = useSelector(state => state.productReducer.materials);
+
+    useEffect(() => {
+        const fetchMaterials = async () => {
+            dispatch(callMaterailsAPI());
+        };
+        fetchMaterials();
+        if(materials){
+            console.log("원자재",materials)
+        }
+    }, []);
 
     useEffect(() => {
         if (selectedProduct) {
@@ -53,6 +64,14 @@ function BomUpdate({productCode,bom,isOpen,onClose,selectedProduct, setSelectedP
             [name]: value
         });
     };
+
+    const handleMaterialChange = (e) => {
+        setBomInfo({
+            ...bomInfo,
+            specCode: e.target.value, // 선택된 원자재의 코드를 bomInfo 상태의 specCode에 저장
+        });
+    };
+
 
     const handleSubmit = async () => {
         if (bomInfo.quantity< 0 || bomInfo.sequence < 0 || bomInfo.specCode< 0) {
@@ -104,10 +123,14 @@ function BomUpdate({productCode,bom,isOpen,onClose,selectedProduct, setSelectedP
                             <ModalBody borderTop='1px solid' borderColor='secondaryGray.100' p='30px 40px'>
                                 <VStack spacing={4} align="stretch">
                                     <FormControl>
-                                        <FormLabel fontWeight='800' color={textColor}>원자재 코드</FormLabel>
-                                        <Input type="number" placeholder="원자재코드를 입력하세요" _placeholder={{ fontSize: 'sm' }}
-                                               name='specCode' value={bomInfo.specCode}
-                                               onChange={handleChange} />
+                                        <FormLabel fontWeight='800' color={textColor}>원자재</FormLabel>
+                                        <Select placeholder="원자재를 선택하세요" onChange={handleMaterialChange} value={bomInfo.specCode}>
+                                            {materials && materials.map(material => (
+                                                <option key={material.specCode} value={material.specCode}>
+                                                    {material.materialName}
+                                                </option>
+                                            ))}
+                                        </Select>
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel fontWeight='800' color={textColor}>수량</FormLabel>

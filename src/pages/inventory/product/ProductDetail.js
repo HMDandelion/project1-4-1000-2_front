@@ -96,7 +96,7 @@ function ProductDetail() {
             edit: (() => {
                 return (
                     <div>
-                        <Button colorScheme="orange" size="sm" onClick={onOpen} float="right"
+                        <Button colorScheme="orange" size="sm"  float="right"
                                 onClick={handleEditClick(el)}>BOM 수정</Button>
                         <BomUpdate productCode={productCode} bom={el} isOpen={isEditModalOpen} onClose={() => {
                             onEditModalClose();
