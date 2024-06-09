@@ -26,9 +26,10 @@ import PagingBar from "../../../components/common/PagingBar";
 
 import {useNavigate} from "react-router-dom";
 
-import ProductUpdat from "../../../modals/products/ProductUpdat";
+import ProductUpdate from "../../../modals/products/ProductUpdate";
 import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
 import ProductClient from "../../../modals/products/ProductClient";
+import StockUpdate from "../../../modals/products/StockUpdate";
 
 function Products() {
     const dispatch = useDispatch();
@@ -37,8 +38,10 @@ function Products() {
     const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
     const { isOpen: isSaveModalOpen, onOpen: onSaveModalOpen, onClose: onSaveModalClose } = useDisclosure();
     const { isOpen: isClientModalOpen, onOpen: onClientModalOpen, onClose: onClientModalClose } = useDisclosure();
+    const { isOpen: isStockEditModalOpen, onOpen: onStockEditModalOpen, onClose: onStockEditModalClose } = useDisclosure();
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedStock, setSelectedStock] = useState(null);
     const navigate = useNavigate();
 
 
@@ -118,6 +121,10 @@ function Products() {
         },
         {
             Header: '',
+            accessor: 'editStock'
+        },
+        {
+            Header: '',
             accessor: 'isToday',
         }
     ]
@@ -131,26 +138,27 @@ function Products() {
     const stockIdAccessor = "stockCode";     // id로 사용할 컬럼 지정
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData =  () => {
             setLoading(true);
-            await dispatch(callStockTodayAPI());
-            await dispatch(callProductTotalAPI());
-            await dispatch(callTotalStockAPI());
-            await dispatch(callProductListAPI());
-
-            await dispatch(callDestroysTotalAPI());
-            await dispatch(callProductDestroyAPI());
+             dispatch(callStockTodayAPI());
+             dispatch(callProductTotalAPI());
+             dispatch(callTotalStockAPI());
+             dispatch(callProductListAPI());
+             dispatch(callDestroysTotalAPI());
+             dispatch(callProductDestroyAPI());
             console.log("버튼 상태 ",activeTab)
             if (activeTab === 'products') {
-                await dispatch(callProductsAPI({ currentPage }));
+                 dispatch(callProductsAPI({ currentPage }));
             } else if (activeTab === 'inventory') {
-                await dispatch(callStocksAPI({ currentPage }));
+                 dispatch(callStocksAPI({ currentPage }));
             }
             setLoading(false);
         };
 
         fetchData();
     }, [currentPage, activeTab]);
+
+
 
 
 // 상품 수정 버튼의 onClick 이벤트 핸들러
@@ -176,7 +184,7 @@ function Products() {
         event.stopPropagation();
         setSelectedProduct(product);
         dispatch(callProductUpdateStatusAPI({
-            onSuccess: async () => {
+            onSuccess: () => {
                 toast({
                     title: "상품 생산 상태 변경 완료",
                     description: "상품 생산 상태가 성공적으로 수정되었습니다!",
@@ -184,12 +192,13 @@ function Products() {
                     duration: 1000,
                     isClosable: true,
                 });
-                await dispatch(callProductsAPI({ currentPage: 1 }));
-                await dispatch(callProductListAPI());
-                await dispatch(callProductTotalAPI());
-                await dispatch(callTotalStockAPI());
-                await dispatch(callDestroysTotalAPI());
-                await dispatch(callProductDestroyAPI());
+                 dispatch(callProductsAPI({ currentPage: 1 }));
+                 dispatch(callProductListAPI());
+                dispatch(callDestroysTotalAPI());
+                dispatch(callProductDestroyAPI());
+                 dispatch(callProductTotalAPI());
+                 dispatch(callTotalStockAPI());
+
 
                 onEditModalClose ();
                 navigate('/inventory/product', {replace: true});
@@ -236,7 +245,7 @@ function Products() {
                         <Button colorScheme="green" size='xs' onClick={handleDeleteClick(product)}>재 생산</Button>
                         </>
                         )}
-                    <ProductUpdat isOpen={isEditModalOpen} onClose={() => { onEditModalClose(); setSelectedProduct(null); }} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
+                    <ProductUpdate isOpen={isEditModalOpen} onClose={() => { onEditModalClose(); setSelectedProduct(null); }} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
                 </div>
             );
         })(),
@@ -252,11 +261,26 @@ function Products() {
         })()
     }));
 
+
+    // 재고 수정 버튼의 onClick 이벤트 핸들러
+    const handleStockUpdate = (stock) => (event) => {
+        event.stopPropagation(); // 이벤트 버블링 방지
+        setSelectedStock(stock);
+        onStockEditModalOpen(); // 수정 모달 열기 함수 호출
+    };
     const processedStocks = stocks?.data?.content.map(stock => ({
         ...stock,
+        editStock:(() => {
+            return (
+                <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button colorScheme="orange"size='xs' onClick={handleStockUpdate(stock)} style={{ marginRight: '8px' }}>재고 수정</Button>
+                    <StockUpdate isOpen={isStockEditModalOpen} onClose={() => { onStockEditModalClose(); setSelectedStock(null); }} selectedStock={selectedStock} setSelectedStock={setSelectedStock} />
+                </div>
+            );
+        })(),
         isToday: stock.isToday ? (
             <div className="today-label">Today!</div>
-        ) : <div className="today-label">Today!</div>,
+        ) : '',
         assignmentStatus: (() => {
             switch(stock.assignmentStatus) {
                 case 'partially_assigned':

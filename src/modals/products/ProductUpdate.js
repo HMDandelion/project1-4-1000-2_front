@@ -16,7 +16,7 @@ import {callMaterailsAPI, callProductListAPI, callProductsAPI, callProductUpdate
 import {callProductTotalAPI, callTotalStockAPI} from "../../apis/StockAPICalls";
 import {callDestroysTotalAPI, callProductDestroyAPI} from "../../apis/StorageAPICalls";
 
-function ProductUpdat({isOpen,onClose,selectedProduct, setSelectedProduct}){
+function ProductUpdate({isOpen,onClose,selectedProduct, setSelectedProduct}){
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); // 오류 모달 상태
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const dispatch = useDispatch();
@@ -147,4 +147,4 @@ function ProductUpdat({isOpen,onClose,selectedProduct, setSelectedProduct}){
         </>
     )
 }
-export default ProductUpdat;
+export default ProductUpdate;

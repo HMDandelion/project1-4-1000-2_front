@@ -1,6 +1,6 @@
 import {request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
-import {getInventoryProducts} from "../modules/ProductModules";
+import {getInventoryProducts, success} from "../modules/ProductModules";
 import {getInventoryStocks, getTodayStock, productTotal, total} from "../modules/StockModules";
 
 const DEFAULT_URL = `/api/v1/stock`;
@@ -63,5 +63,25 @@ export const callStockTodayAPI =() => {
         }
     }
 }
+
+export const callStockUpdateAPI = ({ updateRequest,onSuccess,stockCode }) => {
+
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('PUT',`${DEFAULT_URL}/${stockCode}`,{'Content-Type':'application/json'}, JSON.stringify(updateRequest));
+            console.log('callStockUpdateAPI result : ',result);
+
+            if(result.status === 201) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('재고 수정 실패:', result);
+            }
+        } catch (error) {
+            console.error('재고 수정 중 오류 발생:', error);
+        }
+    }
+};
+
 
 
