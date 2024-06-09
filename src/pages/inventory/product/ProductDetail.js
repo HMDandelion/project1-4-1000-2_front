@@ -1,9 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {callSalesClientAPI} from "../../../apis/ClientAPICalls";
 import {useNavigate, useParams} from "react-router-dom";
-import StockRatio from "../../../chart/StockRatio";
-import {callProductTotalAPI, callStocksAPI, callTotalStockAPI} from "../../../apis/StockAPICalls";
 import {
     callBomDeleteAPI,
     callProductAPI,
@@ -26,6 +23,7 @@ import HorizonLine from "../../../components/common/HorizonLine";
 import BomSave from "../../../modals/products/BomSave";
 import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
 import BomUpdate from "../../../modals/products/BomUpdate";
+import PagingBar from "../../../components/common/PagingBar";
 function ProductDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const { productCode } = useParams();
@@ -39,6 +37,7 @@ function ProductDetail() {
 
     const product = useSelector(state => state.productReducer.product);
     const bom = useSelector(state => state.productReducer.bom);
+    const bomPaging = useSelector(state => state.productReducer.bomPaging);
     const spec = useSelector(state => state.productReducer.state);
     const toast = useToast();
 
@@ -55,6 +54,9 @@ function ProductDetail() {
         fetchData();
     }, [currentPage]);
 
+    if(bomPaging){
+        console.log("상속자들",bomPaging)
+    }
     const bomColumns = [
         {
             Header: '코드',
@@ -104,12 +106,6 @@ function ProductDetail() {
                     duration: 1000,
                     isClosable: true,
                 });
-                // await dispatch(callProductsAPI({ currentPage: 1 }));
-                // await dispatch(callProductListAPI());
-                // await dispatch(callProductTotalAPI());
-                // await dispatch(callTotalStockAPI());
-                // await dispatch(callDestroysTotalAPI());
-                // await dispatch(callProductDestroyAPI());
                 await dispatch(callProductBomAPI({currentPage,productCode}));
                 await dispatch(callProductAPI({productCode}));
                 onEditModalClose();
@@ -177,6 +173,7 @@ function ProductDetail() {
                             baseLink={bomBaseLink}
                             idAccessor={bomIdAccessor}
                         />
+                    <PagingBar pageInfo={bomPaging} setCurrentPage={setCurrentPage} />
                     <HorizonLine />
                 </div>
             }

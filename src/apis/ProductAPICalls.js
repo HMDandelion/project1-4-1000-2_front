@@ -1,6 +1,7 @@
 import {request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
 import {
+    getBomPaging,
     getInventoryMaterials,
     getInventoryProduct,
     getInventoryProductBom,
@@ -8,6 +9,7 @@ import {
     getInventoryProducts,
     success
 } from "../modules/ProductModules";
+
 
 const DEFAULT_URL = `/api/v1/product`;
 export const callProductsAPI =({currentPage = 1}) =>{
@@ -162,6 +164,7 @@ export const callProductBomAPI = ({currentPage = 1, productCode}) => {
     return async (dispatch, getState) => {
         try {
             const results = await request('GET', `/api/v1/bom/product/page/${productCode}?page=${currentPage}`);
+            console.log("페에이지잉",results);
             const realResult = results.data.data.map(result =>(
                 {
                     bomCode:result.bomCode,
@@ -170,9 +173,10 @@ export const callProductBomAPI = ({currentPage = 1, productCode}) => {
                     sequence:result.sequence
                 }
             ))
-            console.log("real",realResult)
+            console.log("callProductBomAPI",realResult)
             if (results.status === 200) {
                 dispatch(getInventoryProductBom(realResult));
+                dispatch(getBomPaging(results.data.pageInfo));
             }
 
         } catch (error) {
