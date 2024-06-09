@@ -12,18 +12,21 @@ const initialState = {
 const GET_INVENTORY_STOCKS = 'product/GET_INVENTORY_STOCKS';
 const TOTAL = 'product/TOTAL';
 const PRODUCT_TOTAL = 'product/PRODUCT_TOTAL';
+const GET_TODAY_STOCK = 'product/GET_TODAY_STOCK';
 
-export const { product: {getInventoryStocks, total, productTotal}} = createActions({
+export const { product: {getInventoryStocks, total, productTotal,getTodayStock}} = createActions({
     [GET_INVENTORY_STOCKS]: result => ({stocks: result}),
     [TOTAL]: result => ({total: result}),
-    [PRODUCT_TOTAL]: result => ({productTotal: result})
+    [PRODUCT_TOTAL]: result => ({productTotal: result}),
+    [GET_TODAY_STOCK]:result => ({todayStock:result})
 });
 
 /* 리듀서 */
 const stockReducer = handleActions({
     [GET_INVENTORY_STOCKS]: (state, {payload}) => ({...state, stocks: payload.stocks}),
     [TOTAL]: (state, {payload}) => ({...state, total: payload.total}),
-    [PRODUCT_TOTAL]: (state, {payload}) => ({...state, productTotal: payload.productTotal})
+    [PRODUCT_TOTAL]: (state, {payload}) => ({...state, productTotal: payload.productTotal}),
+    [GET_TODAY_STOCK]: (state, {payload}) => ({...state, todayStock: payload.todayStock})
 }, initialState);
 
 export default stockReducer;

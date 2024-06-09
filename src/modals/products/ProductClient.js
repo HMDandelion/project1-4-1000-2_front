@@ -44,19 +44,26 @@ function ProductClient({isOpen,onClose,selectedProduct, setSelectedProduct}){
                     <ModalHeader color={"navy"}>상품 거래처 목록</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        {productClient.data && productClient.data.length > 0 ? (
+                        {productClient && productClient.data.length > 0 ? (
+                            <>
+                                <div style={{ height: '100px' }}></div>
                             <List spacing={3}>
                                 {productClient.data.map((client, index) => (
                                     <ListItem key={index}>
-                                        <ListIcon as={MdCheckCircle} color="green.500" />
+                                        <ListIcon as={MdCheckCircle} color="green.500" textAlign="center" />
                                         <Text display="inline" fontWeight="bold" fontSize="lg" textAlign="center"> {/* 텍스트 크기 및 정렬 조정 */}
                                             {client}
                                         </Text>
                                     </ListItem>
                                 ))}
                             </List>
-                        ) : (
-                            <Text fontSize="lg" textAlign="center">거래처 정보가 없습니다.</Text>
+                            <div style={{ height: '100px' }}></div>
+                            </>
+                        ) : (<>
+                            <div style={{ height: '100px' }}></div>
+                    <Text fontSize="lg" textAlign="center">거래처 정보가 없습니다.</Text>
+                    <div style={{ height: '100px' }}></div>
+                            </>
                             )}
                     </ModalBody>
                 </ModalContent>

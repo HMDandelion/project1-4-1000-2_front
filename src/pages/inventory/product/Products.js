@@ -8,7 +8,7 @@ import {
     callProductUpdateAPI,
     callProductUpdateStatusAPI
 } from "../../../apis/ProductAPICalls";
-import {callProductTotalAPI, callStocksAPI, callTotalStockAPI} from "../../../apis/StockAPICalls";
+import {callProductTotalAPI, callStocksAPI, callStockTodayAPI, callTotalStockAPI} from "../../../apis/StockAPICalls";
 import "../../../Products.css"
 import {
     Button, Modal,
@@ -51,6 +51,7 @@ function Products() {
     const productList = useSelector(state => state.productReducer.productList);
     const totalDestroy = useSelector(state => state.storageReducer.destroys);
     const productDestroy = useSelector(state => state.storageReducer.productDestroy);
+    const todayStock = useSelector(state => state.stockReducer.todayStock);
 
     const toast = useToast();
 
@@ -134,6 +135,7 @@ function Products() {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
+            await dispatch(callStockTodayAPI());
             await dispatch(callProductTotalAPI());
             await dispatch(callTotalStockAPI());
             await dispatch(callProductListAPI());
@@ -312,6 +314,7 @@ function Products() {
 
     console.log("totalDestroy",totalDestroy)
     console.log("productDestroy",productDestroy)
+    console.log("todayStock",todayStock);
 
     //페이징
     let productPageInfo={};
@@ -337,15 +340,36 @@ function Products() {
     }
     return (
         <>
-            <div style={{ backgroundColor: '#ffffff', margin: '10px', padding: '10px', borderRadius: '5px' }}>
-                {productList && total && productTotal && (
-                        <StockRatio products={productList.data} total={total} productTotal={productTotal}/>
-                )}
-            </div>
-            <div style={{ backgroundColor: '#ffffff', margin: '10px', padding: '10px', borderRadius: '5px' }}>
-                {totalDestroy &&  productDestroy &&(
-                    <DestroyRatio totalDestroy={totalDestroy.data} productDestroy={productDestroy.data}/>
-                )}
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ flex: 1, margin: '10px' }}>
+                    <div style={{ backgroundColor: '#ffffff', padding: '10px', borderRadius: '5px' }}>
+                        {productList && total && productTotal && (
+                            <StockRatio products={productList.data} total={total} productTotal={productTotal}/>
+                        )}
+                    </div>
+                    <div style={{ backgroundColor: '#ffffff', padding: '10px', borderRadius: '5px', marginTop: '10px' }}>
+                        {totalDestroy && productDestroy && (
+                            <DestroyRatio totalDestroy={totalDestroy.data} productDestroy={productDestroy.data}/>
+                        )}
+                    </div>
+                </div>
+                <div style={{ flex: 1, margin: '10px' }}>
+                    {todayStock && (
+                        <div style={{ color: 'navy', marginTop: '10px', textAlign: 'left' }}>
+                            <div style={{ fontSize: '2em', fontWeight: 'bold' }}>{todayStock.data.today}일</div>
+                            <div style={{ fontSize: '2em', color: 'navy', fontWeight: 'bold' }}>
+                <span style={{ color: 'orange', fontSize: '4em', fontWeight: 'bold' }}>
+                    {todayStock.data.todayCase}
+                </span>
+                                건의 재고와<br/>
+                                <span style={{ color: 'orange', fontSize: '4em', fontWeight: 'bold' }}>
+                    {todayStock.data.todayQuantity}
+                </span>
+                                재고 수량이 추가 되었습니다.
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
             <div style={{ backgroundColor: '#ffffff', margin: '10px', padding: '10px', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                 <div className="tabs">
@@ -361,23 +385,23 @@ function Products() {
 
                 {activeTab === 'products' && products && (
                     <>
-                    <CustomizedTable columnsData={productColumns} tableData={processedProducts} tableTitle={tableTitle}
-                                  baseLink={baseLink} idAccessor={idAccessor}/>
+                        <CustomizedTable columnsData={productColumns} tableData={processedProducts} tableTitle={tableTitle}
+                                         baseLink={baseLink} idAccessor={idAccessor}/>
                         <PagingBar pageInfo={productPageInfo} setCurrentPage={setCurrentPage} />
                     </>
                 )}
 
-
                 {activeTab === 'inventory' && stocks && (
                     <>
-                    <CustomizedTable columnsData={stockColumns} tableData={processedStocks} tableTitle={stockTableTitle}
-                                  baseLink={stockBaseLink} idAccessor={stockIdAccessor}/>
+                        <CustomizedTable columnsData={stockColumns} tableData={processedStocks} tableTitle={stockTableTitle}
+                                         baseLink={stockBaseLink} idAccessor={stockIdAccessor}/>
                         <PagingBar pageInfo={stockPageInfo} setCurrentPage={setCurrentPage} />
                     </>
                 )}
             </div>
         </>
     );
+
 
 }
 
