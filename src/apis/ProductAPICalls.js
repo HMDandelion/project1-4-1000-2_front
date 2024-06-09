@@ -1,6 +1,7 @@
 import {request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
 import {
+    getInventoryMaterials,
     getInventoryProduct,
     getInventoryProductBom,
     getInventoryProductList,
@@ -88,6 +89,25 @@ export const callProductUpdateAPI = ({ updateRequest,onSuccess,productCode }) =>
     }
 };
 
+export const callBomUpdateAPI = ({ updateRequest,onSuccess,bomCode }) => {
+
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('PUT',`/api/v1/bom/${bomCode}`,{'Content-Type':'application/json'}, JSON.stringify(updateRequest));
+            console.log('callBomUpdateAPI result : ',result);
+
+            if(result.status === 201) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('bom 수정 실패:', result);
+            }
+        } catch (error) {
+            console.error('bom 수정 중 오류 발생:', error);
+        }
+    }
+};
+
 export const callProductUpdateStatusAPI = ({ onSuccess,selectedProduct }) => {
 
     return async (dispatch, getState) => {
@@ -142,7 +162,15 @@ export const callProductBomAPI = ({currentPage = 1, productCode}) => {
     }
 }
 
+export const callMaterailsAPI =() =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `/api/v1/material/spec/list`);
 
-
+        console.log("callMaterailsAPI : ", result);
+        if(result.status === 200) {
+            dispatch(getInventoryMaterials(result.data));
+        }
+    }
+}
 
 

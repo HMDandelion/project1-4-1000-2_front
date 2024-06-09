@@ -24,10 +24,11 @@ import StockRatio from "../../../chart/StockRatio";
 import DestroyRatio from "../../../chart/DestroyRatio";
 import {callDestroysTotalAPI, callProductDestroyAPI} from "../../../apis/StorageAPICalls";
 import PagingBar from "../../../components/common/PagingBar";
-import ProductUpdate from "../../../modals/products/ProductUpdate";
+
 import {useNavigate} from "react-router-dom";
-import ProductSave2 from "../../../modals/products/ProductSave2";
-import ProductUpdat2 from "../../../modals/products/ProductUpdat2";
+
+import ProductUpdat from "../../../modals/products/ProductUpdat";
+import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
 
 function Products() {
     const dispatch = useDispatch();
@@ -147,6 +148,7 @@ function Products() {
 
 // 상품 수정 버튼의 onClick 이벤트 핸들러
     const handleEditClick = (product) => (event) => {
+        console.log("버블링",product);
         event.stopPropagation(); // 이벤트 버블링 방지
         setSelectedProduct(product);
         onEditModalOpen(); // 수정 모달 열기 함수 호출
@@ -211,22 +213,16 @@ function Products() {
                 <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button colorScheme="orange" size="sm" onClick={handleEditClick(product)} style={{ marginRight: '8px' }}>상품 수정</Button>
                     {product.status === 'in_production' && (
+                        <>
                         <Button colorScheme="red" size="sm" onClick={handleDeleteClick(product)}>생산 중단</Button>
+                        </>
                     )}
                     {product.status === 'production_discontinued' && (
+                        <>
                         <Button colorScheme="green" size="sm" onClick={handleDeleteClick(product)}>재 생산</Button>
-                    )}
-                    {/*<Modal isOpen={isOpen} onClose={() => { onClose(); setSelectedProduct(null); }}>*/}
-                    {/*    <ModalOverlay />*/}
-                    {/*    <ModalContent>*/}
-                    {/*        <ModalHeader color={"navy"}>상품 수정</ModalHeader>*/}
-                    {/*        <ModalCloseButton />*/}
-                    {/*        <ModalBody>*/}
-                    {/*            {selectedProduct && <ProductUpdate onClose={() => { onClose(); setSelectedProduct(null); }} product={selectedProduct}/>}*/}
-                    {/*        </ModalBody>*/}
-                    {/*    </ModalContent>*/}
-                    {/*</Modal>*/}
-                    <ProductUpdat2 isOpen={isEditModalOpen} onClose={() => { onEditModalClose(); setSelectedProduct(null); }} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
+                        </>
+                        )}
+                    <ProductUpdat isOpen={isEditModalOpen} onClose={() => { onEditModalClose(); setSelectedProduct(null); }} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
                 </div>
             );
         })()
@@ -334,14 +330,14 @@ function Products() {
                     {activeTab === 'products' && (
                         <>
                             <Button colorScheme="orange" size="sm" onClick={handleSaveClick} float="right" ml={5}>상품 등록</Button>
-                            <ProductSave2 isOpen={isSaveModalOpen} onClose={onSaveModalClose} />
+                            <ProductSave isOpen={isSaveModalOpen} onClose={onSaveModalClose} />
                         </>
                     )}
                 </div>
 
                 {activeTab === 'products' && products && (
                     <>
-                    <ColumnsTable columnsData={productColumns} tableData={processedProducts} tableTitle={tableTitle}
+                    <CustomizedTable columnsData={productColumns} tableData={processedProducts} tableTitle={tableTitle}
                                   baseLink={baseLink} idAccessor={idAccessor}/>
                         <PagingBar pageInfo={productPageInfo} setCurrentPage={setCurrentPage} />
                     </>
@@ -350,7 +346,7 @@ function Products() {
 
                 {activeTab === 'inventory' && stocks && (
                     <>
-                    <ColumnsTable columnsData={stockColumns} tableData={processedStocks} tableTitle={stockTableTitle}
+                    <CustomizedTable columnsData={stockColumns} tableData={processedStocks} tableTitle={stockTableTitle}
                                   baseLink={stockBaseLink} idAccessor={stockIdAccessor}/>
                         <PagingBar pageInfo={stockPageInfo} setCurrentPage={setCurrentPage} />
                     </>

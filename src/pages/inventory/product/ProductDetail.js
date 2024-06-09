@@ -22,15 +22,25 @@ import HorizonLine from "../../../components/common/HorizonLine";
 import ColumnsTable from "../../../components/table/ComplexTable";
 import ProductSave from "../../../modals/products/ProductSave";
 import BomSave from "../../../modals/products/BomSave";
+import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
+import ProductUpdat from "../../../modals/products/ProductUpdat";
+import BomUpdate from "../../../modals/products/BomUpdate";
 function ProductDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const { productCode } = useParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
     const product = useSelector(state => state.productReducer.product);
     const bom = useSelector(state => state.productReducer.bom);
-    const [loading, setLoading] = useState(true);
+    const spec = useSelector(state => state.productReducer.state);
+
+
+
 
 
     useEffect(() => {
@@ -59,14 +69,45 @@ function ProductDetail() {
         {
             Header: '조립순서',
             accessor: 'sequence',
+        },
+        {
+            Header: '',
+            accessor: 'edit'
         }
     ]
+
+
 
     const bomTableTitle = "BOM ";     // 테이블 제목
     const bomBaseLink = "/inventory/product/bom";   // 상세조회 React 주소
     const bomIdAccessor = "bomCode";     // id로 사용할 컬럼 지정
 
-    console.log("bom",bom);
+//상품 수정
+    const handleEditClick = (bom) => (event) => {
+        event.stopPropagation(); // 이벤트 버블링 방지
+        setSelectedProduct(bom);
+        onEditModalOpen(); // 수정 모달 열기 함수 호출
+    };
+
+    let processedBoms;
+    if(bom) {
+        processedBoms = bom.map(el => ({
+            ...el,
+            edit: (() => {
+                return (
+                    <div>
+                        <Button colorScheme="orange" size="sm" onClick={onOpen} float="right"
+                                onClick={handleEditClick(el)}>BOM 수정</Button>
+                        <BomUpdate productCode={productCode} bom={el} isOpen={isEditModalOpen} onClose={() => {
+                            onEditModalClose();
+                            setSelectedProduct(null);
+                        }} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct}/>
+                    </div>
+                );
+            })()
+        }));
+    }
+
 
 
     return (
@@ -97,14 +138,13 @@ function ProductDetail() {
                     </Flex>
                     <Button colorScheme="orange" size="sm" onClick={onOpen} float="right" ml={5}>BOM 등록</Button>
                     <BomSave onClose={onClose} productCode={productCode} isOpen={isOpen}/>
-                        <ColumnsTable
+                        <CustomizedTable
                             columnsData={bomColumns}
-                            tableData={bom}
+                            tableData={processedBoms}
                             tableTitle={bomTableTitle}
                             baseLink={bomBaseLink}
                             idAccessor={bomIdAccessor}
                         />
-
                     <HorizonLine />
                 </div>
             }
