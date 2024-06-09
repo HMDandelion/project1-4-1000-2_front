@@ -7,6 +7,7 @@ import SelectMenu from "../../../components/common/SelectMenu";
 import ComplexTable from "../../../components/table/NewComplexTable";
 import {useNavigate} from "react-router-dom";
 import {callEstimatesAPI} from "../../../apis/EstimateAPICalls";
+import EstimateRegist from "./EstimateRegist";
 
 function Estimates() {
     const dispatch = useDispatch();
@@ -64,6 +65,7 @@ function Estimates() {
                 <>
                     <HStack spacing='10px'>
                         <SelectMenu onSearch={handleSearch} menuList={menuList}/>
+                        <EstimateRegist/>
                     </HStack>
                     <ComplexTable columnsData={columns} tableData={estimates.data} onRowClick={handleRowClick}/>
                     <PagingBar pageInfo={estimates.pageInfo} setCurrentPage={setCurrentPage}/>

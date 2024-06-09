@@ -1,20 +1,14 @@
-import {
-    Button,
-    Modal,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay, useDisclosure,
-} from "@chakra-ui/react";
-import ClientForm from "./ClientForm";
-import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {callClientModifyAPI, callClientRegistAPI} from "../../../apis/ClientAPICalls";
 import {useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Button, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, useDisclosure} from "@chakra-ui/react";
+import EstimateForm from "./EstimateForm";
 
-function ClientRegist() {
+function EstimateRegist() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const[ form, setForm ] = useState({
+        clientCode : '',
         clientName : '',
         address : '',
         addressDetail : '',
@@ -29,22 +23,14 @@ function ClientRegist() {
     // 등록 모달
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { success } = useSelector(state => state.clientReducer);
+    const { success } = useSelector(state => state.estimateReducer);
 
     useEffect(() => {
-        if(success === true) navigate(`/sales/client`);
+        if(success === true) navigate(`/sales/estimate`);
     }, [success]);
 
     const onClickRegistHandler = () => {
-        setForm(prevForm => {
-            const updatedForm = {
-                ...prevForm,
-                phone: `${prevForm.phoneFirst}-${prevForm.phoneSecond}-${prevForm.phoneThird}`,
-            };
-            dispatch(callClientRegistAPI({clientRequest : updatedForm}));
-            console.log("updatedForm", updatedForm);
-            return updatedForm;
-        });
+        //TODO
     }
 
     return (
@@ -52,10 +38,12 @@ function ClientRegist() {
             <Button colorScheme='orange' size='sm' onClick={onOpen}>
                 등록
             </Button>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} size='xl' scrollBehavior='inside'>
                 <ModalOverlay/>
-                <ModalContent>
-                    <ClientForm client={form} setForm={setForm}/>
+                <ModalContent maxW='800px'>
+                    <ModalBody>
+                        <EstimateForm/>
+                    </ModalBody>
                     <ModalFooter justifyContent='center'>
                         <Button colorScheme='orange' mx={1} onClick={onClickRegistHandler}>등록</Button>
                         <Button variant='outline' mx={1} onClick={onClose}>
@@ -68,4 +56,4 @@ function ClientRegist() {
     );
 }
 
-export default ClientRegist;
+export default EstimateRegist;
