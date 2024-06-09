@@ -9,7 +9,8 @@ import {
 import {callProductTotalAPI, callStocksAPI, callStockTodayAPI, callTotalStockAPI} from "../../../apis/StockAPICalls";
 import "../../../Products.css"
 import {
-    Button, Modal,
+    Box,Text,
+    Button, Flex, Modal,
     ModalBody,
     ModalCloseButton,
     ModalContent,
@@ -337,9 +338,9 @@ function Products() {
     }
     return (
         <>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ flex: 1, margin: '10px' }}>
-                    <div style={{ backgroundColor: '#ffffff', padding: '10px', borderRadius: '5px', width: '100%' }}>
+            <Flex justifyContent="space-between">
+                <Box flex="1" m="10px">
+                    <Box bg="#ffffff" p="10px" borderRadius="5px" w="100%">
                         {productList && total && productTotal && (
                             <StockRatio
                                 products={productList.data}
@@ -348,8 +349,8 @@ function Products() {
                                 style={{ width: '100%' }}
                             />
                         )}
-                    </div>
-                    <div style={{ backgroundColor: '#ffffff', padding: '10px', borderRadius: '5px', marginTop: '10px', width: '100%' }}>
+                    </Box>
+                    <Box bg="#ffffff" p="10px" borderRadius="5px" mt="10px" w="100%">
                         {totalDestroy && productDestroy && (
                             <DestroyRatio
                                 totalDestroy={totalDestroy.data}
@@ -357,57 +358,79 @@ function Products() {
                                 style={{ width: '100%' }}
                             />
                         )}
-                    </div>
-                </div>
-                <div style={{ flex: 1, margin: '100px', display: 'flex', alignItems: 'center' }}>
+                    </Box>
+                </Box>
+                <Flex flex="1" m="100px" alignItems="center">
                     {todayStock && (
-                        <div style={{ color: 'navy', textAlign: 'left' }}>
-                            <div style={{ fontSize: '2.65em', fontWeight: 'bold' }}>{todayStock.data.today}일</div>
-                            <div style={{ fontSize: '2.65em', color: 'navy', fontWeight: 'bold' }}>
-                            <span style={{ color: 'orange', fontSize: '4em', fontWeight: 'bold' }}>
-                                {todayStock.data.todayCase}
-                            </span>
-                                건의 재고와<br/>
-                                <span style={{ color: 'orange', fontSize: '4em', fontWeight: 'bold' }}>
-                                {todayStock.data.todayQuantity}
-                            </span>
+                        <Box color="navy" textAlign="left">
+                            <Text fontSize="2.65em" fontWeight="bold">{todayStock.data.today}일</Text>
+                            <Text fontSize="2.65em" color="navy" fontWeight="bold">
+                                <Text as="span" color="orange" fontSize="4em" fontWeight="bold">
+                                    {todayStock.data.todayCase}
+                                </Text>
+                                건의 재고와<br />
+                                <Text as="span" color="orange" fontSize="4em" fontWeight="bold">
+                                    {todayStock.data.todayQuantity}
+                                </Text>
                                 재고 수량이 추가 되었습니다.
-                            </div>
-                        </div>
+                            </Text>
+                        </Box>
                     )}
-                </div>
-            </div>
-            <div style={{ backgroundColor: '#ffffff', margin: '10px', padding: '10px', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                <div className="tabs">
-                    <button onClick={() => setActiveTab('products')}>상품</button>
-                    <button onClick={() => setActiveTab('inventory')}>재고</button>
-                    {activeTab === 'products' && (
-                        <>
-                            <Button colorScheme="orange" size='xs' onClick={handleSaveClick} float="right" ml={5}>상품 등록</Button>
-                            <ProductSave isOpen={isSaveModalOpen} onClose={onSaveModalClose} />
-                        </>
-                    )}
-                </div>
+                </Flex>
+            </Flex>
+            <Box bg="#ffffff" m="10px" p="10px" borderRadius="5px" boxShadow="0 2px 4px rgba(0,0,0,0.1)">
+                <Flex className="tabs" mb="10px">
+                    <Button
+                        onClick={() => setActiveTab('products')}
+                        colorScheme={activeTab === 'products' ? 'orange' : 'gray'}
+                        variant={activeTab === 'products' ? 'solid' : 'outline'}
+                        mr="5px"
+                    >
+                        상품
+                    </Button>
+                    <Button
+                        onClick={() => setActiveTab('inventory')}
+                        colorScheme={activeTab === 'inventory' ? 'orange' : 'gray'}
+                        variant={activeTab === 'inventory' ? 'solid' : 'outline'}
+                    >
+                        재고
+                    </Button>
+                </Flex>
 
-                {activeTab === 'products' && products && (
+                {activeTab === 'products' && (
                     <>
-                        <CustomizedTable columnsData={productColumns} tableData={processedProducts} tableTitle={tableTitle}
-                                         baseLink={baseLink} idAccessor={idAccessor}/>
-                        <PagingBar pageInfo={productPageInfo} setCurrentPage={setCurrentPage} />
+                        <Button colorScheme="orange" size='xs' onClick={handleSaveClick} float="right" ml={5}>상품 등록</Button>
+                        <ProductSave isOpen={isSaveModalOpen} onClose={onSaveModalClose} />
+                        {products && (
+                            <>
+                                <CustomizedTable
+                                    columnsData={productColumns}
+                                    tableData={processedProducts}
+                                    tableTitle={tableTitle}
+                                    baseLink={baseLink}
+                                    idAccessor={idAccessor}
+                                />
+                                <PagingBar pageInfo={productPageInfo} setCurrentPage={setCurrentPage} />
+                            </>
+                        )}
                     </>
                 )}
 
                 {activeTab === 'inventory' && stocks && (
                     <>
-                        <CustomizedTable columnsData={stockColumns} tableData={processedStocks} tableTitle={stockTableTitle}
-                                         baseLink={stockBaseLink} idAccessor={stockIdAccessor}/>
+                        <CustomizedTable
+                            columnsData={stockColumns}
+                            tableData={processedStocks}
+                            tableTitle={stockTableTitle}
+                            baseLink={stockBaseLink}
+                            idAccessor={stockIdAccessor}
+                        />
                         <PagingBar pageInfo={stockPageInfo} setCurrentPage={setCurrentPage} />
                     </>
                 )}
-            </div>
+            </Box>
         </>
     );
-
 
 
 }
