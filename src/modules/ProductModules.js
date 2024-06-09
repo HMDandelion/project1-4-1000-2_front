@@ -11,8 +11,10 @@ const GET_INVENTORY_PRODUCT = 'product/GET_INVENTORY_PRODUCT';
 const GET_INVENTORY_PRODUCT_BOM = 'product/GET_INVENTORY_PRODUCT_BOM';
 const GET_INVENTORY_MATERIALS = 'product/GET_INVENTORY_MATERIALS';
 const GET_BOM_PAGING = 'product/GET_BOM_PAGING';
+const GET_SPEC = 'product/GET_SPEC';
+const GET_SPEC_PAGING = 'product/GET_SPEC_PAGING';
 
-export const { product: { getInventoryProducts, success, getInventoryProductList,getInventoryProduct,getInventoryProductBom,getInventoryMaterials,getBomPaging} } = createActions({
+export const { product: { getInventoryProducts, success, getInventoryProductList,getInventoryProduct,getInventoryProductBom,getInventoryMaterials,getBomPaging,getSpec,getSpecPaging} } = createActions({
     [GET_INVENTORY_PRODUCTS]: result => ({ products: result }),
     [SUCCESS]: () => ({ success: true }),
     [GET_INVENTORY_PRODUCT_LIST]: result => ({ productList: result }),
@@ -20,6 +22,8 @@ export const { product: { getInventoryProducts, success, getInventoryProductList
     [GET_INVENTORY_PRODUCT_BOM]: result => ({ bom: result }),
     [GET_INVENTORY_MATERIALS]: result => ({ materials: result }),
     [GET_BOM_PAGING]: result => ({ bomPaging: result }),
+    [GET_SPEC]: result => ({spec:result}),
+    [GET_SPEC_PAGING]: result => ({specPaging:result})
 });
 
 const productReducer = handleActions({
@@ -50,6 +54,14 @@ const productReducer = handleActions({
     [GET_BOM_PAGING]: (state, { payload }) => ({
         ...state, // 현재 state 복사
         bomPaging: payload.bomPaging
+    }),
+    [GET_SPEC]: (state, { payload }) => ({
+        ...state, // 현재 state 복사
+        spec: payload.spec
+    }),
+    [GET_SPEC_PAGING]: (state, { payload }) => ({
+        ...state, // 현재 state 복사
+        specPaging: payload.specPaging
     })
 }, initialState);
 

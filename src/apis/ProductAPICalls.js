@@ -6,7 +6,7 @@ import {
     getInventoryProduct,
     getInventoryProductBom,
     getInventoryProductList,
-    getInventoryProducts,
+    getInventoryProducts, getSpec, getSpecPaging,
     success
 } from "../modules/ProductModules";
 
@@ -72,6 +72,26 @@ export const callProductBomRegistAPI = ({ registRequest,onSuccess,productCode })
     }
 };
 
+export const callProductSpecRegistAPI = ({ registRequest,onSuccess,productCode }) => {
+
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('POST',`/api/v1/productSpec/product/${productCode}`,{'Content-Type':'application/json'}, JSON.stringify(registRequest));
+            console.log('callProductSpecRegistAPI result : ',result);
+
+            if(result.status === 201) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('spec 등록 실패:', result);
+            }
+        } catch (error) {
+            console.error('spec 등록 중 오류 발생:', error);
+        }
+    }
+};
+
+
 export const callProductUpdateAPI = ({ updateRequest,onSuccess,productCode }) => {
 
     return async (dispatch, getState) => {
@@ -106,6 +126,25 @@ export const callBomUpdateAPI = ({ updateRequest,onSuccess,bomCode }) => {
             }
         } catch (error) {
             console.error('bom 수정 중 오류 발생:', error);
+        }
+    }
+};
+
+export const callSpecUpdateAPI = ({ updateRequest,onSuccess,specCode }) => {
+
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('PUT',`/api/v1/productSpec/${specCode}`,{'Content-Type':'application/json'}, JSON.stringify(updateRequest));
+            console.log('callSpecUpdateAPI result : ',result);
+
+            if(result.status === 201) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('스펙 수정 실패:', result);
+            }
+        } catch (error) {
+            console.error('스펙 수정 중 오류 발생:', error);
         }
     }
 };
@@ -148,6 +187,26 @@ export const callBomDeleteAPI = ({ onSuccess,selectedBom }) => {
     }
 };
 
+export const callSpecDeleteAPI = ({ onSuccess,selectedSpec }) => {
+
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('DELETE',`/api/v1/productSpec/${selectedSpec}`,{'Content-Type':'application/json'});
+            console.log('callSpecDeleteAPI result : ',result);
+
+            if(result.status === 204) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('스펙 삭제 실패:', result);
+            }
+        } catch (error) {
+            console.error('스펙 삭제 중 오류 발생:', error);
+        }
+    }
+};
+
+
 export const callProductListAPI = () => {
     return async (dispatch, getState) =>{
         const result = await request('GET', `/api/v1/products`);
@@ -164,7 +223,6 @@ export const callProductBomAPI = ({currentPage = 1, productCode}) => {
     return async (dispatch, getState) => {
         try {
             const results = await request('GET', `/api/v1/bom/product/page/${productCode}?page=${currentPage}`);
-            console.log("페에이지잉",results);
             const realResult = results.data.data.map(result =>(
                 {
                     bomCode:result.bomCode,
@@ -177,6 +235,31 @@ export const callProductBomAPI = ({currentPage = 1, productCode}) => {
             if (results.status === 200) {
                 dispatch(getInventoryProductBom(realResult));
                 dispatch(getBomPaging(results.data.pageInfo));
+            }
+
+        } catch (error) {
+            console.error("Error fetching BOM data: ", error);
+        }
+    }
+}
+
+export const callProductSpecAPI = ({specCurrentPage = 1, productCode}) => {
+    return async (dispatch, getState) => {
+        try {
+            const results = await request('GET', `/api/v1/productSpec/product/${productCode}?page=${specCurrentPage}`);
+            const realResult = results.data.data.map(result =>(
+                {
+                    specCode:result.specCode,
+                    type:result.type,
+                    size:result.size,
+                    color:result.color
+                }
+            ))
+            console.log("callProductSpecAPI",realResult)
+            console.log("callProductSpecAPI PAGING",results.data.pageInfo)
+            if (results.status === 200) {
+                dispatch(getSpec(realResult));
+                dispatch(getSpecPaging(results.data.pageInfo));
             }
 
         } catch (error) {
