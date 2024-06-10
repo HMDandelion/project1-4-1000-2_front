@@ -10,6 +10,8 @@ import InventoryMaterailAnalyze from "./pages/inventory/material/InventoryMatera
 import Specs from "./pages/inventory/material/Specs";
 import MaterialInStock from "./pages/inventory/material/MaterialInStock";
 import MaterialStocks from "./pages/inventory/material/MaterialStocks";
+import MaterialOrders from "./pages/purchase/material/MaterialOrders";
+import MaterialClients from "./pages/purchase/material/MaterialClients";
 
 function App() {
   return (
@@ -41,7 +43,12 @@ function App() {
                           <Route path="in-stock" element={<MaterialInStock/>}/>
                           <Route path="Specs" element={<Specs/>}/>
                           <Route path="stock" element={<MaterialStocks/>}/>
-
+                      </Route>
+                  </Route>
+                  <Route path="purchase">
+                      <Route path="material">
+                          <Route path="orders" element={<MaterialOrders/>}/>
+                          <Route path="clients" element={<MaterialClients/>}/>
                       </Route>
                   </Route>
               </Route>

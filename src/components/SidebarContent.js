@@ -129,7 +129,6 @@ function SidebarContent(props) {
                                                     </UnorderedList>
                                                 </AccordionPanel>
                                             </AccordionItem>
-
                                             <AccordionItem>
                                                 <h2>
                                                     <AccordionButton>
@@ -269,12 +268,38 @@ function SidebarContent(props) {
                             </h2>
                             <AccordionPanel pb={4}>
                                 <UnorderedList>
-                                    <ListItem>
-                                        <Link as={NavLink}
-                                              to="/123"
-                                              _activeLink={{color: activeColor}}
-                                        >원자재 관리</Link>
-                                    </ListItem>
+                                    <Accordion allowToggle>
+                                        <AccordionItem>
+                                            <h2>
+                                                <AccordionButton>
+                                                    <Box flex="1" textAlign="left">원자재</Box>
+                                                    <AccordionIcon />
+                                                </AccordionButton>
+                                            </h2>
+                                            <AccordionPanel pb={4}>
+                                                <UnorderedList>
+                                                    <ListItem>
+                                                        <Link
+                                                            as={NavLink}
+                                                            to="/purchase/material/orders"
+                                                            _activeLink={{color: activeColor}}>
+                                                            주문관리
+                                                        </Link>
+                                                    </ListItem>
+                                                </UnorderedList>
+                                                <UnorderedList>
+                                                    <ListItem>
+                                                        <Link
+                                                            as={NavLink}
+                                                            to="/purchase/material/clients"
+                                                            _activeLink={{color: activeColor}}>
+                                                            공급업체 관리
+                                                        </Link>
+                                                    </ListItem>
+                                                </UnorderedList>
+                                            </AccordionPanel>
+                                        </AccordionItem>
+                                    </Accordion>
                                 </UnorderedList>
                             </AccordionPanel>
                         </AccordionItem>
