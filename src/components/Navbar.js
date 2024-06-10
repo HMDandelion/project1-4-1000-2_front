@@ -42,19 +42,24 @@ export default function Navbar(props) {
 
     // 메뉴와 서브메뉴 매핑
     const menuMap = {
-        sales: {
-            label: '영업·판매'
-        },
-        client: {
-            label: '거래처 관리'
-        },
-        production: {
-            label: '생산·품질',
-        },
-        logistics: {
-            label: '재고·유통',
-        },
+        sales: { label: '영업·판매', isLast: false },
+            client: { label: '거래처 관리', isLast: false },
+
+        production: { label: '생산·품질', isLast: false },
+        logistics: { label: '재고·유통', isLast: false },
+
+        detail: { label: '상세 조회', isLast: true },
     };
+
+    const getPageTitle = (pathName) => {
+        for (let i = pathName.length - 1; i >= 0; i--) {
+            const part = pathName[i];
+            if (menuMap[part] && !menuMap[part].isLast) {
+                return menuMap[part].label;
+            }
+        }
+        return null;
+    }
 
     return (
         <Box
@@ -132,7 +137,6 @@ export default function Navbar(props) {
                         })}
                     </Breadcrumb>
 
-                    {/* Here we create navbar brand, based on route name */}
                     <ChakraLink
                         color={mainText}
                         href='#'
@@ -149,7 +153,7 @@ export default function Navbar(props) {
                         _focus={{
                             boxShadow: 'none'
                         }}>
-                        {brandText}
+                        {getPageTitle(pathNames)}
                     </ChakraLink>
                 </Box>
                 <Box ms='auto' w={{ sm: '100%', md: 'unset' }}>

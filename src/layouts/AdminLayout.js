@@ -46,7 +46,7 @@ import Card from "../components/card/Card";
                         gap={{ base: "20px", xl: "20px" }}>
                     </Grid>
                     <Grid
-                        mb='20px'
+                        mb='30px'
                         templateColumns={{
                             base: "1fr",
                             lg: "repeat(2, 1fr)",
@@ -64,7 +64,7 @@ import Card from "../components/card/Card";
                         <Outlet/>
                     </Card>
                 </Box>
-                <Box>
+                <Box mt={5}>
                     <Footer/>
                 </Box>
             </Box>

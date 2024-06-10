@@ -1,65 +1,70 @@
 import {
-    Button, FormControl, FormLabel, HStack, Input,
+    Button,
     Modal,
-    ModalBody,
-    ModalCloseButton,
     ModalContent,
     ModalFooter,
-    ModalHeader,
-    ModalOverlay, useColorModeValue, useDisclosure, VStack
+    ModalOverlay, useDisclosure,
 } from "@chakra-ui/react";
+import ClientForm from "./ClientForm";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {callClientModifyAPI, callClientRegistAPI} from "../../../apis/ClientAPICalls";
+import {useNavigate} from "react-router-dom";
 
-function ClientRegist({ isOpen, onClose }) {
-    const textColor = useColorModeValue("secondaryGray.900", "white");
+function ClientRegist() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const[ form, setForm ] = useState({
+        clientName : '',
+        address : '',
+        addressDetail : '',
+        postcode: '',
+        representativeName : '',
+        phoneFirst: '',
+        phoneSecond: '',
+        phoneThird: '',
+        phone: ''
+    });
+
+    // 등록 모달
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const { success } = useSelector(state => state.clientReducer);
+
+    useEffect(() => {
+        if(success === true) navigate(`/sales/clients`);
+    }, [success]);
+
+    const onClickRegistHandler = () => {
+        setForm(prevForm => {
+            const updatedForm = {
+                ...prevForm,
+                phone: `${prevForm.phoneFirst}-${prevForm.phoneSecond}-${prevForm.phoneThird}`,
+            };
+            dispatch(callClientRegistAPI({clientRequest : updatedForm}));
+            console.log("updatedForm", updatedForm);
+            return updatedForm;
+        });
+    }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay/>
-            <ModalContent>
-                <ModalHeader fontWeight='800' color={textColor}>거래처 설정</ModalHeader>
-                <ModalCloseButton/>
-                <ModalBody borderTop='1px solid' borderColor='secondaryGray.100' p='30px 40px'>
-                    <VStack spacing={4} align="stretch">
-                        <FormControl>
-                            <FormLabel fontWeight='800' color={textColor}>거래처명</FormLabel>
-                            <Input placeholder="거래처명을 입력하세요" _placeholder={{fontSize: 'sm'}}/>
-                        </FormControl>
-
-                        <FormControl>
-                            <FormLabel fontWeight='800' color={textColor}>대표명</FormLabel>
-                            <Input placeholder="대표명을 입력하세요" _placeholder={{fontSize: 'sm'}}/>
-                        </FormControl>
-
-                        <FormControl>
-                            <FormLabel fontWeight='800' color={textColor}>연락처</FormLabel>
-                            <HStack spacing={2}>
-                                <Input maxLength={3} /><span>-</span>
-                                <Input maxLength={4} /><span>-</span>
-                                <Input maxLength={4} />
-                            </HStack>
-                        </FormControl>
-
-                        <FormControl>
-                            <FormLabel fontWeight='800' color={textColor}>주소</FormLabel>
-                            <HStack spacing={2}>
-                                <Input placeholder="우편번호" width="40%" _placeholder={{fontSize: 'sm'}}/>
-                                <Button colorScheme="gray">주소 검색</Button>
-                            </HStack>
-                            <Input placeholder="주소" mt={2} _placeholder={{fontSize: 'sm'}}/>
-                            <Input placeholder="상세주소" mt={2} _placeholder={{fontSize: 'sm'}}/>
-                        </FormControl>
-                    </VStack>
-                </ModalBody>
-
-
-                <ModalFooter justify='center'>
-                    <Button colorScheme='orange' mx={1}>확인</Button>
-                    <Button variant='ghost' mx={1} onClick={onClose}>
-                        취소
-                    </Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+        <>
+            <Button colorScheme='orange' size='sm' onClick={onOpen}>
+                등록
+            </Button>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ClientForm client={form} setForm={setForm}/>
+                    <ModalFooter justifyContent='center'>
+                        <Button colorScheme='orange' mx={1} onClick={onClickRegistHandler}>등록</Button>
+                        <Button variant='outline' mx={1} onClick={onClose}>
+                            취소
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
     );
 }
 
