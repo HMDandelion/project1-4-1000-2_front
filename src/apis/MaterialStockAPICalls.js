@@ -1,5 +1,4 @@
 import {authRequest} from "./api";
-import {getMaterialSpecs} from "../modules/MaterialSpecModules";
 import {getMaterialStocks} from "../modules/MaterialStockModules";
 import {getMaterialDrop} from "../modules/MaterialStockDDModules";
 
@@ -16,6 +15,9 @@ export const callMaterialStocksAPI = ({currentPage = 1, warehouseCode, specCateg
         console.log("callMaterialStocksAPI result : ", result);
         if (result.status === 200) {
             dispatch(getMaterialStocks(result));
+        }
+        else {
+
         }
     };
 };

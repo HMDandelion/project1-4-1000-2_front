@@ -1,9 +1,14 @@
 import {Button, Menu, MenuButton, MenuIcon, MenuItem, MenuList} from "@chakra-ui/react";
 import {ChevronDownIcon} from "@chakra-ui/icons";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 function DropDownMenu({setValue, dropDownList}) {
-    const [selectedOption, setSelectedOption] = useState(dropDownList[0].name);
+    const [selectedOption, setSelectedOption] = useState("");
+
+    useEffect(() => {
+            setSelectedOption(dropDownList[0].name);
+        },[dropDownList]
+    );
     const clickHandler = (drop) => {
         setSelectedOption(drop.name);
         setValue(drop.code);
