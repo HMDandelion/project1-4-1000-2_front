@@ -16,7 +16,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 
 function ClientForm({ client, setForm }) {
     const textColor = useColorModeValue("secondaryGray.900", "white");

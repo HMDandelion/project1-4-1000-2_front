@@ -1,28 +1,27 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {callSalesClientsAPI} from "../../../apis/ClientAPICalls";
 
-import {HStack} from "@chakra-ui/react";
-import ClientRegist from "./ClientRegist";
+import {Badge, HStack} from "@chakra-ui/react";
 import PagingBar from "../../../components/common/PagingBar";
-import SearchRadioButton from "../../../components/button/SearchRadioButton";
 import SelectMenu from "../../../components/common/SelectMenu";
 import ComplexTable from "../../../components/table/NewComplexTable";
 import {useNavigate} from "react-router-dom";
+import {callEstimatesAPI} from "../../../apis/EstimateAPICalls";
+import EstimateRegist from "./EstimateRegist";
 
-function Clients() {
+function Estimates() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {clients, success} = useSelector(state => state.clientReducer);
+    const {estimates, success} = useSelector(state => state.estimateReducer);
 
     // 페이지네이션
     const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
-        dispatch(callSalesClientsAPI({currentPage}));
+        dispatch(callEstimatesAPI({currentPage}));
     }, [currentPage, success]);
 
     // 검색 옵션
-    const menuList = ['거래처명', '대표명'];
+    const menuList = ['거래처명'];
     const [searchParams, setSearchParams] = useState({
         selectedOption : menuList[0],
         searchText : '',
@@ -32,45 +31,44 @@ function Clients() {
         setSearchParams({ selectedOption, searchText });
     };
 
-    // 필터 검색
-    const [isChecked, setIsChecked] = useState(false);
-
     // 리액트 테이블 컬럼 데이터
     const columns = [
         {
-            Header: '코드',
-            accessor: 'clientCode'
+            Header: '등록일',
+            accessor: 'createdAt'
         },
         {
             Header: '거래처명',
             accessor: 'clientName'
         },
         {
-            Header: '대표명',
-            accessor: 'representativeName'
+            Header: '견적가',
+            accessor: 'totalPrice'
         },
         {
-            Header: '연락처',
-            accessor: 'phone'
+            Header: '',
+            accessor: 'isOrdered',
+            Cell: (cell) => cell.value ?
+                <Badge colorScheme='green' size='xs'>주문신청완료</Badge> :
+                <Badge colorScheme='orange' size='xs'>견적접수</Badge>
         }
     ]
 
     const handleRowClick = (row) => {
-        navigate(`/sales/client/detail`, {state: row.original.clientCode});
+        navigate(`/sales/estimate/detail`, {state: row.original.estimateCode});
     }
 
     return (
         <>
             {
-                clients &&
+                estimates &&
                 <>
                     <HStack spacing='10px'>
-                        <SearchRadioButton isChecked={isChecked} setIsChecked={setIsChecked} text='주문 진행중'/>
                         <SelectMenu onSearch={handleSearch} menuList={menuList}/>
-                        <ClientRegist/>
+                        <EstimateRegist/>
                     </HStack>
-                    <ComplexTable columnsData={columns} tableData={clients.data} onRowClick={handleRowClick}/>
-                    <PagingBar pageInfo={clients.pageInfo} setCurrentPage={setCurrentPage}/>
+                    <ComplexTable columnsData={columns} tableData={estimates.data} onRowClick={handleRowClick}/>
+                    <PagingBar pageInfo={estimates.pageInfo} setCurrentPage={setCurrentPage}/>
                 </>
             }
         </>
@@ -78,4 +76,4 @@ function Clients() {
     );
 }
 
-export default Clients;
+export default Estimates;
