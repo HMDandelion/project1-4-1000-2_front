@@ -7,9 +7,9 @@ import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
 import ProtectedRoute from "./components/router/ProtectedRoute";
 import InventoryMaterailAnalyze from "./pages/inventory/material/InventoryMaterailAnalyze";
-import SpecList from "./pages/inventory/material/SpecList";
+import Specs from "./pages/inventory/material/Specs";
 import MaterialInStock from "./pages/inventory/material/MaterialInStock";
-import MaterialStock from "./pages/inventory/material/MaterialStock";
+import MaterialStocks from "./pages/inventory/material/MaterialStocks";
 
 function App() {
   return (
@@ -39,8 +39,8 @@ function App() {
                       <Route path="material">
                           <Route path="analyze" element={<InventoryMaterailAnalyze/>}/>
                           <Route path="in-stock" element={<MaterialInStock/>}/>
-                          <Route path="Specs" element={<SpecList/>}/>
-                          <Route path="stock" element={<MaterialStock/>}/>
+                          <Route path="Specs" element={<Specs/>}/>
+                          <Route path="stock" element={<MaterialStocks/>}/>
 
                       </Route>
                   </Route>

@@ -78,7 +78,6 @@ function SidebarContent(props) {
                             </h2>
                             <AccordionPanel pb={4}>
                                 <UnorderedList>
-                                    <ListItem>
                                         <Accordion allowToggle>
                                             <AccordionItem>
                                                 <h2>
@@ -192,7 +191,6 @@ function SidebarContent(props) {
                                                 </AccordionPanel>
                                             </AccordionItem>
                                         </Accordion>
-                                    </ListItem>
                                 </UnorderedList>
                             </AccordionPanel>
                         </AccordionItem>

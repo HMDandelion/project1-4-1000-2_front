@@ -6,8 +6,8 @@ const initialState = {};
 /* 액션 */
 const GET_MATERIAL_SPECS = 'specs/GET_MATERIAL_SPECS';
 const GET_MATERIAL_SPEC = 'spec/GET_MATERIAL_SPEC';
-const SUCCESS = 'material/SUCCESS';
-const DELETED = 'material/DELETED';
+const SUCCESS = 'spec/SUCCESS';
+const DELETED = 'spec/DELETED';
 
 export const { specs : {getMaterialSpecs, getMaterialSpec, success, deleted}} = createActions({
     [GET_MATERIAL_SPECS] : result => ({ specs : result.data }),
