@@ -5,7 +5,16 @@ import {
     Heading,
     Flex,
     Button,
-    useDisclosure, Divider,
+    useDisclosure,
+    Divider,
+    AlertDialog,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    Grid,
+    GridItem,
+    Box,
+    AlertDialogHeader,
+    AlertDialogBody, AlertDialogFooter,
 } from "@chakra-ui/react";
 
 import {useDispatch, useSelector} from "react-redux";
@@ -16,6 +25,8 @@ import Card from "../../../components/card/Card";
 import ViewDetailButton from "../../../components/button/ViewDetailButton";
 import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 import {callEstimateAPI} from "../../../apis/EstimateAPICalls";
+import {WarningIcon} from "@chakra-ui/icons";
+import OrderRegistButton from "../../../components/button/OrderRegistButton";
 
 
 function EstimateDetail() {
@@ -84,13 +95,10 @@ function EstimateDetail() {
                 <Heading fontSize='xl' color={textColor} pt='15px'>
                     <Flex justify='space-between'>
                         <span>견적 총액 {formatNumber(getTotalPrice(estimate.products))}원</span>
-                        <Button colorScheme='orange' size='sm' isDisabled={estimate['isOrdered']}>
-                            주문 신청
-                        </Button>
+                        <OrderRegistButton isPossible={!estimate['isOrdered']}/>
                     </Flex>
                 </Heading>
             </Card>
-
         </>
     );
 }

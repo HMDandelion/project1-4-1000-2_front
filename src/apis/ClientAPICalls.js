@@ -1,6 +1,16 @@
 import {authRequest} from "./api";
-import {deleted, getSalesClient, getSalesClients, success} from "../modules/ClientModules";
+import {deleted, getSalesClient, getSalesClients, getSimpleSalesClients, success} from "../modules/ClientModules";
 import {statusToastAlert} from "../utils/ToastUtils";
+
+export const callSimpleSalesClientsAPI = () => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`/api/v1/clients/simple`);
+        console.log("callSimpleSalesClientsAPI result : ", result);
+        if(result.status === 200) {
+            dispatch(getSimpleSalesClients(result));
+        }
+    }
+}
 
 export const callSalesClientsAPI = ({currentPage = 1}) => {
     return async (dispatch, getState) => {
