@@ -1,17 +1,20 @@
 import {
-    Box, Button, Divider, Grid, GridItem,
+    Box, Button, Center, Divider, Flex, FormControl, Grid, GridItem,
     Heading, HStack,
     IconButton,
     Input,
     InputGroup,
-    InputRightElement, ModalHeader,
+    InputRightElement, ModalHeader, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger,
     Radio,
     RadioGroup, Select,
-    Stack, Table, Tbody, Td, Th, Thead, Tr,
+    Stack, Table, Tbody, Td, Th, Thead, Tr, useDisclosure,
     VStack
 } from "@chakra-ui/react";
 import {AddIcon, MinusIcon, SearchIcon} from "@chakra-ui/icons";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import DaumPostcodeEmbed from "react-daum-postcode";
+import {useDispatch, useSelector} from "react-redux";
+import {callSimpleSalesClientsAPI} from "../../../apis/ClientAPICalls";
 
 function EstimateForm() {
     const [selectedProducts, setSelectedProducts] = useState([]);
@@ -85,50 +88,120 @@ function EstimateForm() {
 }
 
 const ClientForm = () => {
+    const dispatch = useDispatch();
+    const { onOpen, onClose, isOpen } = useDisclosure();
     const [clientType, setClientType] = useState('existing');
     const [existingClient, setExistingClient] = useState('');
     const [newClient, setNewClient] = useState({
-        name: '',
-        address: '',
-        addressDetail: '',
-        // 다른 필드들 추가
+        clientName : '',
+        address : '',
+        addressDetail : '',
+        postcode: '',
+        representativeName : '',
+        phoneFirst: '',
+        phoneSecond: '',
+        phoneThird: '',
+        phone: ''
     });
+
+    useEffect(() => {
+        dispatch(callSimpleSalesClientsAPI());
+    }, [dispatch]);
+
+
+    const { clients } = useSelector(state => state.clientReducer);
 
     const handleExistingClientChange = (e) => setExistingClient(e.target.value);
     const handleNewClientChange = (e) => setNewClient({ ...newClient, [e.target.name]: e.target.value });
 
+    const addressCompleteHandler = (data, state) => {
+        setNewClient({
+            ...newClient,
+            address : data.address,
+            postcode : data.zonecode,
+        })
+        onClose();
+    }
+
     return (
         <>
-            <RadioGroup onChange={setClientType} value={clientType} mt={4}>
-                <Stack direction="row" spacing={5}>
-                    <Radio value="existing">기존 거래처 선택</Radio>
-                    <Radio value="new">신규 거래처 등록</Radio>
-                </Stack>
+            <RadioGroup onChange={setClientType} value={clientType}>
+                <Grid templateColumns='repeat(14, 1fr)'>
+                    <GridItem/>
+                    <GridItem colSpan={5}>
+                        <VStack mt={4} spacing={2} align='left'>
+                            <Radio value="existing">기존 거래처 선택</Radio>
+                            <InputGroup>
+                                <Input placeholder="거래처명으로 검색" value={existingClient}
+                                       disabled={clientType !== 'existing'} onChange={handleExistingClientChange} />
+                                <InputRightElement>
+                                    <IconButton icon={<SearchIcon />} size='sm' isDisabled={clientType !== 'existing'}/>
+                                </InputRightElement>
+                            </InputGroup>
+                            <Select placeholder="거래처 선택" isDisabled={clientType !== 'existing'}>
+                                { clients && clients.map((client) =>
+                                    <option value={client.clientCode}>{client.clientName}</option>
+                                )}
+                            </Select>
+                        </VStack>
+                    </GridItem>
+
+                    <GridItem colSpan={2}>
+                        <Center height='300px'>
+                            <Divider orientation='vertical' />
+                        </Center>
+                    </GridItem>
+
+                    <GridItem colSpan={5}>
+                        <VStack mt={4} spacing={2} align='left'>
+                            <Radio value="new">신규 거래처 등록</Radio>
+                            <FormControl>
+                                <Input placeholder="거래처명" size='sm' name="clientName" value={newClient.clientName}
+                                       disabled={clientType !== 'new'} onChange={handleNewClientChange} />
+                            </FormControl>
+                            <FormControl>
+                                <Input placeholder="대표자명" size='sm' name="representativeName" value={newClient.representativeName}
+                                       disabled={clientType !== 'new'} onChange={handleNewClientChange} />
+                            </FormControl>
+                            <FormControl>
+                                <HStack spacing={2}>
+                                    <Input maxLength={3} placeholder="010" name='phoneFirst' value={newClient.phoneFirst} size='sm'
+                                           disabled={clientType !== 'new'} onChange={handleNewClientChange}/><span>-</span>
+                                    <Input maxLength={3} placeholder="0000" name='phoneSecond' value={newClient.phoneSecond} size='sm'
+                                           disabled={clientType !== 'new'} onChange={handleNewClientChange}/><span>-</span>
+                                    <Input maxLength={3} placeholder="0000" name='phoneThird' value={newClient.phoneThird} size='sm'
+                                           disabled={clientType !== 'new'} onChange={handleNewClientChange}/>
+                                </HStack>
+                            </FormControl>
+                            <FormControl>
+                                <Input placeholder="우편번호" width="40%" size='sm' name="postcode" value={newClient.postcode}
+                                       disabled={clientType !== 'new'} onChange={handleNewClientChange} />
+                                <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy
+                                         placement='right' closeOnBlur={false}>
+                                    <PopoverTrigger>
+                                        <Button colorScheme="orange" variant="outline" size='sm' ml={1}
+                                                disabled={clientType !== 'new'}>주소 검색</Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <PopoverArrow/>
+                                        <PopoverBody>
+                                            <DaumPostcodeEmbed onComplete={addressCompleteHandler} onClose={onClose}/>
+                                        </PopoverBody>
+                                    </PopoverContent>
+                                </Popover>
+                                <Input placeholder="주소" size='sm' name="address" value={newClient.address}
+                                       disabled={clientType !== 'new'} onChange={handleNewClientChange} />
+                                <Input placeholder="상세주소" size='sm' name="addressDetail" value={newClient.addressDetail}
+                                       disabled={clientType !== 'new'} onChange={handleNewClientChange} />
+                            </FormControl>
+
+                        </VStack>
+                    </GridItem>
+                    <GridItem/>
+
+                </Grid>
             </RadioGroup>
 
-            {clientType === 'existing' ? (
-                <VStack mt={4} spacing={4}>
-                    <InputGroup>
-                        <Input placeholder="거래처명으로 검색" value={existingClient} onChange={handleExistingClientChange} />
-                        <InputRightElement>
-                            <IconButton icon={<SearchIcon />} />
-                        </InputRightElement>
-                    </InputGroup>
-                    {/* 기존 거래처 선택 항목, 예시로 간단한 드롭다운 */}
-                    <Select placeholder="거래처 선택">
-                        <option value="1">종로관화</option>
-                        <option value="2">유관순</option>
-                    </Select>
-                </VStack>
-            ) : (
-                <VStack mt={4} spacing={4}>
-                    <Input placeholder="거래처명" name="name" value={newClient.name} onChange={handleNewClientChange} />
-                    <Input placeholder="대표자명" name="representative" value={newClient.representative} onChange={handleNewClientChange} />
-                    <Input placeholder="연락처" name="contact" value={newClient.contact} onChange={handleNewClientChange} />
-                    <Input placeholder="주소" name="address" value={newClient.address} onChange={handleNewClientChange} />
-                    <Input placeholder="상세주소" name="addressDetail" value={newClient.addressDetail} onChange={handleNewClientChange} />
-                </VStack>
-            )}
         </>
     );
 };

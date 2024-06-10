@@ -1,6 +1,16 @@
 import {authRequest} from "./api";
-import {deleted, getSalesClient, getSalesClients, success} from "../modules/ClientModules";
+import {deleted, getSalesClient, getSalesClients, getSimpleSalesClients, success} from "../modules/ClientModules";
 import {statusToastAlert} from "../utils/ToastUtils";
+
+export const callSimpleSalesClientsAPI = () => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`/api/v1/clients/simple`);
+        console.log("callSimpleSalesClientsAPI result : ", result);
+        if(result.status === 200) {
+            dispatch(getSimpleSalesClients(result));
+        }
+    }
+}
 
 export const callSalesClientsAPI = ({currentPage = 1}) => {
     return async (dispatch, getState) => {
@@ -15,11 +25,17 @@ export const callSalesClientsAPI = ({currentPage = 1}) => {
 
 export const callSalesClientAPI = ({ clientCode }) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.get(`/api/v1/clients/${clientCode}`);
+        try {
+            const result = await authRequest.get(`/api/v1/clients/${clientCode}`);
 
-        console.log("callSalesClientAPI result : ", result);
-        if(result.status === 200) {
-            dispatch(getSalesClient(result));
+            console.log("callSalesClientAPI result : ", result);
+            if(result.status === 200) {
+                dispatch(getSalesClient(result));
+            }
+        } catch ({response}) {
+            const title = '문제가 발생했어요.';
+            const desc = `${response.data.code} : ${response.data.message}`
+            statusToastAlert(title, desc, 'error');
         }
     }
 }
@@ -48,16 +64,18 @@ export const callClientModifyAPI = ({clientCode, clientRequest}) => {
 
 export const callClientDeleteAPI = ({code}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.delete(`/api/v1/clients/${code}`);
-        console.log("callClientDeleteAPI result : ", result);
+        try {
+            const result = await authRequest.delete(`/api/v1/clients/${code}`);
+            console.log("callClientDeleteAPI result : ", result);
 
-        if(result.status === 204) {
-            const title = '성공적으로 처리되었어요.';
-            statusToastAlert(title, null, 'success');
-            dispatch(deleted());
-        } else {
+            if(result.status === 204) {
+                const title = '성공적으로 처리되었어요.';
+                statusToastAlert(title, null, 'success');
+                dispatch(deleted());
+            }
+        } catch ({response}) {
             const title = '문제가 발생했어요.';
-            const desc = '다시 시도해주세요.';
+            const desc = `${response.data.code} : ${response.data.message}`
             statusToastAlert(title, desc, 'error');
         }
     }

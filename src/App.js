@@ -12,6 +12,8 @@ import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
 import Estimates from "./pages/sales/estimate/Estimates";
 import EstimateDetail from "./pages/sales/estimate/EstimateDetail";
+import Orders from "./pages/sales/order/Orders";
+import OrderDetail from "./pages/sales/order/OrderDetail";
 
 function App() {
   return (
@@ -27,6 +29,10 @@ function App() {
                       <Route path="estimate">
                           <Route index element={<ProtectedRoute loginCheck={true}><Estimates/></ProtectedRoute>}/>
                           <Route path="detail" element={<ProtectedRoute loginCheck={true}><EstimateDetail/></ProtectedRoute>}/>
+                      </Route>
+                      <Route path="order">
+                          <Route index element={<ProtectedRoute loginCheck={true}><Orders/></ProtectedRoute>}/>
+                          <Route path="detail" element={<ProtectedRoute loginCheck={true}><OrderDetail/></ProtectedRoute>}/>
                       </Route>
                   </Route>
                   <Route path="production">
