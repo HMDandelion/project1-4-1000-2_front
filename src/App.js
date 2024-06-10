@@ -6,6 +6,10 @@ import ClientDetail from "./pages/sales/client/ClientDetail";
 import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
 import ProtectedRoute from "./components/router/ProtectedRoute";
+import InventoryMaterailAnalyze from "./pages/inventory/material/InventoryMaterailAnalyze";
+import SpecList from "./pages/inventory/material/SpecList";
+import MaterialInStock from "./pages/inventory/material/MaterialInStock";
+import MaterialStock from "./pages/inventory/material/MaterialStock";
 
 function App() {
   return (
@@ -13,6 +17,7 @@ function App() {
           <Routes>
               <Route path="/" element={<AdminLayout/>}>
                   <Route index element={<ProtectedRoute loginCheck={true}><TestPage/></ProtectedRoute>}/> {/* 나중에 Main 컴포넌트 만들면 그걸로 바꿔주삼 */}
+
                   <Route path="sales">
                       <Route path="client">
                           <Route index element={<ProtectedRoute loginCheck={true}><Clients/></ProtectedRoute>}/>
@@ -21,6 +26,22 @@ function App() {
                       <Route path="estimate">
                           <Route index element={<ProtectedRoute loginCheck={true}><Clients/></ProtectedRoute>}/>
                           <Route path=":estimateCode" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
+                      </Route>
+                  </Route>
+                  <Route path="inventory">
+                      {/* <Route path="product"> */}
+                      {/*     <Route index element={<Products/>}/> */}
+                      {/*     <Route path=":productCode"element={<ProductDetail/>}/> */}
+                      {/* </Route> */}
+                      {/* <Route path="warehouse"> */}
+                      {/*     <Route index element={<Warehouses/>}/> */}
+                      {/* </Route> */}
+                      <Route path="material">
+                          <Route path="analyze" element={<InventoryMaterailAnalyze/>}/>
+                          <Route path="in-stock" element={<MaterialInStock/>}/>
+                          <Route path="Specs" element={<SpecList/>}/>
+                          <Route path="stock" element={<MaterialStock/>}/>
+
                       </Route>
                   </Route>
               </Route>

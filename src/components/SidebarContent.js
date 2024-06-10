@@ -57,17 +57,20 @@ function SidebarContent(props) {
                                     <Box flex="1" textAlign="left">
                                         <Text
                                             fontSize={"md"}
-                                            fontWeight='bold'
+                                            fontWeight="bold"
                                             color={inactiveColor}
-                                            mx='auto'
-                                            pt='4px'
-                                            pb='4px'>
-                                            <Link as={NavLink}
-                                                to="/123"
+                                            mx="auto"
+                                            pt="4px"
+                                            pb="4px"
+                                        >
+                                            <Link
+                                                as={NavLink}
+                                                to="/inventory"
                                                 _activeLink={{ color: activeColor }}
                                             >
-                                                <GlobeIcon h='24px' w='24px' pr='5px'/>
-                                                재고·유통</Link>
+                                                <GlobeIcon h="24px" w="24px" pr="5px" />
+                                                재고·유통
+                                            </Link>
                                         </Text>
                                     </Box>
                                     <AccordionIcon />
@@ -76,22 +79,119 @@ function SidebarContent(props) {
                             <AccordionPanel pb={4}>
                                 <UnorderedList>
                                     <ListItem>
-                                        <Link as={NavLink}
-                                              to="/123"
-                                              _activeLink={{color: activeColor}}
-                                        >재고 관리</Link>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Link as={NavLink}
-                                              to="/123"
-                                              _activeLink={{color: activeColor}}
-                                        >유통 관리</Link>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Link as={NavLink}
-                                              to="/inventory/material"
-                                              _activeLink={{color: activeColor}}
-                                        >원자재</Link>
+                                        <Accordion allowToggle>
+                                            <AccordionItem>
+                                                <h2>
+                                                    <AccordionButton>
+                                                        <Box flex="1" textAlign="left">원자재</Box>
+                                                        <AccordionIcon />
+                                                    </AccordionButton>
+                                                </h2>
+                                                <AccordionPanel pb={4}>
+                                                    <UnorderedList>
+                                                        <ListItem>
+                                                            <Link
+                                                                as={NavLink}
+                                                                to="/inventory/material/in-stock"
+                                                                _activeLink={{color: activeColor}}>
+                                                                입고
+                                                            </Link>
+                                                        </ListItem>
+                                                    </UnorderedList>
+                                                    <UnorderedList>
+                                                        <ListItem>
+                                                            <Link
+                                                                as={NavLink}
+                                                                to="/inventory/material/analyze"
+                                                                _activeLink={{color: activeColor}}>
+                                                                분석
+                                                            </Link>
+                                                        </ListItem>
+                                                    </UnorderedList>
+                                                    <UnorderedList>
+                                                        <ListItem>
+                                                            <Link
+                                                                as={NavLink}
+                                                                to="/inventory/material/specs"
+                                                                _activeLink={{color: activeColor}}>
+                                                                스펙관리
+                                                            </Link>
+                                                        </ListItem>
+                                                    </UnorderedList>
+                                                    <UnorderedList>
+                                                        <ListItem>
+                                                            <Link
+                                                                as={NavLink}
+                                                                to="/inventory/material/stock"
+                                                                _activeLink={{color: activeColor}}>
+                                                                재고관리
+                                                            </Link>
+                                                        </ListItem>
+                                                    </UnorderedList>
+                                                </AccordionPanel>
+                                            </AccordionItem>
+
+                                            <AccordionItem>
+                                                <h2>
+                                                    <AccordionButton>
+                                                        <Box flex="1" textAlign="left">재고</Box>
+                                                        <AccordionIcon />
+                                                    </AccordionButton>
+                                                </h2>
+                                                <AccordionPanel pb={4}>
+                                                    <UnorderedList>
+                                                        <ListItem>
+                                                            <Link
+                                                                as={NavLink}
+                                                                to="/inventory/product"
+                                                                _activeLink={{ color: activeColor }}
+                                                            >
+                                                                재고·상품
+                                                            </Link>
+                                                        </ListItem>
+                                                        <ListItem>
+                                                            <Link
+                                                                as={NavLink}
+                                                                to="/inventory/warehouse"
+                                                                _activeLink={{ color: activeColor }}
+                                                            >
+                                                                창고
+                                                            </Link>
+                                                        </ListItem>
+                                                    </UnorderedList>
+                                                </AccordionPanel>
+                                            </AccordionItem>
+                                            <AccordionItem>
+                                                <h2>
+                                                    <AccordionButton>
+                                                        <Box flex="1" textAlign="left">유통</Box>
+                                                        <AccordionIcon />
+                                                    </AccordionButton>
+                                                </h2>
+                                                <AccordionPanel pb={4}>
+                                                    <UnorderedList>
+                                                        <ListItem>
+                                                            <Link
+                                                                as={NavLink}
+                                                                to="/shipment"
+                                                                _activeLink={{ color: activeColor }}
+                                                            >
+                                                                출고
+                                                            </Link>
+                                                        </ListItem>
+                                                        <ListItem>
+                                                            <Link
+                                                                as={NavLink}
+                                                                to="/returns"
+                                                                _activeLink={{ color: activeColor }}
+                                                            >
+                                                                반품
+                                                            </Link>
+                                                        </ListItem>
+                                                    </UnorderedList>
+                                                </AccordionPanel>
+                                            </AccordionItem>
+                                        </Accordion>
                                     </ListItem>
                                 </UnorderedList>
                             </AccordionPanel>
