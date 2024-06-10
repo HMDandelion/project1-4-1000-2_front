@@ -5,35 +5,37 @@ import {
     Heading,
     Flex,
     Button,
-    useDisclosure,
+    useDisclosure, Divider,
 } from "@chakra-ui/react";
 
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import {callSalesClientAPI} from "../../../apis/ClientAPICalls";
-import {useNavigate, useParams} from "react-router-dom";
-import HorizonLine from "../../../components/common/HorizonLine";
+import React, {useEffect, useState} from "react";
+import {callClientDeleteAPI, callSalesClientAPI} from "../../../apis/ClientAPICalls";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import ViewDetailButton from "../../../components/button/ViewDetailButton";
-import OrderStatusButton from "../../../components/button/OrderStatusButton";
+import OrderStatusBadge from "../../../components/badge/OrderStatusBadge";
 import ClientModify from "./ClientModify";
+import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 
 
 function ClientDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const dispatch = useDispatch();
-    const { clientCode } = useParams();
-    const { client, success } = useSelector(state => state.clientReducer);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const clientCode = location.state;
+    const { client, success, deleted } = useSelector(state => state.clientReducer);
 
     const [columnData, setColumnData] = useState([
         { headerName: "주문번호", valueGetter: (p) => p.data.orderCode, width: 100, resizable: false },
         { headerName: "주문일시", valueGetter: (p) => p.data.orderDatetime },
         { headerName: "마감기한", valueGetter: (p) => p.data.deadline },
         { headerName: "주문총액", valueGetter: (p) => p.data.totalPrice },
-        { headerName: "진행상태", cellRenderer: OrderStatusButton, width: 150 },
+        { headerName: "진행상태", cellRenderer: (p) => OrderStatusBadge(p.data.status), width: 150 },
         { headerName: null, cellRenderer: (p) => ViewDetailButton(`/sales/orders/${p.data.orderCode}`), width: 100, resizable: false}
     ]);
 
@@ -41,6 +43,10 @@ function ClientDetail() {
         dispatch(callSalesClientAPI({clientCode}));
         onClose();
     }, [success]);
+
+    useEffect(() => {
+        if(deleted === true) navigate('/sales/client');
+    }, [deleted]);
 
 
     const getTotalPrice = (orders) => {
@@ -58,9 +64,12 @@ function ClientDetail() {
                 <Text fontSize='3xl' fontWeight='800' color={textColor} m='10px'>
                     {client.clientName}
                 </Text>
-                <Button colorScheme='gray' size='xs' onClick={onOpen}>
-                    수정
-                </Button>
+                <div>
+                    <Button colorScheme='gray' size='xs' onClick={onOpen}>
+                        수정
+                    </Button>
+                    <DeleteAlertButton code={clientCode} deleteAPI={callClientDeleteAPI}/>
+                </div>
                 <ClientModify isOpen={isOpen} onClose={onClose} client={client}/>
             </Flex>
 
@@ -73,7 +82,7 @@ function ClientDetail() {
             <Text fontWeight='bold' color={textColor}>
                 <Badge fontSize='sm' m='2px 5px' colorScheme='orange'>주소</Badge><span>{client.address} {client.addressDetail}</span>
             </Text>
-            <HorizonLine/>
+            <Divider mt='20px'/>
 
             <Card>
                 <Heading fontSize='xl' color={textColor} pb='15px'>
