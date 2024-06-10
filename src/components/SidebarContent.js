@@ -89,7 +89,7 @@ function SidebarContent(props) {
                                     </ListItem>
                                     <ListItem>
                                         <Link as={NavLink}
-                                              to="/123"
+                                              to="/inventory/material"
                                               _activeLink={{color: activeColor}}
                                         >원자재</Link>
                                     </ListItem>

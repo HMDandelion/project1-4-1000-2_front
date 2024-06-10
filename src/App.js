@@ -3,6 +3,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
 import ClientDetail from "./pages/sales/client/ClientDetail";
+import SpecList from "./pages/inventory/material/SpecList";
 
 function App() {
   return (
@@ -14,7 +15,12 @@ function App() {
                       <Route path="client">
                           <Route index element={<Clients/>}/>
                           <Route path=":clientCode" element={<ClientDetail/>}/>
-
+                      </Route>
+                  </Route>
+                  <Route path="inventory">
+                      <Route path="material">
+                          <Route path="SpecList" element={<SpecList/>}>
+                          </Route>
                       </Route>
                   </Route>
               </Route>
