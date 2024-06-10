@@ -6,7 +6,13 @@ import {
     callProductUpdateAPI,
     callProductUpdateStatusAPI
 } from "../../../apis/ProductAPICalls";
-import {callProductTotalAPI, callStocksAPI, callStockTodayAPI, callTotalStockAPI} from "../../../apis/StockAPICalls";
+import {
+    callProductTotalAPI,
+    callStockDeleteAPI,
+    callStocksAPI,
+    callStockTodayAPI,
+    callTotalStockAPI
+} from "../../../apis/StockAPICalls";
 import "../../../Products.css"
 import {
     Box,Text,
@@ -39,6 +45,7 @@ function Products() {
     const { isOpen: isSaveModalOpen, onOpen: onSaveModalOpen, onClose: onSaveModalClose } = useDisclosure();
     const { isOpen: isClientModalOpen, onOpen: onClientModalOpen, onClose: onClientModalClose } = useDisclosure();
     const { isOpen: isStockEditModalOpen, onOpen: onStockEditModalOpen, onClose: onStockEditModalClose } = useDisclosure();
+    const { isOpen: isStockDeleteModalOpen, onOpen: onStockDeleteModalOpen, onClose: onStockDeletedModalClose } = useDisclosure();
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedStock, setSelectedStock] = useState(null);
@@ -261,19 +268,50 @@ function Products() {
         })()
     }));
 
-
-    // 재고 수정 버튼의 onClick 이벤트 핸들러
+// 재고 수정 버튼의 onClick 이벤트 핸들러
     const handleStockUpdate = (stock) => (event) => {
         event.stopPropagation(); // 이벤트 버블링 방지
         setSelectedStock(stock);
         onStockEditModalOpen(); // 수정 모달 열기 함수 호출
     };
+
+// 재고 삭제 버튼의 onClick 이벤트 핸들러
+    const handleStockDelete = (stock) => (event) => {
+        event.stopPropagation();
+        setSelectedStock(stock);
+        dispatch(callStockDeleteAPI({
+            onSuccess: () => {
+                toast({
+                    title: "재고 삭제 완료",
+                    description: "재고가 성공적으로 삭제되었습니다!",
+                    status: "success",
+                    duration: 1000,
+                    isClosable: true,
+                });
+                dispatch(callStocksAPI({ currentPage: 1 }));
+                dispatch(callProductListAPI());
+                dispatch(callDestroysTotalAPI());
+                dispatch(callProductDestroyAPI());
+                dispatch(callProductTotalAPI());
+                dispatch(callTotalStockAPI());
+
+
+                onEditModalClose ();
+                navigate('/inventory/product', {replace: true});
+            },
+            selectedStock:stock.stockCode
+        }));
+    };
+
     const processedStocks = stocks?.data?.content.map(stock => ({
         ...stock,
-        editStock:(() => {
+        editStock: (() => {
             return (
                 <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button colorScheme="orange"size='xs' onClick={handleStockUpdate(stock)} style={{ marginRight: '8px' }}>재고 수정</Button>
+                    {stock.assignmentStatus === 'not_assignment' && (
+                        <Button colorScheme="red" size='xs' onClick={handleStockDelete(stock)} style={{ marginRight: '8px', visibility: 'visible' }}>재고 삭제</Button>
+                    )}
+                    <Button colorScheme="orange" size='xs' onClick={handleStockUpdate(stock)} style={{ marginRight: '8px' }}>재고 수정</Button>
                     <StockUpdate isOpen={isStockEditModalOpen} onClose={() => { onStockEditModalClose(); setSelectedStock(null); }} selectedStock={selectedStock} setSelectedStock={setSelectedStock} />
                 </div>
             );
@@ -286,7 +324,7 @@ function Products() {
                 case 'partially_assigned':
                     return (
                         <div className="status-container">
-                            <div className="status-circle yellow" >!</div>
+                            <div className="status-circle yellow">!</div>
                             <span className="status-text">일부배정</span>
                         </div>
                     );
@@ -322,10 +360,11 @@ function Products() {
                             재생산품
                         </div>
                     );
+                default:
+                    return null;
             }
         })()
     }));
-
 
         console.log("products",productList)
 
