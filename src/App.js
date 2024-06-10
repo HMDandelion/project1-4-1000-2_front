@@ -33,7 +33,7 @@ function App() {
                 </Route>
                 <Route path="production">
                     <Route path="productionReport">
-                        <Route element={<ProtectedRoute loginCheck={true}><ProductionReports/></ProtectedRoute>}/>
+                        <Route index element={<ProtectedRoute loginCheck={true}><ProductionReports/></ProtectedRoute>}/>
                     </Route>
                 </Route>
             </Routes>
