@@ -10,7 +10,7 @@ import {
 } from "../../../apis/ProductAPICalls";
 import {
     Badge,
-    Button,
+    Button, Divider,
     Flex,
     Modal, ModalBody, ModalCloseButton,
     ModalContent, ModalHeader,
@@ -19,7 +19,6 @@ import {
     useColorModeValue,
     useDisclosure, useToast
 } from "@chakra-ui/react";
-import HorizonLine from "../../../components/common/HorizonLine";
 import BomSave from "../../../modals/products/BomSave";
 import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
 import BomUpdate from "../../../modals/products/BomUpdate";
@@ -252,7 +251,7 @@ function ProductDetail() {
                         </span>
                         </div>
                     </Flex>
-                    <HorizonLine />
+                    <Divider mt='20px'/>
                     <Button colorScheme="orange" size="sm" onClick={onOpen} float="right" ml={5}>BOM 등록</Button>
                     <BomSave onClose={onClose} productCode={productCode} isOpen={isOpen}/>
                         <CustomizedTable
@@ -263,7 +262,7 @@ function ProductDetail() {
                             idAccessor={bomIdAccessor}
                         />
                     <PagingBar pageInfo={bomPaging} setCurrentPage={setCurrentPage} />
-                    <HorizonLine />
+                    <Divider mt='20px'/>
                     <Button colorScheme="orange" size="sm" onClick={onSpecRegistOpen} float="right" ml={5}>스펙 등록</Button>
                     <SpecSave onClose={onSpecRegistClose} productCode={productCode} isOpen={isSpecRegistOpen}/>
                     <CustomizedTable

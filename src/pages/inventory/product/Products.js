@@ -36,6 +36,7 @@ import ProductUpdate from "../../../modals/products/ProductUpdate";
 import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
 import ProductClient from "../../../modals/products/ProductClient";
 import StockUpdate from "../../../modals/products/StockUpdate";
+import WarehouseAssignment from "../../../modals/products/WarehouseAssignment";
 
 function Products() {
     const dispatch = useDispatch();
@@ -45,7 +46,7 @@ function Products() {
     const { isOpen: isSaveModalOpen, onOpen: onSaveModalOpen, onClose: onSaveModalClose } = useDisclosure();
     const { isOpen: isClientModalOpen, onOpen: onClientModalOpen, onClose: onClientModalClose } = useDisclosure();
     const { isOpen: isStockEditModalOpen, onOpen: onStockEditModalOpen, onClose: onStockEditModalClose } = useDisclosure();
-    const { isOpen: isStockDeleteModalOpen, onOpen: onStockDeleteModalOpen, onClose: onStockDeletedModalClose } = useDisclosure();
+    const { isOpen: isAssignmentModalOpen, onOpen: onAssignmentModalOpen, onClose: onAssignmentModalClose } = useDisclosure();
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedStock, setSelectedStock] = useState(null);
@@ -302,17 +303,24 @@ function Products() {
             selectedStock:stock.stockCode
         }));
     };
+    //재고 창고 배정
+    const handleWarehouseAssignment=(stock) => (event) => {
+        event.stopPropagation();
+        setSelectedStock(stock);
+        onAssignmentModalOpen();
+    };
+
 
     const processedStocks = stocks?.data?.content.map(stock => ({
         ...stock,
         editStock: (() => {
             return (
-                <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    {stock.assignmentStatus === 'not_assignment' && (
-                        <Button colorScheme="red" size='xs' onClick={handleStockDelete(stock)} style={{ marginRight: '8px', visibility: 'visible' }}>재고 삭제</Button>
-                    )}
+                <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative', width: '200px' }}>
                     <Button colorScheme="orange" size='xs' onClick={handleStockUpdate(stock)} style={{ marginRight: '8px' }}>재고 수정</Button>
+                    <Button colorScheme="green" size='xs' onClick={handleWarehouseAssignment(stock)} style={{ marginRight: '8px', visibility: stock.assignmentStatus !== 'fully_assigned' ? 'visible' : 'hidden' }}>창고 배정</Button>
+                    <Button colorScheme="red" size='xs' onClick={handleStockDelete(stock)} style={{ marginRight: '8px', visibility: stock.assignmentStatus === 'not_assignment' ? 'visible' : 'hidden' }}>재고 삭제</Button>
                     <StockUpdate isOpen={isStockEditModalOpen} onClose={() => { onStockEditModalClose(); setSelectedStock(null); }} selectedStock={selectedStock} setSelectedStock={setSelectedStock} />
+                    <WarehouseAssignment isOpen={isAssignmentModalOpen} onClose={() => { onAssignmentModalClose(); }} selectedStock={selectedStock} setSelectedStock={setSelectedStock}/>
                 </div>
             );
         })(),

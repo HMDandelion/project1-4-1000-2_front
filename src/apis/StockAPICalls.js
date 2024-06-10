@@ -1,7 +1,7 @@
 import {request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
 import {getInventoryProducts, success} from "../modules/ProductModules";
-import {getInventoryStocks, getTodayStock, productTotal, total} from "../modules/StockModules";
+import {getInventoryStocks, getStockWarehouse, getTodayStock, productTotal, total} from "../modules/StockModules";
 import {callProductUpdateStatusAPI} from "./ProductAPICalls";
 
 const DEFAULT_URL = `/api/v1/stock`;
@@ -24,6 +24,22 @@ export const callTotalStockAPI =() => {
             console.log("totalResult : ", result);
             if (result.status === 200) {
                 dispatch(total(result));
+            } else {
+                console.error('데이터 로딩 실패:', result.status);
+            }
+        } catch (error) {
+            console.error('API 호출 중 오류 발생:', error);
+        }
+    }
+}
+
+export const callStockWarehouseAPI =({stockCode}) => {
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('GET', `${DEFAULT_URL}/left/${stockCode}`);
+            console.log("callStockWarehouseAPI : ", result.data);
+            if (result.status === 200) {
+                dispatch(getStockWarehouse(result.data));
             } else {
                 console.error('데이터 로딩 실패:', result.status);
             }
