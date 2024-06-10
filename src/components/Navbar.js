@@ -47,6 +47,8 @@ export default function Navbar(props) {
             estimate: { label: '견적 관리', isLast: false },
 
         production: { label: '생산·품질', isLast: false },
+            plan: { label: '생산 계획 관리', isLast: false },
+            'work-order':{label: '작업 지시서 관리', isLast: false},
         logistics: { label: '재고·유통', isLast: false },
 
         detail: { label: '상세 조회', isLast: true },

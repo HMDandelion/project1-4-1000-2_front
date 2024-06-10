@@ -2,25 +2,28 @@ import {createActions, handleActions} from "redux-actions";
 
 const initialState = {
     /* 초기화 */
-    success : false
 };
 
 /* 액션 타입 */
-const GET_WORK_ORDERS = 'workOrders/GET_WORK_ORDERS';
-const SUCCESS = 'workOrders/SUCCESS';
+const GET_WORK_ORDERS = 'workOrder/GET_WORK_ORDERS';
+const GET_WORK_ORDER = 'workOrder/GET_WORK_ORDER';
+const SUCCESS = 'workOrder/SUCCESS';
+const DELETED = 'workOrder/DELETED';
 
 /* 액션 함수 */
-export const { workOrders : { getWorkOrders, success } } = createActions({
+export const { workOrder : { getWorkOrders, getWorkOrder, success, deleted } } = createActions({
     [GET_WORK_ORDERS] : (result) => ({ workOrders : result.data }),
-    [SUCCESS] : () => ({ success : true })
+    [GET_WORK_ORDER] : (result) => ({ workOrder : result.data }),
+    [SUCCESS] : () => ({ success : true }),
+    [DELETED] : () => ({ deleted : true})
 });
 
 /* 리듀서 함수 */
-const WorkOrderReducer = handleActions({
-    [GET_WORK_ORDERS] : (state, {payload}) => ({
-        ...state,
-        workOrders : payload.workOrders
-    })
+const workOrderReducer = handleActions({
+    [GET_WORK_ORDERS] : (state, {payload}) => payload,
+    [GET_WORK_ORDER] : (state, {payload}) => payload,
+    [SUCCESS] : (state, {payload}) => payload,
+    [DELETED] : (state, {payload}) => payload
 },initialState);
 
-export default WorkOrderReducer;
+export default workOrderReducer;

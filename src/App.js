@@ -10,7 +10,6 @@ import ProtectedRoute from "./components/router/ProtectedRoute";
 import ClientDetail from "./pages/sales/client/ClientDetail";
 import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
-import ProtectedRoute from "./components/router/ProtectedRoute";
 import Estimates from "./pages/sales/estimate/Estimates";
 import EstimateDetail from "./pages/sales/estimate/EstimateDetail";
 
