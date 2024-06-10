@@ -209,7 +209,7 @@ function SidebarContent(props) {
                                 <UnorderedList>
                                     <ListItem>
                                         <Link as={NavLink}
-                                              to="/123"
+                                              to="http://localhost:8001/api/v1/production/reports"
                                               _activeLink={{color: activeColor}}
                                         >생산 관리</Link>
                                     </ListItem>
