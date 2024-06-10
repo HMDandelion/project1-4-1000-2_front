@@ -134,6 +134,8 @@ function WarehousAssginment({isOpen,onClose,selectedStock, setSelectedStock}){
 
     return (
         <>
+            {stockWarehouse &&(
+                <>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -180,6 +182,8 @@ function WarehousAssginment({isOpen,onClose,selectedStock, setSelectedStock}){
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+                    </>)
+            }
 
             <Modal isOpen={isErrorModalOpen} onClose={() => setIsErrorModalOpen(false)}>
                 <ModalOverlay />
