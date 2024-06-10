@@ -4,7 +4,7 @@ import authReducer from "./AuthModules";
 import productionReportReducer from "./ProductionReportModules";
 
 const rootReducer = combineReducers({
-    authReducer, clientReducer
+    authReducer, clientReducer,productionReportReducer
 });
 
 
