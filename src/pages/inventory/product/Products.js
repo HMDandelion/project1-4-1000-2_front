@@ -37,6 +37,7 @@ import CustomizedTable from "../../../components/table/productTable/CustomizedTa
 import ProductClient from "../../../modals/products/ProductClient";
 import StockUpdate from "../../../modals/products/StockUpdate";
 import WarehouseAssignment from "../../../modals/products/WarehouseAssignment";
+import StoreStock from "../../../modals/products/StoreStock";
 
 function Products() {
     const dispatch = useDispatch();
@@ -47,6 +48,7 @@ function Products() {
     const { isOpen: isClientModalOpen, onOpen: onClientModalOpen, onClose: onClientModalClose } = useDisclosure();
     const { isOpen: isStockEditModalOpen, onOpen: onStockEditModalOpen, onClose: onStockEditModalClose } = useDisclosure();
     const { isOpen: isAssignmentModalOpen, onOpen: onAssignmentModalOpen, onClose: onAssignmentModalClose } = useDisclosure();
+    const { isOpen: isStoreModalOpen, onOpen: onStoreModalOpen, onClose: onStoreModalClose } = useDisclosure();
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedStock, setSelectedStock] = useState(null);
@@ -118,6 +120,10 @@ function Products() {
         {
             Header: '창고배정현황',
             accessor: 'assignmentStatus',
+        },
+        {
+            HEADER:'창고 내 재고',
+            accessor: 'store'
         },
         {
             Header: '종류',
@@ -309,7 +315,12 @@ function Products() {
         setSelectedStock(stock);
         onAssignmentModalOpen();
     };
-
+    //재고의 창고 배정 정보 onClick이벤트 핸들러
+    const handleStoreDetail = (stock) =>(event) =>{
+        event.stopPropagation();
+        setSelectedStock(stock);
+        onStoreModalOpen();
+    }
 
     const processedStocks = stocks?.data?.content.map(stock => ({
         ...stock,
@@ -327,6 +338,16 @@ function Products() {
         isToday: stock.isToday ? (
             <div className="today-label">Today!</div>
         ) : '',
+        store:(() => {
+            return(
+                <div>
+                    <Button colorScheme='gray' size='xs' onClick={handleStoreDetail(stock)}>
+                        재고배정창고
+                    </Button>
+                    <StoreStock isOpen={isStoreModalOpen} selectedStock={selectedStock}  onClose={() => { onStoreModalClose(); }} setSelectedStock={setSelectedStock} />
+                </div>
+            )
+        })(),
         assignmentStatus: (() => {
             switch(stock.assignmentStatus) {
                 case 'partially_assigned':

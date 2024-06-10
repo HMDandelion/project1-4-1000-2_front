@@ -9,20 +9,7 @@ export const callWarehousesAPI =() =>{
     return async (dispatch, getState) =>{
         const result = await request('GET', `${DEFAULT_URL}`);
 
-        console.log("result : ", result);
-        console.log("dmd",result.data[0].name);
-        if(result.status === 200) {
-            dispatch(getInventoryWarehouses(result));
-        }
-    }
-}
-
-export const callWarehouseMove =() =>{
-    return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}`);
-
-        console.log("result : ", result);
-        console.log("dmd",result.data[0].name);
+        console.log("callWarehousesAPI : ", result);
         if(result.status === 200) {
             dispatch(getInventoryWarehouses(result));
         }

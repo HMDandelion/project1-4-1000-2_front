@@ -1,29 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, Text, useColorModeValue } from "@chakra-ui/react";
+import {Badge, Box, Button, Flex, Text, useColorModeValue} from "@chakra-ui/react";
 import { callWarehousesAPI } from "../../../apis/WarehouseAPICalls";
-import {callWarehouseMove} from "../../../apis/StorageAPICalls";
+import {callStoragesAPI, callWarehouseMove} from "../../../apis/StorageAPICalls";
 import ColumnsTable from "../../../components/table/ComplexTable";
+import { useNavigate } from 'react-router-dom';
+import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
+import '../../../Products.css'
 
 function Warehouses() {
     const dispatch = useDispatch();
     const { warehouses } = useSelector(state => state.warehouseReducer);
+    const { storageMove } = useSelector(state => state.storageReducer);
     const { storages } = useSelector(state => state.storageReducer);
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
     const [warehouseDetails, setWarehouseDetails] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(callWarehousesAPI());
+
     }, [dispatch]);
-    useEffect(() => {
-        console.log('변화', storages);
-    }, [storages]);
     const handleWarehouseSelect = (warehouse) => {
         setSelectedWarehouse(warehouse);
-        console.log("gkgk",warehouse.warehouseCode);
-        dispatch(callWarehouseMove(warehouse.warehouseCode));
-        console.log('storages',storages)
+        if(warehouse) {
+            dispatch(callWarehouseMove(warehouse.warehouseCode));
+        }
+        if(selectedWarehouse) {
+            dispatch(callStoragesAPI({warehouseCode: selectedWarehouse.warehouseCode}));
+        }
+        navigate(`/inventory/warehouse/${warehouse.warehouseCode}`);
     };
+
 
     const activeBorderColor = useColorModeValue("orange.600", "white");
     const inactiveColor = useColorModeValue("secondaryGray.600", "secondaryGray.600");
@@ -53,14 +61,64 @@ function Warehouses() {
         }
     ]
 
+    const storageColumns = [
+        {
+            Header: '코드',
+            accessor: 'storageCode'
+        },
+        {
+            Header: '상품명',
+            accessor: 'productName'
+        },
+        {
+            Header: '수량',
+            accessor: 'actualQuantity'
+        },
+        {
+            Header: '창고배정일',
+            accessor: 'createdDate',
+        },
+        {
+            Header: '파손',
+            accessor: 'destroyQuantity'
+        },
+        {
+            Header: '창고',
+            accessor: 'warehouseName'
+        },
+        {
+            Header: '보관일',
+            accessor: 'storageDate'
+        },
+        {
+            Header: '',
+            accessor: 'isToday'
+        }
+    ]
+
     const moveTableTitle = "이동 내역";     // 테이블 제목
     const baseLink = "/inventory/warehouse";   // 상세조회 React 주소
     const idAccessor = "createdAt";     // id로 사용할 컬럼 지정
 
+    const storageTableTitle = "보관 재고 리스트";     // 테이블 제목
+    const storageBaseLink = "/inventory/warehouse";   // 상세조회 React 주소
+    const storageIdAccessor = "storageCode";     // id로 사용할 컬럼 지정
+
+    let processedStorages;
+    if(storages) {
+        processedStorages = storages.map(storage => ({
+            ...storage,
+            isToday: storage.isToday ? (
+                <div className="today-label">Today!</div>
+            ) : ''
+        }));
+    }
+
+
     return (
         <Box p={4}>
             <Box mb={4} display="flex" flexWrap="wrap" borderBottom={`2px solid ${inactiveColor}`}>
-                {warehouses && warehouses.map(warehouse => (
+                {warehouses  && warehouses.map(warehouse => (
                     <Button
                         key={warehouse.id}
                         onClick={() => handleWarehouseSelect(warehouse)}
@@ -77,19 +135,48 @@ function Warehouses() {
                     </Button>
                 ))}
             </Box>
-            {selectedWarehouse && (
-                <Box mt={4} p={4} borderWidth="1px" borderRadius="lg">
-                    <Text color={textColor} mb={2} fontSize="lg" fontWeight="bold">{selectedWarehouse.name}</Text>
-                    <Text color={textColor} mb={2}>위치: {selectedWarehouse.location}</Text>
-                    <Text color={textColor} mb={2}>크기: {selectedWarehouse.volume}</Text>
-                    <Text color={textColor}>담당자: {selectedWarehouse.employeeName}</Text>
-                </Box>
+            {selectedWarehouse && storageMove && storages &&(
+                <>
+                <Flex mt={4}>
+                    <Box p={4} borderWidth="1px" borderRadius="lg" flex="1" mr={4} position="relative">
+                        <Button
+                            position="absolute"
+                            top="4"
+                            right="4"
+                            colorScheme="orange"
+                            // onClick={handleEditClick} // 수정 버튼 클릭 시 실행될 함수
+                        >
+                            수정
+                        </Button>
+                        <Text color={textColor} mb={2} fontSize="lg" fontWeight="bold" fontSize='3xl' fontWeight='800' color={textColor} m='10px'>{selectedWarehouse.name}</Text>
+                        <Box mb={4}>
+                            <Box display="flex" alignItems="center" mb={4}>
+                                <Badge fontSize='lg' m='5px 0' colorScheme='orange'>위치</Badge>
+                                <Text fontSize='lg' fontWeight='bold' ml={2}>{selectedWarehouse.location}</Text>
+                            </Box>
+                            <Box display="flex" alignItems="center" mb={4}>
+                                <Badge fontSize='lg' m='5px 0' colorScheme='orange'>크기</Badge>
+                                <Text fontSize='lg' fontWeight='bold' ml={2}>{selectedWarehouse.volume}</Text>
+                            </Box>
+                            <Box display="flex" alignItems="center" mb={4}>
+                                <Badge fontSize='lg' m='5px 0' colorScheme='orange'>담당자</Badge>
+                                <Text fontSize='lg' fontWeight='bold' ml={2}>{selectedWarehouse.employeeName}</Text>
+                            </Box>
+                        </Box>
+                    </Box>
 
+                    <Box flex="2">
+                        <CustomizedTable columnsData={moveColumns} tableData={storageMove} tableTitle={moveTableTitle} baseLink={baseLink} idAccessor={idAccessor} />
+                    </Box>
+                </Flex>
+                <Box flex="2">
+                <CustomizedTable columnsData={storageColumns} tableData={processedStorages} tableTitle={storageTableTitle} baseLink={storageBaseLink} idAccessor={storageIdAccessor} />
+                </Box>
+                </>
             )}
-            {console.log("유후",storages)}
-            <ColumnsTable columnsData={moveColumns} tableData={storages} tableTitle={moveTableTitle} baseLink={baseLink} idAccessor={idAccessor}/>
         </Box>
     );
+
 }
 
 export default Warehouses;

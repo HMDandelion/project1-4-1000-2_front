@@ -9,6 +9,7 @@ import {
     getInventoryProducts, getProductClient, getSpec, getSpecPaging,
     success
 } from "../modules/ProductModules";
+import {getStore} from "../modules/StorageModules";
 
 
 const DEFAULT_URL = `/api/v1/product`;

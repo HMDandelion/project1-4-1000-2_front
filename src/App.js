@@ -30,7 +30,8 @@ function App() {
                           <Route path=":productCode"element={<ProductDetail/>}/>
                       </Route>
                       <Route path="warehouse">
-                          <Route index element={<Warehouses/>}/>
+                          <Route  path=":warehouseCode"element={<Warehouses/>}/>
+                          <Route  index element={<Warehouses/>}/>
                           <Route path="detail" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
                       </Route>
                       <Route path="estimate">

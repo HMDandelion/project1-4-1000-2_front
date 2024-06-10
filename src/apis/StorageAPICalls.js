@@ -1,9 +1,7 @@
 import {request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
-import {getInventoryProducts, success} from "../modules/ProductModules";
-import {getInventoryStocks} from "../modules/StockModules";
-import {getInventoryWarehouses} from "../modules/WarehouseModules";
-import {getDestroys, getProductDestroy, getStorageMove} from "../modules/StorageModules";
+import {getInventoryProducts, getProductClient, success} from "../modules/ProductModules";
+import {getDestroys, getProductDestroy, getStorageMove, getStorages, getStore} from "../modules/StorageModules";
 
 const DEFAULT_URL = `/api/v1/storage`;
 export const callWarehouseMove =(warehouseCode) =>{
@@ -11,7 +9,7 @@ export const callWarehouseMove =(warehouseCode) =>{
         console.log("번호",+warehouseCode)
         const result = await request('GET', `${DEFAULT_URL}/warehouse/${warehouseCode}`);
 
-        console.log("result : ", result);
+        console.log("callWarehouseMove : ", result);
         if(result.status === 200) {
             dispatch(getStorageMove(result));
         }
@@ -58,3 +56,26 @@ export const callStockAssignment = ({ updateRequest,onSuccess,stockCode }) => {
         }
     }
 };
+
+export const callStoreAPI =({stockCode}) =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `${DEFAULT_URL}/stock/${stockCode}`);
+
+        console.log("callStoreAPI : ", result);
+        if(result.status === 200) {
+            dispatch(getStore(result));
+        }
+    }
+}
+
+
+export const callStoragesAPI =({warehouseCode}) =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `${DEFAULT_URL}/filter/${warehouseCode}`);
+
+        console.log("callStoragesAPI : ", result.data.content);
+        if(result.status === 200) {
+            dispatch(getStorages(result.data.content));
+        }
+    }
+}
