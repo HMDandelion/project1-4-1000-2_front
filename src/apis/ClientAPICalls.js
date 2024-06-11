@@ -1,5 +1,12 @@
 import {authRequest} from "./api";
-import {deleted, getMaterialClients, getSalesClient, getSalesClients, success} from "../modules/ClientModules";
+import {
+    deleted,
+    getMaterialClient,
+    getMaterialClients,
+    getSalesClient,
+    getSalesClients,
+    success
+} from "../modules/ClientModules";
 import {statusToastAlert} from "../utils/ToastUtils";
 
 export const callSalesClientsAPI = ({currentPage = 1}) => {
@@ -74,3 +81,13 @@ export const callMaterialClientsAPI = ({currentPage}) =>{
         }
     };
 }
+export const callMaterialClientAPI = ({clientCode}) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`api/v1/material/clients/${clientCode}`);
+        console.log("callMaterialClientAPI result : ", result);
+
+        if (result.status === 200) {
+            dispatch(getMaterialClient(result));
+        }
+    };
+};
