@@ -50,7 +50,7 @@ function SidebarContent(props) {
                             <HomeIcon h='24px' w='24px' pr='5px'/>
                             대시보드</Link>
                     </Text>
-
+                    {/* 재고 유통 */}
                     <Accordion allowToggle>
                         <AccordionItem border="none" color={inactiveColor}>
                             <h2>
@@ -195,8 +195,9 @@ function SidebarContent(props) {
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
-
+                    {/* 영업 판매 */}
                     <Accordion allowToggle>
+
                         <AccordionItem border="none" color={inactiveColor}>
                             <h2>
                                 <AccordionButton>
@@ -243,7 +244,7 @@ function SidebarContent(props) {
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
-
+                    {/* 구매 발주 */}
                     <Accordion allowToggle>
                         <AccordionItem border="none" color={inactiveColor}>
                             <h2>
@@ -305,7 +306,7 @@ function SidebarContent(props) {
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
-
+                    {/* 생산 품질 */}
                     <Accordion allowToggle>
                         <AccordionItem border="none" color={inactiveColor}>
                             <h2>
@@ -319,7 +320,7 @@ function SidebarContent(props) {
                                             pt='4px'
                                             pb='4px'>
                                             <Link as={NavLink}
-                                                  to="/123"
+                                                  to="/production"
                                                   _activeLink={{ color: activeColor }}
                                             >
                                                 <SupportIcon h='24px' w='24px' pr='5px'/>
@@ -339,7 +340,7 @@ function SidebarContent(props) {
                                     </ListItem>
                                     <ListItem>
                                         <Link as={NavLink}
-                                              to="/123"
+                                              to="/production/material/usage"
                                               _activeLink={{color: activeColor}}
                                         >원자재</Link>
                                     </ListItem>

@@ -46,6 +46,7 @@ export default function Navbar(props) {
             client: { label: '거래처 관리', isLast: false },
 
         production: { label: '생산·품질', isLast: false },
+        usage:{label:'사용 관리', isLast: false},
         logistics: { label: '재고·유통', isLast: false },
 
         detail: { label: '상세 조회', isLast: true },
@@ -60,6 +61,7 @@ export default function Navbar(props) {
         purchase:{label:'구매·발주',isLast:false},
             orders:{label:'주문 관리', isLast:false},
             clients:{label:'공급업체 관리', isLast:false},
+
 
     };
 

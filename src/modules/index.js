@@ -9,6 +9,7 @@ import materialSpecReducer from "./MaterialSpecModules";
 import materialStockReducer from "./MaterialStockModules";
 import materialOrderReducer from "./MaterialOrderModules";
 import materialDropReducer from "./MaterialStockDDModules";
+import materialUsageReducer from "./MaterialUsageModules";
 
 const rootReducer = combineReducers({
 
@@ -26,8 +27,8 @@ const rootReducer = combineReducers({
     materialDropReducer,
     materialOrderReducer,
     materialSpecReducer,
-    materialStockReducer
-
+    materialStockReducer,
+    materialUsageReducer
 });
 
 export default rootReducer;
