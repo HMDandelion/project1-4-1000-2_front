@@ -42,14 +42,7 @@ function WarehouseSave({isOpen,onClose,warehouse,handleWarehouseSelect}){
         fetchEmployees();
     }, []);
 
-    // useEffect(() => {
-    //         setWarehouseInfo({
-    //             name: warehouse.name || '',
-    //             location: warehouse.location || '',
-    //             volume: warehouse.volume || 0,
-    //             employeeCode: warehouse.employeeCode || 0
-    //         });
-    // }, [warehouse]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setWarehouseInfo({
@@ -67,7 +60,7 @@ function WarehouseSave({isOpen,onClose,warehouse,handleWarehouseSelect}){
 
 
     const handleSubmit = async () => {
-        if (warehouseInfo.name === null || warehouseInfo.location === null || warehouseInfo.volume < 0 || warehouseInfo.employeeCode === null) {
+        if (warehouseInfo.name == null || warehouseInfo.location == null || warehouseInfo.volume == null || warehouseInfo.employeeCode == null) {
             onOpen();
             return;
         }
@@ -135,7 +128,7 @@ function WarehouseSave({isOpen,onClose,warehouse,handleWarehouseSelect}){
                                         </FormControl>
                                         <FormControl>
                                             <FormLabel fontWeight='800' color={textColor}>크기</FormLabel>
-                                            <Input placeholder="크기를 입력하세요" _placeholder={{ fontSize: 'sm' }}
+                                            <Input type="number" placeholder="크기를 입력하세요" _placeholder={{ fontSize: 'sm' }}
                                                    name='volume' value={warehouseInfo.volume}
                                                    onChange={handleChange} />
                                         </FormControl>
