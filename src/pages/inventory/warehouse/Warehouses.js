@@ -22,6 +22,7 @@ function Warehouses() {
     const { storages } = useSelector(state => state.storageReducer);
     const { warehouse} = useSelector(state => state.warehouseReducer);
     const { storagesPage } = useSelector(state => state.storageReducer);
+    const { movePage } = useSelector(state => state.storageReducer);
     const { isOpen: isWarehouseUpdateModalOpen, onOpen: onWarehouseUpdateModalOpen, onClose: onWarehouseUpdateModalClose } = useDisclosure();
     const { isOpen: isWarehouseSaveModalOpen, onOpen: onWarehouseSaveModalOpen, onClose: onWarehouseSaveModalClose } = useDisclosure();
     const { isOpen: isDestroyModalOpen, onOpen: onDestroyModalOpen, onClose: onDestroyModalClose } = useDisclosure();
@@ -31,7 +32,7 @@ function Warehouses() {
     const [isUpdated, setIsUpdated] = useState(false);
     const [warehouseDetails, setWarehouseDetails] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const [currentStoragePage, setCurrentStoragePage] = useState(1);
+    const [currentMovePage, setCurrentMovePage] = useState(1);
     const navigate = useNavigate();
     const toast = useToast();
 
@@ -48,11 +49,16 @@ function Warehouses() {
             dispatch(callStoragesAPI({currentPage: currentPage, warehouseCode: warehouse.warehouseCode}));
         }
     },[currentPage])
+    useEffect(() => {
+        if(warehouse){
+            dispatch(callWarehouseMove({currentPage:currentMovePage,warehouseCode:warehouse.warehouseCode}));
+        }
+    },[currentMovePage])
 
     const handleWarehouseSelect = (warehouse) => {
         if(warehouse) {
             setSelectedWarehouse(warehouse);
-            dispatch(callWarehouseMove(warehouse.warehouseCode));
+            dispatch(callWarehouseMove({currentPage:currentMovePage,warehouseCode:warehouse.warehouseCode}));
             dispatch(callStoragesAPI({currentPage:currentPage,warehouseCode: warehouse.warehouseCode}));
             dispatch(callWarehouseAPI({warehouseCode: warehouse.warehouseCode}));
         }
@@ -175,7 +181,7 @@ function Warehouses() {
                 givenDate.getDate() === today.getDate();
         };
 
-        processedMove = storageMove.map(el => ({
+        processedMove = storageMove.data.map(el => ({
             ...el,
             isToday: el.createdAt && isToday(el.createdAt) ? (
                 <div className="today-label" size={'md'}>Today!</div>
@@ -222,15 +228,24 @@ function Warehouses() {
     };
 
     let pageResult={};
-    if(storageMove){
+    let movePageResult = {};
+    if(storages){
         pageResult = {
             currentPage : storagesPage.data.pageable.pageNumber+1,
             startPage : 1,
             endPage : 10,
             maxPage : storagesPage.data.totalPages
         }
-        console.log("옥수수",pageResult);
     }
+    if(storageMove){
+        movePageResult = {
+            currentPage : movePage.data.pageInfo.currentPage,
+            startPage : 1,
+            endPage : 10,
+            maxPage :  movePage.data.pageInfo.maxPage
+        }
+    }
+
     // if(storagePageResult){
     //     pageResult = {
     //         currentPage : storagesPage.data.pageable.pageNumber+1,
@@ -306,7 +321,7 @@ function Warehouses() {
                         </Box>
                         <Box flex="2">
                             <CustomizedTable columnsData={moveColumns} tableData={processedMove} tableTitle={moveTableTitle} baseLink={baseLink} idAccessor={idAccessor} />
-
+                            <PagingBar pageInfo={movePageResult}  setCurrentPage={setCurrentMovePage}/>
                         </Box>
                     </Flex>
                     <Box flex="2">

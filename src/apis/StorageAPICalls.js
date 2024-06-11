@@ -2,7 +2,7 @@ import {request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
 import {getEmployees, getInventoryProducts, getProductClient, success} from "../modules/ProductModules";
 import {
-    getDestroys,
+    getDestroys, getMovePage,
     getProductDestroy,
     getStorageMove,
     getStorages,
@@ -12,14 +12,15 @@ import {
 import {useState} from "react";
 
 const DEFAULT_URL = `/api/v1/storage`;
-export const callWarehouseMove =(warehouseCode) =>{
+export const callWarehouseMove =({currentPage=1,warehouseCode}) =>{
     return async (dispatch, getState) =>{
         console.log("번호",+warehouseCode)
-        const result = await request('GET', `${DEFAULT_URL}/warehouse/${warehouseCode}`);
+        const result = await request('GET', `${DEFAULT_URL}/warehouse/${warehouseCode}?page=${currentPage}`);
 
         console.log("callWarehouseMove : ", result);
         if(result.status === 200) {
             dispatch(getStorageMove(result));
+            dispatch(getMovePage(result));
         }
     }
 }
