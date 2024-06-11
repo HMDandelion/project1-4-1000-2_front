@@ -1,22 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { callProductionReportsAPI } from "../../../apis/ProductionAPICalls";
-
-
 import { HStack } from "@chakra-ui/react";
 import SelectMenu from "../../../components/common/SelectMenu";
 import ComplexTable from "../../../components/table/NewComplexTable";
-import PagingBar from "../../../components/common/PagingBar";
 import DropDownMenu from "../../../components/common/DropDownMenu";
+import {useNavigate} from "react-router-dom";
+
 
 function ProductionReports() {
     const dispatch = useDispatch();
     const { productionReports } = useSelector((state) => state.productionReportReducer);
+    const navigate = useNavigate();
+
+    const [statusType, setStatusType] = useState('type1');
 
     // 페이지
     const [currentPage, setCurrentPage] = useState(1);
-    const [statusType, setStatusType] = useState('type1');
-
     useEffect(() => {
         dispatch(callProductionReportsAPI({ currentPage, statusType }));
     }, [currentPage, statusType]);
@@ -58,6 +58,12 @@ function ProductionReports() {
             accessor: 'productionStatus'
         }
     ];
+    const handleRowClick = (row) => {
+        navigate(`/production/reports/${row.productionStatusCode}/detail`);
+        // navigate(`/production/report/detail`, {state: row.original.productionStatusCode});
+    };
+
+
 
     return (
         <>
@@ -68,7 +74,7 @@ function ProductionReports() {
                         <DropDownMenu dropDownList={searchOptions.type1} setValue={searchHandler} mr="20px" />
                         <SelectMenu onSearch={searchHandler} menuList={menuList} />
                     </HStack>
-                    <ComplexTable columnsData={columns} tableData={productionReports} />
+                    <ComplexTable columnsData={columns} tableData={productionReports} onRowClick={handleRowClick} />
                 </>
             }
         </>

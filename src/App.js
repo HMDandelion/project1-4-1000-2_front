@@ -7,6 +7,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
 import ProtectedRoute from "./components/router/ProtectedRoute";
 import ProductionReports from "./pages/production/productionReport/ProductionReports";
+import ProductionReportDetail from "./pages/production/productionReport/ProductionReportDetail";
 
 
 
@@ -33,6 +34,8 @@ function App() {
                         <Route path="reports">
                             <Route index
                                    element={<ProtectedRoute loginCheck={true}><ProductionReports/></ProtectedRoute>}/>
+                            <Route path="detail"
+                                   element={<ProtectedRoute loginCheck={true}><ProductionReportDetail/></ProtectedRoute>}/>
                         </Route>
                     </Route>
                     <Route path="/login" element={<AuthLayout/>}>
