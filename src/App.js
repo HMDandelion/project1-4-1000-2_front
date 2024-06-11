@@ -34,7 +34,7 @@ function App() {
                   <Route path="inventory">
                       <Route path="product">
                           <Route index element={<Products/>}/>
-                          <Route path=":productCode"element={<ProductDetail/>}/>
+                          <Route path=":productCode" element={<ProductDetail/>}/>
                       </Route>
                       <Route path="warehouse">
                           <Route index element={<Warehouses/>}/>
@@ -44,15 +44,6 @@ function App() {
                           <Route index element={<ProtectedRoute loginCheck={true}><Clients/></ProtectedRoute>}/>
                           <Route path=":estimateCode" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
                       </Route>
-                  </Route>
-                  <Route path="inventory">
-                      {/* <Route path="product"> */}
-                      {/*     <Route index element={<Products/>}/> */}
-                      {/*     <Route path=":productCode"element={<ProductDetail/>}/> */}
-                      {/* </Route> */}
-                      {/* <Route path="warehouse"> */}
-                      {/*     <Route index element={<Warehouses/>}/> */}
-                      {/* </Route> */}
                       <Route path="material">
                           <Route path="analyze" element={<InventoryMaterailAnalyze/>}/>
                           <Route path="in-stock" element={<MaterialInStock/>}/>

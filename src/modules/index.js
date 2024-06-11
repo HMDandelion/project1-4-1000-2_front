@@ -11,16 +11,23 @@ import materialOrderReducer from "./MaterialOrderModules";
 import materialDropReducer from "./MaterialStockDDModules";
 
 const rootReducer = combineReducers({
+
+    //예원
     clientReducer,
+    authReducer,
+
+    //동환
     productReducer,
     stockReducer,
     warehouseReducer,
     storageReducer,
-    authReducer
-let rootReducer;
-rootReducer = combineReducers({
-    authReducer, clientReducer,
-    materialDropReducer, materialOrderReducer, materialSpecReducer, materialStockReducer
+
+    //한결
+    materialDropReducer,
+    materialOrderReducer,
+    materialSpecReducer,
+    materialStockReducer
+
 });
 
 export default rootReducer;
