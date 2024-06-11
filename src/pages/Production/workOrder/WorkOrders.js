@@ -9,7 +9,8 @@ import WorkOrderStatusBadge from "../../../components/badge/WorkOrderStatusBadge
 import WorkOrderRegist from "./WorkOrderRegist";
 import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 import WorkOrderModify from "./WorkOrderModify";
-import MyBigCalendar from "../plan/MyBigCalendar";
+import CalendarPlan from "../plan/CalendarPlan";
+import CalendarPlans from "../plan/CalendarPlans";
 
 function WorkOrders(){
     const navigate = useNavigate();
@@ -83,39 +84,10 @@ function WorkOrders(){
             )
         }
     ];
-    const columns1 = [
-        {
-            Header: '생산 계획 기간',
-            accessor: ''
-        },
-        {
-            Header: '코드',
-            accessor: ''
-        },
-        {
-            Header: '품목',
-            accessor: ''
-        },
-        {
-            Header: '총 수량',
-            accessor: ''
-        }
-    ];
 
     const tableTitle = "";     // 테이블 제목
     const baseLink = "/production/work-order";   // 상세조회 React 주소
-    const idAccessor = "workOrderCode";     // id로 사용할 컬럼 지정
-
-    // 추가: 행 선택 토글 함수
-    // const toggleRow = (id) => {
-    //     setSelectedRows(prev => {
-    //         if (prev.includes(id)) {
-    //             return prev.filter(rowId => rowId !== id); // 이미 선택된 경우 선택 해제
-    //         } else {
-    //             return [...prev, id]; // 선택되지 않은 경우 선택
-    //         }
-    //     });
-    // };
+    const idAccessor = "workOrderCode";
 
     useEffect(() => {
         if (deleted === true || currentPage) {
@@ -130,11 +102,8 @@ function WorkOrders(){
             {
                 workOrders &&
                 <div className="">
-                    <Box display="flex">
-                        <Box width="50%">
-                            <MyBigCalendar />
-                        </Box>
-                        {/*<ColumnsTable columnsData={columns} tableData={workOrders.data} tableTitle={tableTitle} baseLink={baseLink} idAccessor={idAccessor} onRowClick={() => { }}/>*/}
+                    <Box display="flex" width="100%">
+                        <CalendarPlans />
                     </Box>
                     <Box display="flex" justifyContent="flex-end">
                         <WorkOrderRegist isOpen={isOpen} onClose={onClose}/>

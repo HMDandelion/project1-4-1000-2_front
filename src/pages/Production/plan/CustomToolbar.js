@@ -28,10 +28,10 @@ const CustomToolbar = (toolbar) => {
     return (
         <div className="rbc-toolbar">
             <span className="rbc-btn-group">
-                <button type="button" onClick={goToBack}><Icon as={ChevronLeftIcon}/></button>
+                <button type="button" style={{border:'0'}} onClick={goToBack}><Icon as={ChevronLeftIcon}/></button>
                 <span className="rbc-toolbar-label">{label()}</span>
                 {/*<button type="button" onClick={goToCurrent}>오늘</button>*/}
-                <button type="button" onClick={goToNext}><Icon as={ChevronRightIcon}/></button>
+                <button type="button"  style={{border:'0'}} onClick={goToNext}><Icon as={ChevronRightIcon}/></button>
             </span>
 
         </div>

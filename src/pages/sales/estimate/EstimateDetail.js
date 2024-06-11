@@ -22,7 +22,6 @@ import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
-import ViewDetailButton from "../../../components/button/ViewDetailButton";
 import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 import {callEstimateAPI} from "../../../apis/EstimateAPICalls";
 import {WarningIcon} from "@chakra-ui/icons";

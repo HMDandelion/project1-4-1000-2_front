@@ -14,6 +14,7 @@ import Orders from "./pages/sales/order/Orders";
 import OrderDetail from "./pages/sales/order/OrderDetail";
 import WorkOrderRegist from "./pages/Production/workOrder/WorkOrderRegist";
 import WorkOrders from "./pages/Production/workOrder/WorkOrders";
+import Plans from "./pages/Production/plan/Plans";
 
 function App() {
   return (
@@ -39,7 +40,9 @@ function App() {
                       <Route path="work-order">
                           <Route index element={<WorkOrders/>}/>
                       </Route>
-                      <Route path="work-order-regist" element={<ProtectedRoute authCheck={false}><WorkOrderRegist/></ProtectedRoute>}/>
+                      <Route path="plan">
+                          <Route index element={<Plans/>}/>
+                      </Route>
                   </Route>
               </Route>
               <Route path="/login" element={<AuthLayout/>}>

@@ -85,8 +85,6 @@ function SidebarContent(props) {
                                                 <GlobeIcon h="24px" w="24px" pr="5px" />
                                                 재고·유통
                                             </Link>
-                                                <GlobeIcon h='24px' w='24px' pr='5px'/>
-                                                재고·유통
                                         </Text>
                                     </Box>
                                     <AccordionIcon />
