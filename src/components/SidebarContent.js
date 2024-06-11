@@ -15,6 +15,7 @@ import {
 import Brand from "./SidebarBrand";
 import React from "react";
 import {CartIcon, GlobeIcon, HomeIcon, RocketIcon, SupportIcon, WalletIcon} from "./icons/Icons";
+import {FaTruck} from "react-icons/fa";
 
 
 function SidebarContent(props) {
