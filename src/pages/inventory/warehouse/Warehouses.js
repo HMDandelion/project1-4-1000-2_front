@@ -13,6 +13,7 @@ import WarehouseSave from "../../../modals/products/WarehouseSave";
 import StoreStock from "../../../modals/products/StoreStock";
 import DestroyRegist from "../../../modals/products/DestroyRegist";
 import CancelAssignment from "../../../modals/products/CancelAssignment";
+import PagingBar from "../../../components/common/PagingBar";
 
 function Warehouses() {
     const dispatch = useDispatch();
@@ -20,6 +21,7 @@ function Warehouses() {
     const { storageMove } = useSelector(state => state.storageReducer);
     const { storages } = useSelector(state => state.storageReducer);
     const { warehouse} = useSelector(state => state.warehouseReducer);
+    const { storagesPage } = useSelector(state => state.storageReducer);
     const { isOpen: isWarehouseUpdateModalOpen, onOpen: onWarehouseUpdateModalOpen, onClose: onWarehouseUpdateModalClose } = useDisclosure();
     const { isOpen: isWarehouseSaveModalOpen, onOpen: onWarehouseSaveModalOpen, onClose: onWarehouseSaveModalClose } = useDisclosure();
     const { isOpen: isDestroyModalOpen, onOpen: onDestroyModalOpen, onClose: onDestroyModalClose } = useDisclosure();
@@ -28,6 +30,8 @@ function Warehouses() {
     const [selectedStorage, setSelectedStorage] = useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
     const [warehouseDetails, setWarehouseDetails] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [currentStoragePage, setCurrentStoragePage] = useState(1);
     const navigate = useNavigate();
     const toast = useToast();
 
@@ -39,12 +43,17 @@ function Warehouses() {
             handleWarehouseSelect(warehouses[0]);
         }
     }, [warehouses]);
+    useEffect(() => {
+        if(warehouse) {
+            dispatch(callStoragesAPI({currentPage: currentPage, warehouseCode: warehouse.warehouseCode}));
+        }
+    },[currentPage])
 
     const handleWarehouseSelect = (warehouse) => {
         if(warehouse) {
             setSelectedWarehouse(warehouse);
             dispatch(callWarehouseMove(warehouse.warehouseCode));
-            dispatch(callStoragesAPI({warehouseCode: warehouse.warehouseCode}));
+            dispatch(callStoragesAPI({currentPage:currentPage,warehouseCode: warehouse.warehouseCode}));
             dispatch(callWarehouseAPI({warehouseCode: warehouse.warehouseCode}));
         }
     };
@@ -211,6 +220,26 @@ function Warehouses() {
     const handleWarehouseAdd = () =>  {
         onWarehouseSaveModalOpen();
     };
+
+    let pageResult={};
+    if(storageMove){
+        pageResult = {
+            currentPage : storagesPage.data.pageable.pageNumber+1,
+            startPage : 1,
+            endPage : 10,
+            maxPage : storagesPage.data.totalPages
+        }
+        console.log("옥수수",pageResult);
+    }
+    // if(storagePageResult){
+    //     pageResult = {
+    //         currentPage : storagesPage.data.pageable.pageNumber+1,
+    //         startPage : 1,
+    //         endPage : 10,
+    //         maxPage : storagesPage.data.totalPages
+    //     }
+    // }
+
     return (
         <Box p={4}>
             <Box mb={4} display="flex" flexWrap="wrap" borderBottom={`2px solid ${inactiveColor}`}>
@@ -277,10 +306,12 @@ function Warehouses() {
                         </Box>
                         <Box flex="2">
                             <CustomizedTable columnsData={moveColumns} tableData={processedMove} tableTitle={moveTableTitle} baseLink={baseLink} idAccessor={idAccessor} />
+
                         </Box>
                     </Flex>
                     <Box flex="2">
                         <CustomizedTable columnsData={storageColumns} tableData={processedStorages} tableTitle={storageTableTitle} baseLink={storageBaseLink} idAccessor={storageIdAccessor} />
+                        <PagingBar pageInfo={pageResult}  setCurrentPage={setCurrentPage}/>
                     </Box>
                 </>
             )}

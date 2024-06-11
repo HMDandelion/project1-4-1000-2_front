@@ -1,7 +1,15 @@
 import {request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
 import {getEmployees, getInventoryProducts, getProductClient, success} from "../modules/ProductModules";
-import {getDestroys, getProductDestroy, getStorageMove, getStorages, getStore} from "../modules/StorageModules";
+import {
+    getDestroys,
+    getProductDestroy,
+    getStorageMove,
+    getStorages,
+    getStoragesPage,
+    getStore
+} from "../modules/StorageModules";
+import {useState} from "react";
 
 const DEFAULT_URL = `/api/v1/storage`;
 export const callWarehouseMove =(warehouseCode) =>{
@@ -90,15 +98,16 @@ export const callStoreAPI =({stockCode}) =>{
         }
     }
 }
-
-
-export const callStoragesAPI =({warehouseCode}) =>{
+export const callStoragesAPI =({warehouseCode,currentPage=1}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/filter/${warehouseCode}`);
+        const result = await request('GET', `${DEFAULT_URL}/filter/${warehouseCode}?page=${currentPage}`);
 
-        console.log("callStoragesAPI : ", result.data.content);
+        console.log("callStoragesAPI : ", result);
+
+        console.log("팝콘",result)
         if(result.status === 200) {
             dispatch(getStorages(result.data.content));
+            dispatch(getStoragesPage(result));
         }
     }
 }

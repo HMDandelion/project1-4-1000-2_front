@@ -10,13 +10,15 @@ const GET_DESTROYS = 'storage/GET_DESTROYS';
 const GET_PRODUCT_DESTROY = 'storage/GET_PRODUCT_DESTROY';
 const GET_STORE = 'storage/GET_STORE';
 const GET_STORAGES = 'storage/GET_STORAGES';
+const GET_STORAGES_PAGE = 'storage/GET_STORAGES_PAGE';
 
-export const { storage : {getStorageMove,getDestroys,getProductDestroy,getStore,getStorages}} = createActions({
+export const { storage : {getStorageMove,getDestroys,getProductDestroy,getStore,getStorages,getStoragesPage}} = createActions({
     [GET_STORAGE_MOVE] : result => ({ storageMove : result.data }),
     [GET_DESTROYS] : result => ({destroys : result}),
     [GET_PRODUCT_DESTROY] : result => ({productDestroy:result}),
     [GET_STORE] : result => ({store:result}),
-    [GET_STORAGES] : result => ({storages:result})
+    [GET_STORAGES] : result => ({storages:result}),
+    [GET_STORAGES_PAGE] : result => ({storagesPage:result})
 });
 
 /* 리듀서 */
@@ -38,6 +40,10 @@ const storageReducer = handleActions({
         ...payload
     }),
     [GET_STORAGES]: (state, { payload }) => ({
+        ...state,
+        ...payload
+    }),
+    [GET_STORAGES_PAGE]: (state, { payload }) => ({
         ...state,
         ...payload
     })
