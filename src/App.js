@@ -18,6 +18,7 @@ import ProductDetail from "./pages/inventory/product/ProductDetail";
 import MaterialUsages from "./pages/production/material/MaterialUsages";
 import SpecDetail from "./pages/inventory/material/SpecDetail";
 import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
+import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
 
 function App() {
   return (
@@ -59,7 +60,10 @@ function App() {
                   </Route>
                   <Route path="purchase">
                       <Route path="material">
-                          <Route path="orders" element={<MaterialOrders/>}/>
+                          <Route path="orders" >
+                              <Route index element={<MaterialOrders/>}/>
+                              <Route path=":orderCode" element={<MaterialOrderDetail/>}/>
+                          </Route>
                           <Route path="clients" >
                               <Route index element={<MaterialClients/>}/>
                               <Route path=":clientCode" element={<MaterialClientDetail/>}/>
