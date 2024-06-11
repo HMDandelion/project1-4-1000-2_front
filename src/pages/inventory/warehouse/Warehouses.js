@@ -10,6 +10,8 @@ import '../../../Products.css'
 import StockUpdate from "../../../modals/products/StockUpdate";
 import WarehouseUpdate from "../../../modals/products/WarehouseUpdate";
 import WarehouseSave from "../../../modals/products/WarehouseSave";
+import StoreStock from "../../../modals/products/StoreStock";
+import DestroyRegist from "../../../modals/products/DestroyRegist";
 
 function Warehouses() {
     const dispatch = useDispatch();
@@ -19,7 +21,9 @@ function Warehouses() {
     const { warehouse} = useSelector(state => state.warehouseReducer);
     const { isOpen: isWarehouseUpdateModalOpen, onOpen: onWarehouseUpdateModalOpen, onClose: onWarehouseUpdateModalClose } = useDisclosure();
     const { isOpen: isWarehouseSaveModalOpen, onOpen: onWarehouseSaveModalOpen, onClose: onWarehouseSaveModalClose } = useDisclosure();
+    const { isOpen: isDestroyModalOpen, onOpen: onDestroyModalOpen, onClose: onDestroyModalClose } = useDisclosure();
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
+    const [selectedStorage, setSelectedStorage] = useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
     const [warehouseDetails, setWarehouseDetails] = useState(null);
     const navigate = useNavigate();
@@ -103,6 +107,10 @@ function Warehouses() {
         {
             Header: '',
             accessor: 'isToday'
+        },
+        {
+            Header:'',
+            accessor:'button'
         }
     ]
 
@@ -111,16 +119,30 @@ function Warehouses() {
     const idAccessor = "createdAt";     // id로 사용할 컬럼 지정
 
     const storageTableTitle = "보관 재고 리스트";     // 테이블 제목
-    const storageBaseLink = "/inventory/warehouse";   // 상세조회 React 주소
+    const storageBaseLink = "/inventory/storage";   // 상세조회 React 주소
     const storageIdAccessor = "storageCode";     // id로 사용할 컬럼 지정
 
+
+    const handleSaveDestroy = (storage) => (event) => {
+        event.stopPropagation();
+        setSelectedStorage(storage);
+        onDestroyModalOpen();
+    };
     let processedStorages;
     if(storages) {
         processedStorages = storages.map(storage => ({
             ...storage,
             isToday: storage.isToday ? (
                 <div className="today-label">Today!</div>
-            ) : ''
+            ) : '',
+            button : (() => {
+                return(
+                    <div>
+                        <Button colorScheme="orange" size='xs' onClick={handleSaveDestroy(storage)} float="right" ml={5}>파손 등록</Button>
+                        <DestroyRegist warehouse={selectedWarehouse} handleWarehouseSelect={handleWarehouseSelect} isOpen={isDestroyModalOpen} selectedStorage={selectedStorage}  onClose={() => { onDestroyModalClose(); }} setSelectedStock={setSelectedStorage} />
+                    </div>
+                )
+            })()
         }));
     }
 
@@ -197,6 +219,7 @@ function Warehouses() {
                             </Box>
                         </Box>
                         <Box flex="2">
+
                             <CustomizedTable columnsData={moveColumns} tableData={storageMove} tableTitle={moveTableTitle} baseLink={baseLink} idAccessor={idAccessor} />
                         </Box>
                     </Flex>

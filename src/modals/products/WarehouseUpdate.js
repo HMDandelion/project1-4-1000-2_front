@@ -71,13 +71,13 @@ function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
     };
 
 
-    const handleSubmit = async () => {
+    const handleSubmit =  () => {
         if (warehouseInfo.name == null || warehouseInfo.location == null || warehouseInfo.volume < 0 || warehouseInfo.employeeCode == null) {
             onOpen();
             return;
         }
         try {
-            await dispatch(callWarehouseUpdateAPI({
+             dispatch(callWarehouseUpdateAPI({
                 updateRequest: warehouseInfo,
                 onSuccess: () => {
                     toast({

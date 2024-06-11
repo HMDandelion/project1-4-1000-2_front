@@ -69,7 +69,6 @@ function WarehouseSave({isOpen,onClose,warehouse,handleWarehouseSelect}){
     const handleSubmit = async () => {
         if (warehouseInfo.name === null || warehouseInfo.location === null || warehouseInfo.volume < 0 || warehouseInfo.employeeCode === null) {
             onOpen();
-            console.log("웨하스",warehouseInfo);
             return;
         }
         try {

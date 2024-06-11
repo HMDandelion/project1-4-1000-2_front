@@ -38,6 +38,29 @@ export const callProductDestroyAPI =() =>{
     }
 }
 
+export const callRegistDestroyAPI = ({ updateRequest,onSuccess,storageCode }) => {
+
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('PUT',`${DEFAULT_URL}/destroy/${storageCode}`,{'Content-Type':'application/json'}, JSON.stringify(updateRequest));
+            console.log('callRegistDestroyAPI result : ',result);
+
+            if(result.status === 201) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('파손 등록 실패:', result);
+                throw new Error('파손 등록 실패');
+            }
+        } catch (error) {
+            console.error('파손 등록 중 오류 발생:', error);
+            throw error;
+        }
+    }
+};
+
+
+
 export const callStockAssignment = ({ updateRequest,onSuccess,stockCode }) => {
 
     return async (dispatch, getState) => {

@@ -84,7 +84,7 @@ function SpecSave({onClose,productCode,isOpen}){
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader color={"navy"}>BOM 등록</ModalHeader>
+                    <ModalHeader color={"navy"}>상품 스펙 등록</ModalHeader>
                     <ModalCloseButton />
                         <ModalBody borderTop='1px solid' borderColor='secondaryGray.100' p='30px 40px'>
                             <VStack spacing={4} align="stretch">
