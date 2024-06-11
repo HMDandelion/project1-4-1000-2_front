@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Badge, Box, Button, Flex, Text, useColorModeValue, useDisclosure} from "@chakra-ui/react";
+import {Badge, Box, Button, Flex, Text, useColorModeValue, useDisclosure, useToast} from "@chakra-ui/react";
 import {callWarehouseAPI, callWarehousesAPI} from "../../../apis/WarehouseAPICalls";
-import {callStoragesAPI, callWarehouseMove} from "../../../apis/StorageAPICalls";
+import {callCancelAssignmentAPI, callStoragesAPI, callWarehouseMove} from "../../../apis/StorageAPICalls";
 import ColumnsTable from "../../../components/table/ComplexTable";
 import { useNavigate } from 'react-router-dom';
 import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
@@ -12,6 +12,7 @@ import WarehouseUpdate from "../../../modals/products/WarehouseUpdate";
 import WarehouseSave from "../../../modals/products/WarehouseSave";
 import StoreStock from "../../../modals/products/StoreStock";
 import DestroyRegist from "../../../modals/products/DestroyRegist";
+import CancelAssignment from "../../../modals/products/CancelAssignment";
 
 function Warehouses() {
     const dispatch = useDispatch();
@@ -22,11 +23,13 @@ function Warehouses() {
     const { isOpen: isWarehouseUpdateModalOpen, onOpen: onWarehouseUpdateModalOpen, onClose: onWarehouseUpdateModalClose } = useDisclosure();
     const { isOpen: isWarehouseSaveModalOpen, onOpen: onWarehouseSaveModalOpen, onClose: onWarehouseSaveModalClose } = useDisclosure();
     const { isOpen: isDestroyModalOpen, onOpen: onDestroyModalOpen, onClose: onDestroyModalClose } = useDisclosure();
+    const { isOpen: isCancelModalOpen, onOpen: onCancelModalOpen, onClose: onCancelModalClose } = useDisclosure();
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
     const [selectedStorage, setSelectedStorage] = useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
     const [warehouseDetails, setWarehouseDetails] = useState(null);
     const navigate = useNavigate();
+    const toast = useToast();
 
     useEffect(() => {
         dispatch(callWarehousesAPI());
@@ -54,6 +57,10 @@ function Warehouses() {
 
     const moveColumns = [
         {
+            Header: '코드',
+            accessor: 'storageCode'
+        },
+        {
             Header: '유형',
             accessor: 'moveType'
         },
@@ -72,6 +79,14 @@ function Warehouses() {
         {
             Header: '창고명',
             accessor: 'warehouseName'
+        },
+        {
+            Header: '',
+            accessor: 'isToday'
+        },
+        {
+            Header: '',
+            accessor: 'button'
         }
     ]
 
@@ -123,12 +138,54 @@ function Warehouses() {
     const storageIdAccessor = "storageCode";     // id로 사용할 컬럼 지정
 
 
+
+    let processedMove;
+    let processedStorages;
+    const handleCancel = (storage) => (event) => {
+        event.stopPropagation();
+        setSelectedStorage(storage);
+        dispatch(callCancelAssignmentAPI({
+            onSuccess: () => {
+                toast({
+                    title: "수정 완료",
+                    description: "창고 정보가 성공적으로 수정되었습니다!",
+                    status: "success",
+                    duration: 1000,
+                    isClosable: true,
+                });
+                navigate(`/inventory/warehouse`);
+                handleWarehouseSelect(warehouse);},
+            storageCode:storage.storageCode}));
+    };
+    if(storageMove){
+        const today = new Date();
+        const isToday = (date) => {
+            const givenDate = new Date(date);
+            return givenDate.getFullYear() === today.getFullYear() &&
+                givenDate.getMonth() === today.getMonth() &&
+                givenDate.getDate() === today.getDate();
+        };
+
+        processedMove = storageMove.map(el => ({
+            ...el,
+            isToday: el.createdAt && isToday(el.createdAt) ? (
+                <div className="today-label" size={'md'}>Today!</div>
+            ) : '',
+            button : (() => {
+                return(
+                    <div>
+                        <Button colorScheme="red" size='sm' onClick={handleCancel(el)} float="right" ml={5}>창고 배정 취소</Button>
+                        {/*<CancelAssignment warehouse={selectedWarehouse} handleWarehouseSelect={handleWarehouseSelect} isOpen={isCancelModalOpen} selectedStorage={selectedStorage}  onClose={() => { onCancelModalClose(); }} setSelectedStorages={setSelectedStorage} />*/}
+                    </div>
+                )
+            })()
+        }));
+    }
     const handleSaveDestroy = (storage) => (event) => {
         event.stopPropagation();
         setSelectedStorage(storage);
         onDestroyModalOpen();
     };
-    let processedStorages;
     if(storages) {
         processedStorages = storages.map(storage => ({
             ...storage,
@@ -138,7 +195,7 @@ function Warehouses() {
             button : (() => {
                 return(
                     <div>
-                        <Button colorScheme="orange" size='xs' onClick={handleSaveDestroy(storage)} float="right" ml={5}>파손 등록</Button>
+                        <Button colorScheme="orange"size='sm' onClick={handleSaveDestroy(storage)} float="right" ml={5}>파손 등록</Button>
                         <DestroyRegist warehouse={selectedWarehouse} handleWarehouseSelect={handleWarehouseSelect} isOpen={isDestroyModalOpen} selectedStorage={selectedStorage}  onClose={() => { onDestroyModalClose(); }} setSelectedStock={setSelectedStorage} />
                     </div>
                 )
@@ -219,8 +276,7 @@ function Warehouses() {
                             </Box>
                         </Box>
                         <Box flex="2">
-
-                            <CustomizedTable columnsData={moveColumns} tableData={storageMove} tableTitle={moveTableTitle} baseLink={baseLink} idAccessor={idAccessor} />
+                            <CustomizedTable columnsData={moveColumns} tableData={processedMove} tableTitle={moveTableTitle} baseLink={baseLink} idAccessor={idAccessor} />
                         </Box>
                     </Flex>
                     <Box flex="2">

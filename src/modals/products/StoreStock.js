@@ -42,7 +42,7 @@ function StoreStock({isOpen,onClose,selectedStock, setSelectedStock}){
             <Modal isOpen={isOpen} onClose={() => { onClose(); setSelectedStock(null); }}>
                 <ModalOverlay />
                 <ModalContent size="xl"> {/* 모달 크기 조정 */}
-                    <ModalHeader color={"navy"}>상품 거래처 목록</ModalHeader>
+                    <ModalHeader color={"navy"}>재고 배정 창고</ModalHeader>
                     <Divider mt={'10'} />
                     <ModalCloseButton />
                     <ModalBody mt={'10'} mb={'10'}>
@@ -67,7 +67,7 @@ function StoreStock({isOpen,onClose,selectedStock, setSelectedStock}){
                         ) : (
                             <>
                                 <div style={{ height: '100px' }}></div>
-                                <Text fontSize="lg" textAlign="center">거래처 정보가 없습니다.</Text>
+                                <Text fontSize="lg" textAlign="center">배정 된 재고가 없습니다.</Text>
                                 <div style={{ height: '100px' }}></div>
                             </>
                         )}

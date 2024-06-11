@@ -113,3 +113,23 @@ export const callEmployeesAPI =() =>{
         }
     }
 }
+
+export const callCancelAssignmentAPI = ({onSuccess,storageCode}) =>{
+    return async(dispatch,getState) => {
+        try {
+            const result = await request('DELETE',`${DEFAULT_URL}/${storageCode}`,{'Content-Type':'application/json'});
+            console.log('callCancelAssignmentAPI result : ',result);
+
+            if(result.status === 204) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('배정 취소 실패:', result);
+            }
+        } catch (error) {
+            console.error('배정 취소 중 오류 발생:', error);
+        }
+    }
+}
+
+
