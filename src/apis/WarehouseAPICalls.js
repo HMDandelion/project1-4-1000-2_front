@@ -36,6 +36,25 @@ export const callWarehouseUpdateAPI = ({ updateRequest, onSuccess, warehouseCode
     }
 };
 
+export const callWarehouseSaveAPI = ({ updateRequest, onSuccess }) => {
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('POST', `${DEFAULT_URL}`, { 'Content-Type': 'application/json' }, JSON.stringify(updateRequest));
+            console.log('callWarehouseSaveAPI result : ', result);
+
+            if (result && result.status === 201) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            } else {
+                console.error('창고 등록 실패:', result);
+                throw new Error('창고 등록 실패');
+            }
+        } catch (error) {
+            console.error('창고 등록 중 오류 발생:', error);
+            throw error;
+        }
+    }
+};
 
 export const callWarehouseAPI =({warehouseCode}) =>{
     return async (dispatch, getState) =>{

@@ -18,9 +18,9 @@ import {
     callProductDestroyAPI, callStoragesAPI,
     callWarehouseMove
 } from "../../apis/StorageAPICalls";
-import {callWarehouseUpdateAPI} from "../../apis/WarehouseAPICalls";
+import {callWarehousesAPI, callWarehouseSaveAPI, callWarehouseUpdateAPI} from "../../apis/WarehouseAPICalls";
 
-function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
+function WarehouseSave({isOpen,onClose,warehouse,handleWarehouseSelect}){
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); // 오류 모달 상태
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const dispatch = useDispatch();
@@ -36,25 +36,20 @@ function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
     const employees = useSelector(state => state.productReducer.employees);
 
     useEffect(() => {
-        const fetchEmployees =  () => {
+        const fetchEmployees = () => {
             dispatch(callEmployeesAPI());
         };
         fetchEmployees();
-        if(employees){
-            console.log("사원들",employees)
-        }
     }, []);
 
-    useEffect(() => {
-        if (warehouse) {
-            setWarehouseInfo({
-                name: warehouse.name || '',
-                location: warehouse.location || '',
-                volume: warehouse.volume || 0,
-                employeeCode: warehouse.employeeCode || 0
-            });
-        }
-    }, [warehouse]);
+    // useEffect(() => {
+    //         setWarehouseInfo({
+    //             name: warehouse.name || '',
+    //             location: warehouse.location || '',
+    //             volume: warehouse.volume || 0,
+    //             employeeCode: warehouse.employeeCode || 0
+    //         });
+    // }, [warehouse]);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setWarehouseInfo({
@@ -72,30 +67,35 @@ function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
 
 
     const handleSubmit = async () => {
-        if (warehouseInfo.name == null || warehouseInfo.location == null || warehouseInfo.volume < 0 || warehouseInfo.employeeCode == null) {
+        if (warehouseInfo.name === null || warehouseInfo.location === null || warehouseInfo.volume < 0 || warehouseInfo.employeeCode === null) {
             onOpen();
+            console.log("웨하스",warehouseInfo);
             return;
         }
         try {
-            await dispatch(callWarehouseUpdateAPI({
+            await dispatch(callWarehouseSaveAPI({
                 updateRequest: warehouseInfo,
                 onSuccess: () => {
                     toast({
-                        title: "수정 완료",
-                        description: "창고 정보가 성공적으로 수정되었습니다!",
+                        title: "등록 완료",
+                        description: "창고가 성공적으로 등록되었습니다!",
                         status: "success",
                         duration: 1000,
                         isClosable: true,
                     });
                     onClose(); // 모달 창 닫기
-                    // 현재 페이지로 다시 이동하여 컴포넌트를 새로 마운트하도록 함
+                    setWarehouseInfo({
+                        name:  '',
+                        location:  '',
+                        volume:  0,
+                        employeeCode:0
+                    })
+                    dispatch(callWarehousesAPI());
                     navigate(`/inventory/warehouse`);
-                    handleWarehouseSelect(warehouse);
-                },
-                warehouseCode: warehouse.warehouseCode
+                }
             }));
         } catch (error) {
-            console.error("상품 수정 중 오류 발생:", error);
+            console.error("창고 등록 중 오류 발생:", error);
             setIsErrorModalOpen(true);
         }
     };
@@ -105,7 +105,7 @@ function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
             <Modal isOpen={isOpen} onClose={() => { onClose();  }}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader color={"navy"}>창고 수정</ModalHeader>
+                    <ModalHeader color={"navy"}>창고 등록</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         {warehouse && warehouseInfo &&
@@ -124,7 +124,7 @@ function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
                                         </FormControl>
                                         <FormControl>
                                             <FormLabel fontWeight='800' color={textColor}>창고명</FormLabel>
-                                            <Input placeholder="창고명을 입력하세요" _placeholder={{ fontSize: 'sm' }}
+                                            <Input placeholder="수량을 입력하세요" _placeholder={{ fontSize: 'sm' }}
                                                    name='name' value={warehouseInfo.name}
                                                    onChange={handleChange} />
                                         </FormControl>
@@ -144,7 +144,7 @@ function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
                                 </ModalBody>
 
                                 <ModalFooter>
-                                    <Button colorScheme="orange" mr={3} onClick={handleSubmit}>수정하기</Button>
+                                    <Button colorScheme="orange" mr={3} onClick={handleSubmit}>등록하기</Button>
                                     <Button colorScheme="orange" onClick={onClose}>닫기</Button>
                                 </ModalFooter>
                                 <Modal isOpen={isErrorModalOpen} onClose={() => setIsErrorModalOpen(false)}>
@@ -168,4 +168,4 @@ function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
         </>
     )
 }
-export default WarehouseUpdate;
+export default WarehouseSave;

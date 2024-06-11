@@ -9,6 +9,7 @@ import CustomizedTable from "../../../components/table/productTable/CustomizedTa
 import '../../../Products.css'
 import StockUpdate from "../../../modals/products/StockUpdate";
 import WarehouseUpdate from "../../../modals/products/WarehouseUpdate";
+import WarehouseSave from "../../../modals/products/WarehouseSave";
 
 function Warehouses() {
     const dispatch = useDispatch();
@@ -17,6 +18,7 @@ function Warehouses() {
     const { storages } = useSelector(state => state.storageReducer);
     const { warehouse} = useSelector(state => state.warehouseReducer);
     const { isOpen: isWarehouseUpdateModalOpen, onOpen: onWarehouseUpdateModalOpen, onClose: onWarehouseUpdateModalClose } = useDisclosure();
+    const { isOpen: isWarehouseSaveModalOpen, onOpen: onWarehouseSaveModalOpen, onClose: onWarehouseSaveModalClose } = useDisclosure();
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
     const [warehouseDetails, setWarehouseDetails] = useState(null);
@@ -122,9 +124,13 @@ function Warehouses() {
         }));
     }
 
-// 재고 수정 버튼의 onClick 이벤트 핸들러
+// 창고 수정 버튼 핸들러
     const handleWarehouseUpdate = () =>  {
         onWarehouseUpdateModalOpen();
+    };
+    //창고 추가 버튼 핸들러
+    const handleWarehouseAdd = () =>  {
+        onWarehouseSaveModalOpen();
     };
     return (
         <Box p={4}>
@@ -146,19 +152,19 @@ function Warehouses() {
                     </Button>
                 ))}
                 <Button
-                    // onClick={handleAddWarehouse}
-                    bg="green.500"
+                    onClick={handleWarehouseAdd}
+                    bg="orange.500"
                     border="none"
                     borderTop={`2px solid transparent`}
                     color="white"
-                    borderRadius="0"
                     m={0}
                     px={4}
                     py={2}
-                    ml={2} // 버튼 사이 간격 조절
+                    ml={2}
                 >
-                    창고 추가
+                    + 창고 추가
                 </Button>
+                <WarehouseSave handleWarehouseSelect={handleWarehouseSelect} isOpen={isWarehouseSaveModalOpen} onClose={() => { onWarehouseSaveModalClose(); }} warehouse={warehouse}/>
             </Box>
             {warehouse && storageMove && storages && (
                 <>
