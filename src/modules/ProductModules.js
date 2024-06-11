@@ -14,8 +14,9 @@ const GET_BOM_PAGING = 'product/GET_BOM_PAGING';
 const GET_SPEC = 'product/GET_SPEC';
 const GET_SPEC_PAGING = 'product/GET_SPEC_PAGING';
 const GET_PRODUCT_CLIENT = 'product/GET_PRODUCT_CLIENT';
+const GET_SIMPLE_PRODUCTS = 'product/GET_SIMPLE_PRODUCTS';
 
-export const { product: { getInventoryProducts, success, getInventoryProductList,getInventoryProduct,getInventoryProductBom,getInventoryMaterials,getBomPaging,getSpec,getSpecPaging,getProductClient} } = createActions({
+export const { product: { getInventoryProducts, success, getInventoryProductList,getInventoryProduct,getInventoryProductBom,getInventoryMaterials,getBomPaging,getSpec,getSpecPaging,getProductClient,getSimpleProducts} } = createActions({
     [GET_INVENTORY_PRODUCTS]: result => ({ products: result }),
     [SUCCESS]: () => ({ success: true }),
     [GET_INVENTORY_PRODUCT_LIST]: result => ({ productList: result }),
@@ -25,7 +26,8 @@ export const { product: { getInventoryProducts, success, getInventoryProductList
     [GET_BOM_PAGING]: result => ({ bomPaging: result }),
     [GET_SPEC]: result => ({spec:result}),
     [GET_SPEC_PAGING]: result => ({specPaging:result}),
-    [GET_PRODUCT_CLIENT]: result => ({productClient:result})
+    [GET_PRODUCT_CLIENT]: result => ({productClient:result}),
+    [GET_SIMPLE_PRODUCTS]: result => ({simpleProducts:result.data})
 });
 
 const productReducer = handleActions({
@@ -68,7 +70,8 @@ const productReducer = handleActions({
     [GET_PRODUCT_CLIENT]: (state, { payload }) => ({
         ...state, // 현재 state 복사
         productClient: payload.productClient
-    })
+    }),
+    [GET_SIMPLE_PRODUCTS] : (state, {payload}) => payload
 }, initialState);
 
 export default productReducer;
