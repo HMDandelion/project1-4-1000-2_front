@@ -30,9 +30,11 @@ function App() {
                     <Route path="production">
                         <Route path="reports">
                             <Route index element={<ProtectedRoute loginCheck={true}><ProductionReports/></ProtectedRoute>}/>
-                            <Route path=":productionStatusCode" element={<ProtectedRoute loginCheck={true}><ProductionReportDetail/></ProtectedRoute>}/>
-                            <Route path=":productionDetailCode" element={<ProtectedRoute loginCheck={true}><DefectDetail/></ProtectedRoute>}/>
+                            <Route path=":productionStatusCode/detail" element={<ProtectedRoute loginCheck={true}><ProductionReportDetail/></ProtectedRoute>}/>
+                            <Route path=":productionDetailCode/defects">
+                                <Route index element={<ProtectedRoute loginCheck={true}><DefectDetail/></ProtectedRoute>}/>
                         </Route>
+                    </Route>
                     </Route>
                     <Route path="inventory">
                         <Route path="product">

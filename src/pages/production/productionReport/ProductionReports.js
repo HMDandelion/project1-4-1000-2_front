@@ -42,7 +42,7 @@ function ProductionReports() {
 
     const handleRowClick = (row) => {
         // navigate(`/production/report/detail`, { state: row.original.productionStatusCode });
-        navigate(`/production/reports/${row.original.productionStatusCode}`);
+        navigate(`/production/reports/${row.original.productionStatusCode}/detail`);
     };
 
     return (

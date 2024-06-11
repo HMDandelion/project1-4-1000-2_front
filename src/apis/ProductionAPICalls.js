@@ -1,5 +1,9 @@
 import { authRequest } from "./api";
-import {getProductionReport, getProductionReports} from "../modules/ProductionReportModules";
+import {
+    getDefectDetails,
+    getProductionReport,
+    getProductionReports
+} from "../modules/ProductionReportModules";
 
 export const callProductionReportsAPI = ({ currentPage = 1 }) => {
     return async (dispatch, getState) => {
@@ -28,12 +32,12 @@ export const callProductionDetailAPI = ({ productionStatusCode }) => {
 
 export const callDefectDetailAPI = ({ productionDetailCode }) => {
     return async (dispatch, getState) => {
-
-        const result = await authRequest.get(`/api/v1/production/reports/${productionDetailCode}/defect`)
-        console.log("callProductionItemsAPI result : ", result);
+            console.log('productionDetailCode',productionDetailCode)
+        const result = await authRequest.get(`/api/v1/production/reports/${productionDetailCode}/defects`)
+        console.log("callDefectDetailsAPI result : ", result);
 
         if (result.status === 200){
-            dispatch(getProductionReport(result));
+            dispatch(getDefectDetails(result));
         }
     }
 }
