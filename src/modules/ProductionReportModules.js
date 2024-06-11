@@ -9,7 +9,7 @@ const GET_PRODUCTION_REPORTS = 'production/GET_PRODUCTION_REPORTS';
 const GET_PRODUCTION_REPORT = 'production/GET_PRODUCTION_REPORT';
 export const {production:{getProductionReports, getProductionReport}} = createActions({
     [GET_PRODUCTION_REPORTS]: result => ({productionReports: result.data}),
-    [GET_PRODUCTION_REPORT]: result => ({getProductionReport: result.data}),
+    [GET_PRODUCTION_REPORT]: result => ({productionReport: result.data}),
 });
 
 /* 리듀서 */
