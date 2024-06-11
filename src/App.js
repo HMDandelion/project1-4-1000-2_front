@@ -3,9 +3,12 @@ import AdminLayout from "./layouts/AdminLayout";
 import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
 import ClientDetail from "./pages/sales/client/ClientDetail";
+import Products from "./pages/inventory/product/Products";
+import Warehouses from "./pages/inventory/warehouse/Warehouses";
 import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
 import ProtectedRoute from "./components/router/ProtectedRoute";
+import ProductDetail from "./pages/inventory/product/ProductDetail";
 
 function App() {
   return (
@@ -16,6 +19,18 @@ function App() {
                   <Route path="sales">
                       <Route path="client">
                           <Route index element={<ProtectedRoute loginCheck={true}><Clients/></ProtectedRoute>}/>
+                          <Route path=":clientCode" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
+                          <Route index element={<Clients/>}/>
+                          <Route path=":clientCode" element={<ClientDetail/>}/>
+                      </Route>
+                  </Route>
+                  <Route path="inventory">
+                      <Route path="product">
+                          <Route index element={<Products/>}/>
+                          <Route path=":productCode"element={<ProductDetail/>}/>
+                      </Route>
+                      <Route path="warehouse">
+                          <Route index element={<Warehouses/>}/>
                           <Route path="detail" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
                       </Route>
                       <Route path="estimate">
