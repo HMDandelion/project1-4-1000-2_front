@@ -12,17 +12,18 @@ function Specs() {
     const dispatch = useDispatch();
     const {specs, success} = useSelector(state => state.materialSpecReducer);
     const navigate = useNavigate();
-    useEffect(() => {
-            dispatch(callMaterialSpecsAPI({currentPage}));
-        }, [currentPage, success]
-    );
 
-    //검색
+
     const menuList = ['자재명'];
     const [searchParams, setSearchParams] = useState({
             selectedOption: menuList[0],
             searchText: ""
         }
+    );
+
+    useEffect(() => {
+            dispatch(callMaterialSpecsAPI({currentPage, searchParams}));
+        }, [currentPage, success, searchParams]
     );
     const searchHandler = (selectedOption, searchText) => {
         setSearchParams({selectedOption, searchText});
