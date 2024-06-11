@@ -8,7 +8,7 @@ import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 // Custom components
 import Card from "../card/Card.js";
 
-function MiniCalendar({value, onChange}) {
+function MiniCalendar({value, onChange, tomorrow}) {
     return (
         <Card
             align='center'
@@ -21,6 +21,7 @@ function MiniCalendar({value, onChange}) {
             <Calendar
                 onChange={onChange}
                 value={value}
+                minDate={tomorrow}
                 view={"month"}
                 tileContent={<Text color='brand.500'></Text>}
                 prevLabel={<Icon as={MdChevronLeft} w='24px' h='24px' mt='4px' />}

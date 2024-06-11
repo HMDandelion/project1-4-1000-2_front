@@ -5,6 +5,7 @@
     --point: #FF8D21;
     --point-2: #FFB76B;
     --default: #707EAE;
+    --default-2: #E0E5F2;
     --active: #1B2559;
 }
 
@@ -12,6 +13,10 @@
     border: unset;
     background-color: transparent;
     font-family: "Pretendard", sans-serif;
+}
+
+.react-calendar__tile:disabled {
+    background-color: var(--default-2) !important;
 }
 .react-calendar__navigation__prev2-button {
     display: none;
@@ -31,14 +36,14 @@ abbr[title] {
     text-decoration: unset !important;
 }
 .react-calendar__navigation__prev-button {
-    /*background-color: var(--point) !important;*/
+    background-color: white !important;
     border-radius: 10px;
     min-width: 34px !important;
     height: 34px !important;
     color: var(--point);
 }
 .react-calendar__navigation__next-button {
-    /*background-color: var(--point) !important;*/
+    background-color: white !important;
     border-radius: 10px;
     min-width: 34px !important;
     width: 34px !important;

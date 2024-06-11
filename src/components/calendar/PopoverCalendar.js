@@ -15,8 +15,12 @@ function PopoverCalendar({handleDeadline}) {
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
     }
 
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+
     const { onOpen, onClose, isOpen } = useDisclosure();
-    const [selectedDate, setSelectedDate] = useState(getFormattedDate(new Date()));
+    const [selectedDate, setSelectedDate] = useState(getFormattedDate(tomorrow));
 
     useEffect(() => handleDeadline(selectedDate), [selectedDate]);
 
@@ -47,7 +51,8 @@ function PopoverCalendar({handleDeadline}) {
                         <PopoverCloseButton />
                         <MiniCalendar
                             onChange={handleDateChange}
-                            value={selectedDate ? new Date(selectedDate) : new Date()}
+                            value={selectedDate ? new Date(selectedDate) : tomorrow}
+                            tomorrow={tomorrow}
                         />
                 </PopoverContent>
             </Popover>
