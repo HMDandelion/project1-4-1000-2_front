@@ -34,9 +34,6 @@ function StoreStock({isOpen,onClose,selectedStock, setSelectedStock}){
             dispatch(callStoreAPI({stockCode: selectedStock.stockCode}));
         }
     }, [selectedStock]);
-    if(store) {
-        console.log("핫", store)
-    }
     return (
         <>
             <Modal isOpen={isOpen} onClose={() => { onClose(); setSelectedStock(null); }}>
