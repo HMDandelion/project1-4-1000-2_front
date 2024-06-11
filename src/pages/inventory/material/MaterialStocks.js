@@ -19,24 +19,6 @@ function MaterialStocks() {
     const {stocks, success} = useSelector(state => state.materialStockReducer);
     const {dropdown} = useSelector(state => state.materialDropReducer);
 
-    useEffect(() => {
-            if (searchType === "w") {
-                dispatch(callMaterialDropAPI({searchType}))
-                    .then(() => {
-                        // 첫 번째 작업이 완료된 후 두 번째 작업 실행
-                        dispatch(callMaterialStocksAPI({currentPage, warehouseCode}));
-                    });
-            } else {
-                dispatch(callMaterialDropAPI({searchType}))
-                    .then(() => {
-                        // 첫 번째 작업이 완료된 후 두 번째 작업 실행
-                        dispatch(callMaterialStocksAPI({currentPage, specCategoryCode}));
-                    });
-            }
-
-        }, [currentPage, success, warehouseCode, specCategoryCode, searchType]
-    );
-
     //검색
     const menuList = ['자재명'];
     const [searchParams, setSearchParams] = useState({
@@ -44,6 +26,26 @@ function MaterialStocks() {
             searchText: ""
         }
     );
+
+    useEffect(() => {
+            if (searchType === "w") {
+                dispatch(callMaterialDropAPI({searchType}))
+                    .then(() => {
+                        // 첫 번째 작업이 완료된 후 두 번째 작업 실행
+                        dispatch(callMaterialStocksAPI({currentPage, warehouseCode,searchParams}));
+                    });
+            } else {
+                dispatch(callMaterialDropAPI({searchType}))
+                    .then(() => {
+                        // 첫 번째 작업이 완료된 후 두 번째 작업 실행
+                        dispatch(callMaterialStocksAPI({currentPage, specCategoryCode,searchParams}));
+                    });
+            }
+
+        }, [currentPage, success, warehouseCode, specCategoryCode, searchType,searchParams]
+    );
+
+
     const searchHandler = (selectedOption, searchText) => {
         setSearchParams({selectedOption, searchText});
     };
