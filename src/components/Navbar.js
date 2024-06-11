@@ -49,6 +49,14 @@ export default function Navbar(props) {
         logistics: { label: '재고·유통', isLast: false },
 
         detail: { label: '상세 조회', isLast: true },
+
+        material: {label: '원자재', isLast: false},
+        inventory:{label: '재고·유통', isLast: false},
+        specs:{label: '스펙 관리', isLast:false},
+        stocks:{label:'재고 관리', isLast: false},
+        "in-stock":{label:'입고', isLast:false},
+        analyze:{label:'분석', isLast: false}
+
     };
 
     const getPageTitle = (pathName) => {

@@ -121,7 +121,7 @@ function SidebarContent(props) {
                                                         <ListItem>
                                                             <Link
                                                                 as={NavLink}
-                                                                to="/inventory/material/stock"
+                                                                to="/inventory/material/stocks"
                                                                 _activeLink={{color: activeColor}}>
                                                                 재고관리
                                                             </Link>

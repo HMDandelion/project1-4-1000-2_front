@@ -42,7 +42,7 @@ function App() {
                           <Route path="analyze" element={<InventoryMaterailAnalyze/>}/>
                           <Route path="in-stock" element={<MaterialInStock/>}/>
                           <Route path="Specs" element={<Specs/>}/>
-                          <Route path="stock" element={<MaterialStocks/>}/>
+                          <Route path="stocks" element={<MaterialStocks/>}/>
                       </Route>
                   </Route>
                   <Route path="purchase">
