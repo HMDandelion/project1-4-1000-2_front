@@ -3,6 +3,8 @@ import AdminLayout from "./layouts/AdminLayout";
 import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
 import ClientDetail from "./pages/sales/client/ClientDetail";
+import Products from "./pages/inventory/product/Products";
+import Warehouses from "./pages/inventory/warehouse/Warehouses";
 import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
 import ProtectedRoute from "./components/router/ProtectedRoute";
@@ -10,6 +12,7 @@ import Estimates from "./pages/sales/estimate/Estimates";
 import EstimateDetail from "./pages/sales/estimate/EstimateDetail";
 import Orders from "./pages/sales/order/Orders";
 import OrderDetail from "./pages/sales/order/OrderDetail";
+import ProductDetail from "./pages/inventory/product/ProductDetail";
 
 function App() {
   return (
@@ -29,6 +32,16 @@ function App() {
                       <Route path="order">
                           <Route index element={<ProtectedRoute loginCheck={true}><Orders/></ProtectedRoute>}/>
                           <Route path="detail" element={<ProtectedRoute loginCheck={true}><OrderDetail/></ProtectedRoute>}/>
+                      </Route>
+                  </Route>
+                  <Route path="inventory">
+                      <Route path="product">
+                          <Route index element={<Products/>}/>
+                          <Route path=":productCode"element={<ProductDetail/>}/>
+                      </Route>
+                      <Route path="warehouse">
+                          <Route index element={<Warehouses/>}/>
+                          <Route path="detail" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
                       </Route>
                   </Route>
               </Route>
