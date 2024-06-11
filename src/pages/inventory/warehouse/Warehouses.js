@@ -1,35 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Badge, Box, Button, Flex, Text, useColorModeValue} from "@chakra-ui/react";
-import { callWarehousesAPI } from "../../../apis/WarehouseAPICalls";
+import {Badge, Box, Button, Flex, Text, useColorModeValue, useDisclosure} from "@chakra-ui/react";
+import {callWarehouseAPI, callWarehousesAPI} from "../../../apis/WarehouseAPICalls";
 import {callStoragesAPI, callWarehouseMove} from "../../../apis/StorageAPICalls";
 import ColumnsTable from "../../../components/table/ComplexTable";
 import { useNavigate } from 'react-router-dom';
 import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
 import '../../../Products.css'
+import StockUpdate from "../../../modals/products/StockUpdate";
+import WarehouseUpdate from "../../../modals/products/WarehouseUpdate";
 
 function Warehouses() {
     const dispatch = useDispatch();
     const { warehouses } = useSelector(state => state.warehouseReducer);
     const { storageMove } = useSelector(state => state.storageReducer);
     const { storages } = useSelector(state => state.storageReducer);
+    const { warehouse} = useSelector(state => state.warehouseReducer);
+    const { isOpen: isWarehouseUpdateModalOpen, onOpen: onWarehouseUpdateModalOpen, onClose: onWarehouseUpdateModalClose } = useDisclosure();
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
+    const [isUpdated, setIsUpdated] = useState(false);
     const [warehouseDetails, setWarehouseDetails] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(callWarehousesAPI());
-
     }, [dispatch]);
+    useEffect(() => {
+        if (warehouses && warehouses.length > 0) {
+            handleWarehouseSelect(warehouses[0]);
+        }
+    }, [warehouses]);
+
     const handleWarehouseSelect = (warehouse) => {
-        setSelectedWarehouse(warehouse);
         if(warehouse) {
+            setSelectedWarehouse(warehouse);
             dispatch(callWarehouseMove(warehouse.warehouseCode));
+            dispatch(callStoragesAPI({warehouseCode: warehouse.warehouseCode}));
+            dispatch(callWarehouseAPI({warehouseCode: warehouse.warehouseCode}));
         }
-        if(selectedWarehouse) {
-            dispatch(callStoragesAPI({warehouseCode: selectedWarehouse.warehouseCode}));
-        }
-        navigate(`/inventory/warehouse/${warehouse.warehouseCode}`);
     };
 
 
@@ -114,18 +122,21 @@ function Warehouses() {
         }));
     }
 
-
+// 재고 수정 버튼의 onClick 이벤트 핸들러
+    const handleWarehouseUpdate = () =>  {
+        onWarehouseUpdateModalOpen();
+    };
     return (
         <Box p={4}>
             <Box mb={4} display="flex" flexWrap="wrap" borderBottom={`2px solid ${inactiveColor}`}>
-                {warehouses  && warehouses.map(warehouse => (
+                {warehouses && warehouses.map(warehouse => (
                     <Button
-                        key={warehouse.id}
+                        key={warehouse.warehouseCode}
                         onClick={() => handleWarehouseSelect(warehouse)}
-                        bg="transparent"
+                        bg={selectedWarehouse?.warehouseCode === warehouse.warehouseCode ? "blue.500" : "transparent"}
                         border="none"
-                        borderTop={`2px solid ${selectedWarehouse?.id === warehouse.id ? activeBorderColor : "transparent"}`}
-                        color={selectedWarehouse?.id === warehouse.id ? textColor : defaultTextColor}
+                        borderTop={`2px solid ${selectedWarehouse?.warehouseCode === warehouse.warehouseCode ? activeBorderColor : "transparent"}`}
+                        color={selectedWarehouse?.warehouseCode === warehouse.warehouseCode ? "white" : defaultTextColor}
                         borderRadius="0"
                         m={0}
                         px={4}
@@ -134,44 +145,58 @@ function Warehouses() {
                         {warehouse.name}
                     </Button>
                 ))}
+                <Button
+                    // onClick={handleAddWarehouse}
+                    bg="green.500"
+                    border="none"
+                    borderTop={`2px solid transparent`}
+                    color="white"
+                    borderRadius="0"
+                    m={0}
+                    px={4}
+                    py={2}
+                    ml={2} // 버튼 사이 간격 조절
+                >
+                    창고 추가
+                </Button>
             </Box>
-            {selectedWarehouse && storageMove && storages &&(
+            {warehouse && storageMove && storages && (
                 <>
-                <Flex mt={4}>
-                    <Box p={4} borderWidth="1px" borderRadius="lg" flex="1" mr={4} position="relative">
-                        <Button
-                            position="absolute"
-                            top="4"
-                            right="4"
-                            colorScheme="orange"
-                            // onClick={handleEditClick} // 수정 버튼 클릭 시 실행될 함수
-                        >
-                            수정
-                        </Button>
-                        <Text color={textColor} mb={2} fontSize="lg" fontWeight="bold" fontSize='3xl' fontWeight='800' color={textColor} m='10px'>{selectedWarehouse.name}</Text>
-                        <Box mb={4}>
-                            <Box display="flex" alignItems="center" mb={4}>
-                                <Badge fontSize='lg' m='5px 0' colorScheme='orange'>위치</Badge>
-                                <Text fontSize='lg' fontWeight='bold' ml={2}>{selectedWarehouse.location}</Text>
-                            </Box>
-                            <Box display="flex" alignItems="center" mb={4}>
-                                <Badge fontSize='lg' m='5px 0' colorScheme='orange'>크기</Badge>
-                                <Text fontSize='lg' fontWeight='bold' ml={2}>{selectedWarehouse.volume}</Text>
-                            </Box>
-                            <Box display="flex" alignItems="center" mb={4}>
-                                <Badge fontSize='lg' m='5px 0' colorScheme='orange'>담당자</Badge>
-                                <Text fontSize='lg' fontWeight='bold' ml={2}>{selectedWarehouse.employeeName}</Text>
+                    <Flex mt={4}>
+                        <Box p={4} borderWidth="1px" borderRadius="lg" flex="1" mr={4} position="relative">
+                            <Button
+                                position="absolute"
+                                top="4"
+                                right="4"
+                                colorScheme="orange"
+                                onClick={handleWarehouseUpdate}
+                            >
+                                수정
+                            </Button>
+                            <WarehouseUpdate handleWarehouseSelect={handleWarehouseSelect} isOpen={isWarehouseUpdateModalOpen} onClose={() => { onWarehouseUpdateModalClose(); }} warehouse={warehouse}/>
+                            <Text color={textColor} mb={2} fontSize="lg" fontWeight="bold" fontSize='3xl' fontWeight='800' color={textColor} m='10px'>{warehouse.name}</Text>
+                            <Box mb={4}>
+                                <Box display="flex" alignItems="center" mb={4}>
+                                    <Badge fontSize='lg' m='5px 0' colorScheme='orange'>위치</Badge>
+                                    <Text fontSize='lg' fontWeight='bold' ml={2}>{warehouse.location}</Text>
+                                </Box>
+                                <Box display="flex" alignItems="center" mb={4}>
+                                    <Badge fontSize='lg' m='5px 0' colorScheme='orange'>크기</Badge>
+                                    <Text fontSize='lg' fontWeight='bold' ml={2}>{warehouse.volume}</Text>
+                                </Box>
+                                <Box display="flex" alignItems="center" mb={4}>
+                                    <Badge fontSize='lg' m='5px 0' colorScheme='orange'>담당자</Badge>
+                                    <Text fontSize='lg' fontWeight='bold' ml={2}>{warehouse.employeeName}</Text>
+                                </Box>
                             </Box>
                         </Box>
-                    </Box>
-
+                        <Box flex="2">
+                            <CustomizedTable columnsData={moveColumns} tableData={storageMove} tableTitle={moveTableTitle} baseLink={baseLink} idAccessor={idAccessor} />
+                        </Box>
+                    </Flex>
                     <Box flex="2">
-                        <CustomizedTable columnsData={moveColumns} tableData={storageMove} tableTitle={moveTableTitle} baseLink={baseLink} idAccessor={idAccessor} />
+                        <CustomizedTable columnsData={storageColumns} tableData={processedStorages} tableTitle={storageTableTitle} baseLink={storageBaseLink} idAccessor={storageIdAccessor} />
                     </Box>
-                </Flex>
-                <Box flex="2">
-                <CustomizedTable columnsData={storageColumns} tableData={processedStorages} tableTitle={storageTableTitle} baseLink={storageBaseLink} idAccessor={storageIdAccessor} />
-                </Box>
                 </>
             )}
         </Box>

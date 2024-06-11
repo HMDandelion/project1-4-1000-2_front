@@ -1,6 +1,6 @@
 import {request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
-import {getInventoryProducts, getProductClient, success} from "../modules/ProductModules";
+import {getEmployees, getInventoryProducts, getProductClient, success} from "../modules/ProductModules";
 import {getDestroys, getProductDestroy, getStorageMove, getStorages, getStore} from "../modules/StorageModules";
 
 const DEFAULT_URL = `/api/v1/storage`;
@@ -76,6 +76,17 @@ export const callStoragesAPI =({warehouseCode}) =>{
         console.log("callStoragesAPI : ", result.data.content);
         if(result.status === 200) {
             dispatch(getStorages(result.data.content));
+        }
+    }
+}
+
+export const callEmployeesAPI =() =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `/api/v1/employee/list`);
+
+        console.log("callEmployeesAPI : ", result);
+        if(result.status === 200) {
+            dispatch(getEmployees(result));
         }
     }
 }
