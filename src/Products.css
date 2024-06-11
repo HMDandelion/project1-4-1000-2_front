@@ -1,0 +1,41 @@
+.status-container {
+    display: flex;
+    align-items: center;
+}
+
+.status-circle {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.status-text {
+    display: inline-block;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.green {
+    background-color: green;
+}
+
+.red {
+    background-color: red;
+}
+
+.today-label {
+    background-color: red;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    display: inline-block;
+}
+

@@ -1,14 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {callWorkOrderDeleteAPI, WorkOrderAPICalls} from "../../apis/WorkOrderAPICalls";
+import {callWorkOrderDeleteAPI, WorkOrderAPICalls} from "../../../apis/WorkOrderAPICalls";
 import {useLocation, useNavigate} from "react-router-dom";
-import ColumnsTable from "../../components/table/NewComplexTable";
+import ColumnsTable from "../../../components/table/NewComplexTable";
 import {Badge, Box, Button, Checkbox, useColorModeValue, useDisclosure} from "@chakra-ui/react";
-import PagingBar from "../../components/common/PagingBar";
-import WorkOrderStatusBadge from "../../components/badge/WorkOrderStatusBadge";
+import PagingBar from "../../../components/common/PagingBar";
+import WorkOrderStatusBadge from "../../../components/badge/WorkOrderStatusBadge";
 import WorkOrderRegist from "./WorkOrderRegist";
-import DeleteAlertButton from "../../components/button/DeleteAlertButton";
+import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 import WorkOrderModify from "./WorkOrderModify";
+import MyBigCalendar from "../plan/MyBigCalendar";
 
 function WorkOrders(){
     const navigate = useNavigate();
@@ -22,17 +23,6 @@ function WorkOrders(){
     const [selectedRows, setSelectedRows] = useState([]); // 추가: 선택된 행을 추적하기 위한 상태
 
     const columns = [
-        // {
-        //     Header: '선택',
-        //     accessor: 'selection',
-        //     Cell: ({ row }) => (
-        //         <Checkbox
-        //             colorScheme='green'
-        //             isChecked={selectedRows.includes(row.original.workOrderCode)} // 선택된 행일 경우 체크
-        //             onChange={() => toggleRow(row.original.workOrderCode)} // 체크 박스 상태 변경 시 행 선택 상태 변경
-        //         />
-        //     )
-        // },
         {
             Header: '코드',
             accessor: 'workOrderCode'
@@ -93,8 +83,26 @@ function WorkOrders(){
             )
         }
     ];
+    const columns1 = [
+        {
+            Header: '생산 계획 기간',
+            accessor: ''
+        },
+        {
+            Header: '코드',
+            accessor: ''
+        },
+        {
+            Header: '품목',
+            accessor: ''
+        },
+        {
+            Header: '총 수량',
+            accessor: ''
+        }
+    ];
 
-    const tableTitle = "작업 지시서 관리";     // 테이블 제목
+    const tableTitle = "";     // 테이블 제목
     const baseLink = "/production/work-order";   // 상세조회 React 주소
     const idAccessor = "workOrderCode";     // id로 사용할 컬럼 지정
 
@@ -122,6 +130,12 @@ function WorkOrders(){
             {
                 workOrders &&
                 <div className="">
+                    <Box display="flex">
+                        <Box width="50%">
+                            <MyBigCalendar />
+                        </Box>
+                        {/*<ColumnsTable columnsData={columns} tableData={workOrders.data} tableTitle={tableTitle} baseLink={baseLink} idAccessor={idAccessor} onRowClick={() => { }}/>*/}
+                    </Box>
                     <Box display="flex" justifyContent="flex-end">
                         <WorkOrderRegist isOpen={isOpen} onClose={onClose}/>
                     </Box>

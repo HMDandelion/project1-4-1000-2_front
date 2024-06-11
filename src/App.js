@@ -2,8 +2,6 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AdminLayout from "./layouts/AdminLayout";
 import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
-import WorkOrders from "./pages/workOrder/WorkOrders";
-import WorkOrderRegist from "./pages/workOrder/WorkOrderRegist";
 import React from "react";
 import * as PropTypes from "prop-types";
 import ProtectedRoute from "./components/router/ProtectedRoute";
@@ -14,6 +12,8 @@ import Estimates from "./pages/sales/estimate/Estimates";
 import EstimateDetail from "./pages/sales/estimate/EstimateDetail";
 import Orders from "./pages/sales/order/Orders";
 import OrderDetail from "./pages/sales/order/OrderDetail";
+import WorkOrderRegist from "./pages/Production/workOrder/WorkOrderRegist";
+import WorkOrders from "./pages/Production/workOrder/WorkOrders";
 
 function App() {
   return (

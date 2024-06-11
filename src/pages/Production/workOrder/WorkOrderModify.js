@@ -1,10 +1,10 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {callClientModifyAPI} from "../../apis/ClientAPICalls";
+import {callClientModifyAPI} from "../../../apis/ClientAPICalls";
 import {Button, Modal, ModalContent, ModalFooter, ModalOverlay} from "@chakra-ui/react";
-import ClientForm from "../sales/client/ClientForm";
-import {callWorkOrderModifyAPI} from "../../apis/WorkOrderAPICalls";
+import ClientForm from "../../sales/client/ClientForm";
+import {callWorkOrderModifyAPI} from "../../../apis/WorkOrderAPICalls";
 
 function WorkOrderModify({isOpen, onClose, workOrder}){
     const dispatch = useDispatch();
@@ -35,7 +35,7 @@ function WorkOrderModify({isOpen, onClose, workOrder}){
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
             <ModalContent>
-                <ClientForm client={form} setForm={setForm}/>
+                {/*<ClientForm client={form} setForm={setForm}/>*/}
                 <ModalFooter justifyContent='center'>
                     <Button colorScheme='orange' mx={1} onClick={onClickUpdateHandler}>수정</Button>
                     <Button variant='outline' mx={1} onClick={onClose}>
