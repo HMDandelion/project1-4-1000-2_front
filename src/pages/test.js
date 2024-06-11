@@ -15,6 +15,7 @@ import {ChevronDownIcon, SearchIcon} from "@chakra-ui/icons";
 import React, {useState} from "react";
 import ColumnsTable from "../components/table/ComplexTable";
 import OrderStatusBadge from "../components/badge/OrderStatusBadge";
+import MiniCalendar from "../components/calendar/MiniCalendar";
 
 function TestPage() {
 
@@ -65,6 +66,10 @@ function TestPage() {
 
             <div>
                 <ColumnsTable columnsData={columns} tableData={data}/>
+            </div>
+
+            <div>
+                <MiniCalendar/>
             </div>
 
         </>

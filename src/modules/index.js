@@ -11,12 +11,13 @@ import orderReducer from "./OrderModules";
 import planningReducer from "./PlanningModules";
 
 const rootReducer = combineReducers({
+    clientReducer,
     productReducer,
     stockReducer,
     warehouseReducer,
     storageReducer,
-    clientReducer,
-    authReducer,estimateReducer,
+    authReducer,
+    estimateReducer,
     orderReducer,
     // 나윤
     workOrderReducer,planningReducer,

@@ -3,7 +3,6 @@ import AdminLayout from "./layouts/AdminLayout";
 import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
 import React from "react";
-import * as PropTypes from "prop-types";
 import ProtectedRoute from "./components/router/ProtectedRoute";
 import ClientDetail from "./pages/sales/client/ClientDetail";
 import AuthLayout from "./layouts/AuthLayout";
@@ -12,7 +11,7 @@ import Estimates from "./pages/sales/estimate/Estimates";
 import EstimateDetail from "./pages/sales/estimate/EstimateDetail";
 import Orders from "./pages/sales/order/Orders";
 import OrderDetail from "./pages/sales/order/OrderDetail";
-import WorkOrderRegist from "./pages/Production/workOrder/WorkOrderRegist";
+import ProductDetail from "./pages/inventory/product/ProductDetail";
 import WorkOrders from "./pages/Production/workOrder/WorkOrders";
 import Plans from "./pages/Production/plan/Plans";
 
@@ -36,13 +35,23 @@ function App() {
                           <Route path="detail" element={<ProtectedRoute loginCheck={true}><OrderDetail/></ProtectedRoute>}/>
                       </Route>
                   </Route>
+                  <Route path="inventory">
+                      <Route path="product">
+                          <Route index element={<Products/>}/>
+                          <Route path=":productCode"element={<ProductDetail/>}/>
+                      </Route>
+                      <Route path="warehouse">
+                          <Route index element={<Warehouses/>}/>
+                          <Route path="detail" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
+                      </Route>
+                      </Route>
+                  </Route>
                   <Route path="production">
                       <Route path="work-order">
                           <Route index element={<WorkOrders/>}/>
                       </Route>
                       <Route path="plan">
                           <Route index element={<Plans/>}/>
-                      </Route>
                   </Route>
               </Route>
               <Route path="/login" element={<AuthLayout/>}>

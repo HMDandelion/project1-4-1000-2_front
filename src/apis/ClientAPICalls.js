@@ -42,22 +42,34 @@ export const callSalesClientAPI = ({ clientCode }) => {
 
 export const callClientRegistAPI = ({clientRequest}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.post(`/api/v1/clients`, clientRequest);
-        console.log("callClientRegistAPI result : ", result);
+        try {
+            const result = await authRequest.post(`/api/v1/clients`, clientRequest);
+            console.log("callClientRegistAPI result : ", result);
 
-        if(result.status === 201) {
-            dispatch(success());
+            if(result.status === 201) {
+                dispatch(success());
+            }
+        } catch ({response}) {
+            const title = '문제가 발생했어요.';
+            const desc = `${response.data.code} : ${response.data.message}`
+            statusToastAlert(title, desc, 'error');
         }
     }
 }
 
 export const callClientModifyAPI = ({clientCode, clientRequest}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.put(`/api/v1/clients/${clientCode}`, clientRequest);
-        console.log("callClientModifyAPI result : ", result);
+        try {
+            const result = await authRequest.put(`/api/v1/clients/${clientCode}`, clientRequest);
+            console.log("callClientModifyAPI result : ", result);
 
-        if(result.status === 201) {
-            dispatch(success());
+            if(result.status === 201) {
+                dispatch(success());
+            }
+        } catch ({response}) {
+            const title = '문제가 발생했어요.';
+            const desc = `${response.data.code} : ${response.data.message}`
+            statusToastAlert(title, desc, 'error');
         }
     }
 }

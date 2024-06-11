@@ -1,17 +1,28 @@
-import {request} from "./api";
-import {getSalesClient, getSalesClients} from "../modules/ClientModules";
+import {authRequest, request} from "./api";
 import {
     getBomPaging,
     getInventoryMaterials,
     getInventoryProduct,
     getInventoryProductBom,
     getInventoryProductList,
-    getInventoryProducts, getProductClient, getSpec, getSpecPaging,
+    getInventoryProducts, getProductClient, getSimpleProducts, getSpec, getSpecPaging,
     success
 } from "../modules/ProductModules";
 
 
 const DEFAULT_URL = `/api/v1/product`;
+
+export const callSimpleProductsAPI = () => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`${DEFAULT_URL}/simple`);
+        console.log("callSimpleProductsAPI result : ", result);
+        if(result.status === 200) {
+            dispatch(getSimpleProducts(result));
+        }
+    }
+}
+
+
 export const callProductsAPI =({currentPage = 1}) =>{
     return async (dispatch, getState) =>{
         const result = await request('GET', `${DEFAULT_URL}?page=${currentPage}`);
