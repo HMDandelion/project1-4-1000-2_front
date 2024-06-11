@@ -51,7 +51,7 @@ function EstimateRegist() {
         else
             form.client = newClient;
 
-        dispatch(callEstimateRegistAPI({ registRequest : form }));
+        dispatch(callEstimateRegistAPI({ estimateRequest : form }));
     }
 
     const getTotalPrice = (products) => {

@@ -63,9 +63,11 @@ function Orders() {
                 const daysLeft = Math.ceil((deadlineDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
                 return (
-                    daysLeft > 0 ?
-                        <Text color={daysLeft < 3 ? 'red' : ''}>{daysLeft}일</Text> :
-                        <Text>마감</Text>
+                    row.original.status === 'COMPLETED' ?
+                        <Text color='green'>완료</Text> :
+                        daysLeft > 0 ?
+                            <Text color={daysLeft < 3 ? 'red' : ''}>{daysLeft}일</Text> :
+                            <Text>마감</Text>
                 );
             }
         }

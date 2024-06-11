@@ -24,9 +24,10 @@ import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import ViewDetailButton from "../../../components/button/ViewDetailButton";
 import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
-import {callEstimateAPI} from "../../../apis/EstimateAPICalls";
+import {callEstimateAPI, callEstimateDeleteAPI} from "../../../apis/EstimateAPICalls";
 import {WarningIcon} from "@chakra-ui/icons";
 import OrderRegistButton from "../../../components/button/OrderRegistButton";
+import EstimateModify from "./EstimateModify";
 
 
 function EstimateDetail() {
@@ -80,8 +81,9 @@ function EstimateDetail() {
                     <Button colorScheme='gray' size='xs' onClick={onOpen}>
                         수정
                     </Button>
-                    <DeleteAlertButton/>
+                    <DeleteAlertButton code={estimateCode} deleteAPI={callEstimateDeleteAPI}/>
                 </div>
+                <EstimateModify isOpen={isOpen} onClose={onClose} estimate={estimate}/>
             </Flex>
 
             <Text fontWeight='bold' color={textColor}>
