@@ -5,6 +5,7 @@ import stockReducer from "./StockModules";
 import warehouseReducer from "./WarehouseModules";
 import storageReducer from "./StorageModules";
 import authReducer from "./AuthModules";
+import releaseReducer from "./ReleaseModules";
 
 const rootReducer = combineReducers({
     clientReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     stockReducer,
     warehouseReducer,
     storageReducer,
-    authReducer
+    authReducer,
+    releaseReducer
 });
 
 export default rootReducer;

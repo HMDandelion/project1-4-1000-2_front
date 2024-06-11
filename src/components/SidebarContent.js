@@ -122,7 +122,9 @@ function SidebarContent(props) {
                                             <AccordionItem>
                                                 <h2>
                                                     <AccordionButton>
-                                                        <Box flex="1" textAlign="left">유통</Box>
+                                                        <Box flex="1" textAlign="left">
+                                                            유통
+                                                        </Box>
                                                         <AccordionIcon />
                                                     </AccordionButton>
                                                 </h2>
@@ -131,19 +133,10 @@ function SidebarContent(props) {
                                                         <ListItem>
                                                             <Link
                                                                 as={NavLink}
-                                                                to="/shipment"
+                                                                to="/circulation/release"
                                                                 _activeLink={{ color: activeColor }}
                                                             >
                                                                 출고
-                                                            </Link>
-                                                        </ListItem>
-                                                        <ListItem>
-                                                            <Link
-                                                                as={NavLink}
-                                                                to="/returns"
-                                                                _activeLink={{ color: activeColor }}
-                                                            >
-                                                                반품
                                                             </Link>
                                                         </ListItem>
                                                     </UnorderedList>

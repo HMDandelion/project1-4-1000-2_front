@@ -20,7 +20,7 @@ import {
     useDisclosure, useToast
 } from "@chakra-ui/react";
 import BomSave from "../../../modals/products/BomSave";
-import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
+import CustomizedTable from "../../../components/table/product/CustomizedTable";
 import BomUpdate from "../../../modals/products/BomUpdate";
 import PagingBar from "../../../components/common/PagingBar";
 import SpecSave from "../../../modals/products/SpecSave";

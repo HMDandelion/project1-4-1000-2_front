@@ -9,6 +9,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
 import ProtectedRoute from "./components/router/ProtectedRoute";
 import ProductDetail from "./pages/inventory/product/ProductDetail";
+import Release from "./pages/inventory/release/Release";
 
 function App() {
   return (
@@ -36,6 +37,11 @@ function App() {
                       <Route path="estimate">
                           <Route index element={<ProtectedRoute loginCheck={true}><Clients/></ProtectedRoute>}/>
                           <Route path=":estimateCode" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
+                      </Route>
+                  </Route>
+                  <Route path="circulation">
+                      <Route path="release">
+                          <Route index element={<Release/>}/>
                       </Route>
                   </Route>
               </Route>
