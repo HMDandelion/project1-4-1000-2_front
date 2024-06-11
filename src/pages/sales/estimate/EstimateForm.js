@@ -18,6 +18,7 @@ import {callSimpleSalesClientsAPI} from "../../../apis/ClientAPICalls";
 
 function EstimateForm() {
     const [selectedProducts, setSelectedProducts] = useState([]);
+
     const [products] = useState([
         { code: '210645', name: 'KF80 새부리형', price: 24000 },
         { code: '210646', name: '덴탈마스크', price: 12000 },
@@ -108,8 +109,7 @@ const ClientForm = () => {
         dispatch(callSimpleSalesClientsAPI());
     }, [dispatch]);
 
-
-    const { clients } = useSelector(state => state.clientReducer);
+    const { simpleClients } = useSelector(state => state.clientReducer);
 
     const handleExistingClientChange = (e) => setExistingClient(e.target.value);
     const handleNewClientChange = (e) => setNewClient({ ...newClient, [e.target.name]: e.target.value });
@@ -139,8 +139,8 @@ const ClientForm = () => {
                                 </InputRightElement>
                             </InputGroup>
                             <Select placeholder="거래처 선택" isDisabled={clientType !== 'existing'}>
-                                { clients && clients.map((client) =>
-                                    <option value={client.clientCode}>{client.clientName}</option>
+                                { simpleClients && simpleClients.map((client) =>
+                                    <option key={client.clientCode} value={client.clientCode}>{client.clientName}</option>
                                 )}
                             </Select>
                         </VStack>

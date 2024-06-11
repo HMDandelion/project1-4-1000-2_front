@@ -34,12 +34,16 @@ function Estimates() {
     // 리액트 테이블 컬럼 데이터
     const columns = [
         {
-            Header: '등록일',
-            accessor: 'createdAt'
+            Header: '코드',
+            accessor: 'estimateCode'
         },
         {
             Header: '거래처명',
             accessor: 'clientName'
+        },
+        {
+            Header: '등록일',
+            accessor: 'createdAt'
         },
         {
             Header: '견적가',

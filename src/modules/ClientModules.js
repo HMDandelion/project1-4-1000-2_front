@@ -13,7 +13,7 @@ const DELETED = 'client/DELETED';
 export const { client : {getSalesClients, getSalesClient, getSimpleSalesClients, success, deleted}} = createActions({
     [GET_SALES_CLIENTS] : result => ({ clients : result.data }),
     [GET_SALES_CLIENT] : result => ({ client : result.data }),
-    [GET_SIMPLE_SALES_CLIENTS] : result => ({ clients : result.data }),
+    [GET_SIMPLE_SALES_CLIENTS] : result => ({ simpleClients : result.data }),
     [SUCCESS] : () => ({success : true}),
     [DELETED] : () => ({deleted : true})
 });

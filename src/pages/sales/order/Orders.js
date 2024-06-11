@@ -34,6 +34,10 @@ function Orders() {
     // 리액트 테이블 컬럼 데이터
     const columns = [
         {
+            Header: '코드',
+            accessor: 'orderCode'
+        },
+        {
             Header: '주문일자',
             accessor: 'orderDatetime'
         },
