@@ -3,7 +3,13 @@ import {getSalesClient, getSalesClients} from "../modules/ClientModules";
 import {getInventoryProducts, success} from "../modules/ProductModules";
 import {getInventoryStocks} from "../modules/StockModules";
 import {getInventoryWarehouse, getInventoryWarehouses} from "../modules/WarehouseModules";
-import {getOrderProducts, getReleaseOrders, getReleaseOrdersPage} from "../modules/ReleaseModules";
+import {
+    getExpectedRelease,
+    getOrderProducts,
+    getReleaseExpected, getReleaseLack,
+    getReleaseOrders,
+    getReleaseOrdersPage
+} from "../modules/ReleaseModules";
 
 const DEFAULT_URL = `/api/v1/release`;
 export const callReleaseOrdersAPI =({currentPage=1}) =>{
@@ -25,6 +31,28 @@ export const callOrderProduct =({orderCode}) =>{
         console.log("callReleaseOrdersAPI : ", result);
         if(result.status === 200) {
             dispatch(getOrderProducts(result));
+        }
+    }
+}
+
+export const callReleaseExpectedAPI =({orderCode}) =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `${DEFAULT_URL}/storage/${orderCode}`);
+
+        console.log("callReleaseExpectedAPI : ", result);
+        if(result.status === 200) {
+            dispatch(getReleaseExpected(result));
+        }
+    }
+}
+
+export const callReleaseLackAPI =({orderCode}) =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `${DEFAULT_URL}/order/lack/${orderCode}`);
+
+        console.log("callReleaseLackAPI : ", result);
+        if(result.status === 200) {
+            dispatch(getReleaseLack(result));
         }
     }
 }

@@ -8,12 +8,16 @@ const initialState = {
 const GET_RELEASE_ORDERS = 'release/GET_RELEASE_ORDERS';
 const GET_RELEASE_ORDERS_PAGE = 'release/GET_RELEASE_ORDERS_PAGE';
 const GET_ORDER_PRODUCTS = 'release/GET_ORDER_PRODUCTS';
+const GET_RELEASE_EXPECTED = 'release/GET_RELEASE_EXPECTED';
+const GET_RELEASE_LACK = 'release/GET_RELEASE_LACK';
 
 
-export const { release : {getReleaseOrders,getReleaseOrdersPage,getOrderProducts}} = createActions({
+export const { release : {getReleaseOrders,getReleaseOrdersPage,getOrderProducts,getReleaseExpected,getReleaseLack}} = createActions({
     [GET_RELEASE_ORDERS] : result => ({ orders : result.data }),
     [GET_RELEASE_ORDERS_PAGE] : result => ({ ordersPage : result.data }),
-    [GET_ORDER_PRODUCTS] : result => ({ orderProducts : result.data })
+    [GET_ORDER_PRODUCTS] : result => ({ orderProducts : result.data }),
+    [GET_RELEASE_EXPECTED] : result => ({ releaseExpected : result.data }),
+    [GET_RELEASE_LACK] : result => ({ releaseLack : result.data })
 });
 
 /* 리듀서 */
@@ -27,6 +31,14 @@ const releaseReducer = handleActions({
         ...payload
     }),
     [GET_ORDER_PRODUCTS]: (state, { payload }) => ({
+        ...state,
+        ...payload
+    }),
+    [GET_RELEASE_EXPECTED]: (state, { payload }) => ({
+        ...state,
+        ...payload
+    }),
+    [GET_RELEASE_LACK]: (state, { payload }) => ({
         ...state,
         ...payload
     })
