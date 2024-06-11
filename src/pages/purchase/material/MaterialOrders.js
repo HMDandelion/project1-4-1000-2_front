@@ -23,7 +23,7 @@ function MaterialOrders() {
     );
 
     //검색
-    const menuList = ['공급업체명'];
+    const menuList = ['공급업체명','자재명'];
     const [searchParams, setSearchParams] = useState({
             selectedOption: menuList[0],
             searchText: ""

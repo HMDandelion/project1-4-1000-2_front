@@ -1,5 +1,5 @@
 import {authRequest} from "./api";
-import {deleted, getSalesClient, getSalesClients, success} from "../modules/ClientModules";
+import {deleted, getMaterialClients, getSalesClient, getSalesClients, success} from "../modules/ClientModules";
 import {statusToastAlert} from "../utils/ToastUtils";
 
 export const callSalesClientsAPI = ({currentPage = 1}) => {
@@ -61,4 +61,16 @@ export const callClientDeleteAPI = ({code}) => {
             statusToastAlert(title, desc, 'error');
         }
     }
+}
+//이하 원자재 공급업체=================================================================================================
+
+export const callMaterialClientsAPI = ({currentPage}) =>{
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`api/v1/material/clients?page=${currentPage}`);
+        console.log("callMaterialClientsAPI result : ", result);
+
+        if (result.status === 200) {
+            dispatch(getMaterialClients(result));
+        }
+    };
 }
