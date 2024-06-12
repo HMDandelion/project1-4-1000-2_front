@@ -1,4 +1,4 @@
-import {useLocation} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import {callMaterialSpecAPI, callMaterialSpecDeleteAPI} from "../../../apis/MaterialSpecAPICalls";
@@ -14,7 +14,8 @@ function SpecDetail() {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const location = useLocation();
-    const specCode = location.state;
+    const {id} = useParams();
+    const specCode = location.state ? location.state : id;
     const { spec } = useSelector(state => state.materialSpecReducer);
     const dispatch = useDispatch();
 
@@ -28,7 +29,8 @@ function SpecDetail() {
 
 
     useEffect(() => {
-        dispatch(callMaterialSpecAPI({specCode}));
+            dispatch(callMaterialSpecAPI({specCode}));
+
         },[]
     );
     return (

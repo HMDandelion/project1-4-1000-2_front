@@ -52,7 +52,11 @@ export const callMaterialSpecRegistAPI = ({specRequest}) => {
 
 export const callMaterialSpecModifyAPI = ({specCode,specRequest}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.put(`/api/v1/material/spec/${specCode}`, specRequest);
+        const combineRequest = {
+            ...specRequest,
+            specCode: specCode
+        }
+        const result = await authRequest.put(`/api/v1/material/spec`, combineRequest);
         console.log("callMaterialSpecModifyAPI result : ", result);
 
         if (result.status === 201) {
