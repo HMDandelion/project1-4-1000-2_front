@@ -5,6 +5,7 @@ import {Button, Modal, ModalContent, ModalFooter, ModalOverlay, useDisclosure} f
 import {callClientRegistAPI} from "../../../apis/ClientAPICalls";
 import ClientForm from "../../sales/client/ClientForm";
 import SpecForm from "./SpecForm";
+import {callMaterialSpecRegistAPI} from "../../../apis/MaterialSpecAPICalls";
 
 function SpecRegist() {
     const dispatch = useDispatch();
@@ -21,19 +22,18 @@ function SpecRegist() {
     // 등록 모달
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { success } = useSelector(state => state.clientReducer);
+    const { success } = useSelector(state => state.materialSpecReducer);
 
     useEffect(() => {
-        if(success === true) navigate(`/sales/clients`);
+        if(success === true) navigate(`/inventory/material/specs`);
     }, [success]);
 
     const onClickRegistHandler = () => {
         setForm(prevForm => {
             const updatedForm = {
-                ...prevForm,
-                phone: `${prevForm.phoneFirst}-${prevForm.phoneSecond}-${prevForm.phoneThird}`,
+                ...prevForm
             };
-            dispatch(callClientRegistAPI({clientRequest : updatedForm}));
+            dispatch(callMaterialSpecRegistAPI({specRequest : updatedForm}));
             console.log("updatedForm", updatedForm);
             return updatedForm;
         });

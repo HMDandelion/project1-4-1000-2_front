@@ -1,5 +1,5 @@
 import {authRequest} from "./api";
-import {getMaterialSpec, getMaterialSpecs} from "../modules/MaterialSpecModules";
+import {getMaterialSpec, getMaterialSpecs,success} from "../modules/MaterialSpecModules";
 
 export const callMaterialSpecsAPI = ({currentPage = 1, searchParams}) => {
     return async (dispatch, getState) => {
@@ -28,6 +28,29 @@ export const callMaterialSpecAPI = ({specCode}) => {
 };
 
 export const callMaterialSpecDeleteAPI = ({specCode}) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.delete(`api/v1/material/spec/`, specCode);
+        console.log("callMaterialSpecAPI result : ", result);
+        if (result.status === 204) {
+            dispatch(success(true));
+        }
+    };
+};
+
+export const callMaterialSpecRegistAPI = ({specRequest}) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.post(`/api/v1/material/spec`, specRequest);
+
+        console.log("callMaterialSpecRegistAPI result : ", result);
+
+        if (result.status === 201) {
+            dispatch(success(true));
+        }
+
+    };
+};
+
+export const callMaterialSpecModifyAPI = ({specCode,specRequest}) => {
     return async (dispatch, getState) => {
 
 

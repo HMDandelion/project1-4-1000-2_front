@@ -3,7 +3,7 @@ import {
     FormControl, FormLabel, HStack, Input,
     ModalBody,
     ModalCloseButton,
-    ModalHeader, NumberInput, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger,
+    ModalHeader, NumberInput, NumberInputField, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger,
     useColorModeValue,
     useDisclosure,
     VStack
@@ -32,21 +32,18 @@ function SpecForm({spec, setForm}) {
             [e.target.name] : e.target.value
         });
     }
+    const onNumberInputChangeHandler = (value) => {
+        setForm && setForm({
+            ...spec,
+            safetyStock: value
+        });
+    };
     const dropdownHandler = (value) => {
         setForm && setForm({
             ...spec,
-            ["categoryCode"] : value
+            categoryCode : value
         });
     };
-
-    const addressCompleteHandler = (data, state) => {
-        setForm && setForm({
-            ...spec,
-            address : data.address,
-            postcode : data.zonecode,
-        })
-        onClose();
-    }
 
     return (
         <>
@@ -89,9 +86,12 @@ function SpecForm({spec, setForm}) {
                     </FormControl>
                     <FormControl>
                         <FormLabel fontWeight='800' color={textColor}>안전 재고</FormLabel>
-                        <NumberInput placeholder="" mt={2} _placeholder={{fontSize: 'sm'}}
-                               name="safetyStock" value={spec.safetyStock}
-                               onChange={onChangeHandler}/>
+                        <NumberInput
+                                     onChange={onNumberInputChangeHandler}>
+                            <NumberInputField
+                                placeholder="" mt={2} _placeholder={{fontSize: 'sm'}}
+                                name="safetyStock" value={spec.safetyStock}/>
+                        </NumberInput>
                     </FormControl>
                 </VStack>
             </ModalBody>
