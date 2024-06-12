@@ -7,6 +7,7 @@ import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 import SetMaterialOrderButton from "../../../components/button/SetMaterialOrderButton";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
+import SpecModify from "./SpecModify";
 
 function SpecDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -43,6 +44,7 @@ function SpecDetail() {
                     </Button>
                     <DeleteAlertButton code={specCode} deleteAPI={callMaterialSpecDeleteAPI}/>
                 </div>
+                <SpecModify isOpen={isOpen} onClose={onClose} spec={spec} specCode={specCode}/>
                 {/* <ClientModify isOpen={isOpen} onClose={onClose} client={client}/> */}
             </Flex>
             <Text fontWeight='bold' color={textColor}>

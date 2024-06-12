@@ -21,6 +21,7 @@ function SpecForm({spec, setForm}) {
 
     const dispatch = useDispatch();
     useEffect(() => {
+        console.log(spec);
         const searchType = "c";
             dispatch(callMaterialDropAPI({searchType}))
         },[]
