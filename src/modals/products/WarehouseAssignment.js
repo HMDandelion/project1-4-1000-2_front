@@ -46,17 +46,10 @@ function WarehousAssginment({isOpen,onClose,selectedStock, setSelectedStock}){
     const stockWarehouse = useSelector(state => state.stockReducer.stockWarehouse);
 
     useEffect(() => {
-        const fetchWarehouses = async () => {
             dispatch(callWarehousesAPI());
             if(selectedStock) {
                 dispatch(callStockWarehouseAPI({stockCode: selectedStock.stockCode}));
             }
-        };
-        fetchWarehouses();
-        if(warehouses){
-            console.log("창고리스트",warehouses)
-        }
-
     }, [selectedStock]);
     if(selectedStock){
         console.log("배정 재고",stockWarehouse)

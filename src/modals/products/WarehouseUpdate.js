@@ -36,13 +36,7 @@ function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
     const employees = useSelector(state => state.productReducer.employees);
 
     useEffect(() => {
-        const fetchEmployees =  () => {
             dispatch(callEmployeesAPI());
-        };
-        fetchEmployees();
-        if(employees){
-            console.log("사원들",employees)
-        }
     }, []);
 
     useEffect(() => {

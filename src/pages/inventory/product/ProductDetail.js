@@ -50,17 +50,10 @@ function ProductDetail() {
 
 
     useEffect(() => {
-        const fetchData = async () => {
             setLoading(true);
-            await dispatch(callProductBomAPI({currentPage,productCode}));
-            await dispatch(callProductAPI({productCode}));
-            await dispatch(callProductSpecAPI({specCurrentPage,productCode}));
-            if(specPaging){
-                console.log("슾",specPaging);
-            }
-            setLoading(false);
-        };
-        fetchData();
+             dispatch(callProductBomAPI({currentPage,productCode}));
+             dispatch(callProductAPI({productCode}));
+             dispatch(callProductSpecAPI({specCurrentPage,productCode}));
     }, [currentPage,specCurrentPage]);
 
     const bomColumns = [

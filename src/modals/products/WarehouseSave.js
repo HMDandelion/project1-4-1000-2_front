@@ -36,10 +36,7 @@ function WarehouseSave({isOpen,onClose,warehouse,handleWarehouseSelect}){
     const employees = useSelector(state => state.productReducer.employees);
 
     useEffect(() => {
-        const fetchEmployees = () => {
             dispatch(callEmployeesAPI());
-        };
-        fetchEmployees();
     }, []);
 
 

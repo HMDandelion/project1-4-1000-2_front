@@ -39,13 +39,7 @@ function BomUpdate({productCode,bom,isOpen,onClose,selectedProduct, setSelectedP
     const materials = useSelector(state => state.productReducer.materials);
 
     useEffect(() => {
-        const fetchMaterials = async () => {
             dispatch(callMaterailsAPI());
-        };
-        fetchMaterials();
-        if(materials){
-            console.log("원자재",materials)
-        }
     }, []);
 
     useEffect(() => {

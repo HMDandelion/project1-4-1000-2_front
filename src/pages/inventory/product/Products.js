@@ -152,7 +152,6 @@ function Products() {
     const stockIdAccessor = "stockCode";     // id로 사용할 컬럼 지정
 
     useEffect(() => {
-        const fetchData =  () => {
             setLoading(true);
              dispatch(callStockTodayAPI());
              dispatch(callProductTotalAPI());
@@ -167,9 +166,6 @@ function Products() {
                  dispatch(callStocksAPI({ currentPage }));
             }
             setLoading(false);
-        };
-
-        fetchData();
     }, [currentPage, activeTab]);
 
 

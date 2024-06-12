@@ -37,13 +37,7 @@ function StockUpdate({isOpen,onClose,selectedStock, setSelectedStock}){
     const productList = useSelector(state => state.productReducer.productList);
 
     useEffect(() => {
-        const fetchProducts = async () => {
             dispatch(callProductListAPI());
-        };
-        fetchProducts();
-        if(productList){
-            console.log("상품리스트",productList)
-        }
     }, []);
 
     useEffect(() => {
