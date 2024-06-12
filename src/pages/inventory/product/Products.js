@@ -38,6 +38,7 @@ import ProductClient from "../../../modals/products/ProductClient";
 import StockUpdate from "../../../modals/products/StockUpdate";
 import WarehouseAssignment from "../../../modals/products/WarehouseAssignment";
 import StoreStock from "../../../modals/products/StoreStock";
+import {statusToastAlert} from "../../../utils/ToastUtils";
 
 function Products() {
     const dispatch = useDispatch();
@@ -195,13 +196,9 @@ function Products() {
         setSelectedProduct(product);
         dispatch(callProductUpdateStatusAPI({
             onSuccess: () => {
-                toast({
-                    title: "상품 생산 상태 변경 완료",
-                    description: "상품 생산 상태가 성공적으로 수정되었습니다!",
-                    status: "success",
-                    duration: 1000,
-                    isClosable: true,
-                });
+                const title = '상품 생산 상태 변경 완료';
+                const desc = '상품 생산 상태가 성공적으로 수정되었습니다.';
+                statusToastAlert(title, desc, 'success');
                  dispatch(callProductsAPI({ currentPage: 1 }));
                  dispatch(callProductListAPI());
                 dispatch(callDestroysTotalAPI());
@@ -284,13 +281,9 @@ function Products() {
         setSelectedStock(stock);
         dispatch(callStockDeleteAPI({
             onSuccess: () => {
-                toast({
-                    title: "재고 삭제 완료",
-                    description: "재고가 성공적으로 삭제되었습니다!",
-                    status: "success",
-                    duration: 1000,
-                    isClosable: true,
-                });
+                const title = '재고 삭제 완료';
+                const desc = '재고가 성공적으로 삭제되었습니다.';
+                statusToastAlert(title, desc, 'success');
                 dispatch(callStocksAPI({ currentPage: 1 }));
                 dispatch(callProductListAPI());
                 dispatch(callDestroysTotalAPI());

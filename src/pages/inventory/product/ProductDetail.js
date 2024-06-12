@@ -25,6 +25,7 @@ import BomUpdate from "../../../modals/products/BomUpdate";
 import PagingBar from "../../../components/common/PagingBar";
 import SpecSave from "../../../modals/products/SpecSave";
 import SpecUpdate from "../../../modals/products/SpecUpdate";
+import {statusToastAlert} from "../../../utils/ToastUtils";
 function ProductDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const { productCode } = useParams();
@@ -128,13 +129,9 @@ function ProductDetail() {
         setSelectedProduct(bom);
         dispatch(callBomDeleteAPI({
             onSuccess: async () => {
-                toast({
-                    title: "BOM 삭제",
-                    description: "BOM이 삭제 되었습니다!",
-                    status: "success",
-                    duration: 1000,
-                    isClosable: true,
-                });
+                const title = 'BOM 삭제';
+                const desc = 'BOM이 삭제 되었습니다.';
+                statusToastAlert(title, desc, 'success');
                 await dispatch(callProductBomAPI({currentPage,productCode}));
                 await dispatch(callProductAPI({productCode}));
                 onEditModalClose();
@@ -178,13 +175,9 @@ function ProductDetail() {
         setSelectedProduct(spec);
         dispatch(callSpecDeleteAPI({
             onSuccess: async () => {
-                toast({
-                    title: "상품 스펙 삭제",
-                    description: "상품 스펙이 삭제 되었습니다!",
-                    status: "success",
-                    duration: 1000,
-                    isClosable: true,
-                });
+                const title = '상품 스펙 삭제';
+                const desc = '상품 스펙 삭제가 완료 되었습니다.';
+                statusToastAlert(title, desc, 'success');
                 await dispatch(callProductSpecAPI({specCurrentPage:1,productCode}))
                 await  dispatch(callProductBomAPI({currentPage:1,productCode}))
                 await dispatch(callProductAPI({productCode}))
