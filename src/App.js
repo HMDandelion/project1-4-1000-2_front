@@ -19,6 +19,7 @@ import MaterialUsages from "./pages/production/material/MaterialUsages";
 import SpecDetail from "./pages/inventory/material/SpecDetail";
 import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
 import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
+import StockDetail from "./pages/inventory/material/StockDetail";
 
 function App() {
   return (
@@ -55,7 +56,10 @@ function App() {
                               <Route index element={<Specs/>}/>
                               <Route path=":specCode" element={<SpecDetail/>}/>
                           </Route>
-                          <Route path="stocks" element={<MaterialStocks/>}/>
+                          <Route path="stocks" >
+                              <Route index element={<MaterialStocks/>}/>
+                              <Route path=":stockCode" element={<StockDetail/>}/>
+                          </Route>
                       </Route>
                   </Route>
                   <Route path="purchase">
