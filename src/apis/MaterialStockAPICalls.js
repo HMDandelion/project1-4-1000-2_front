@@ -28,6 +28,10 @@ export const callMaterialDropAPI = ({searchType = "w"}) => {
     return async (dispatch, getState) => {
         const result = await authRequest.get(`/api/v1/material/inventory/dropdown?searchType=${searchType}`);
         console.log("callMaterialDropAPI result : ",result);
-        dispatch(getMaterialDrop(result));
+
+        if (result.status === 200) {
+
+            dispatch(getMaterialDrop(result));
+        }
     };
 };
