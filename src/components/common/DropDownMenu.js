@@ -4,13 +4,16 @@ import React, {useEffect, useState} from "react";
 
 function DropDownMenu({setValue, dropDownList}) {
     const [selectedOption, setSelectedOption] = useState("");
+    const [ selectedCode, setSelectedCode ] = useState(1);
+
 
     useEffect(() => {
-            setSelectedOption(dropDownList[0].name);
+            setSelectedOption(dropDownList[selectedCode-1].name);
         },[dropDownList]
     );
     const clickHandler = (drop) => {
         setSelectedOption(drop.name);
+        setSelectedCode(drop.code)
         setValue(drop.code);
     };
     return (
