@@ -10,9 +10,9 @@ import {
 } from "@chakra-ui/react";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import React, {useEffect} from "react";
-import DropDownMenu from "../../../components/common/DropDownMenu";
 import {useDispatch, useSelector} from "react-redux";
-import {callMaterialDropAPI} from "../../../apis/MaterialStockAPICalls";
+import {callMaterialDropAPI} from "../../apis/MaterialStockAPICalls";
+import DropDownMenu from "../../components/common/DropDownMenu";
 
 function SpecForm({spec, setForm}) {
     const textColor = useColorModeValue("secondaryGray.900", "white");

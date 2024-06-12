@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import SpecForm from "./SpecForm";
-import {callMaterialSpecModifyAPI} from "../../../apis/MaterialSpecAPICalls";
+import {callMaterialSpecModifyAPI} from "../../apis/MaterialSpecAPICalls";
 
 function SpecModify({isOpen, onClose, spec, specCode}) {
     const dispatch = useDispatch();

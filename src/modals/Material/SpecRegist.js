@@ -2,10 +2,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {Button, Modal, ModalContent, ModalFooter, ModalOverlay, useDisclosure} from "@chakra-ui/react";
-import {callClientRegistAPI} from "../../../apis/ClientAPICalls";
-import ClientForm from "../../sales/client/ClientForm";
 import SpecForm from "./SpecForm";
-import {callMaterialSpecRegistAPI} from "../../../apis/MaterialSpecAPICalls";
+import {callMaterialSpecRegistAPI} from "../../apis/MaterialSpecAPICalls";
 
 function SpecRegist() {
     const dispatch = useDispatch();
