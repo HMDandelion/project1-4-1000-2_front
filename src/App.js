@@ -18,6 +18,7 @@ import ProductDetail from "./pages/inventory/product/ProductDetail";
 import ProductionReports from "./pages/production/productionReport/ProductionReports";
 import ProductionReportDetail from "./pages/production/productionReport/ProductionReportDetail";
 import DefectDetail from "./pages/production/productionReport/DefectDetail";
+import MaterialUsages from "./pages/production/material/MaterialUsages";
 
 function App() {
   return (
