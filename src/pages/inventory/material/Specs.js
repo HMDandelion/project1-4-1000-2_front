@@ -6,7 +6,7 @@ import PagingBar from "../../../components/common/PagingBar";
 import {HStack} from "@chakra-ui/react";
 import SelectMenu from "../../../components/common/SelectMenu";
 import {useNavigate} from "react-router-dom";
-import SpecRegist from "./SpecRegist";
+import SpecRegist from "../../../modals/Material/SpecRegist";
 
 function Specs() {
     const [currentPage, setCurrentPage] = useState(1);

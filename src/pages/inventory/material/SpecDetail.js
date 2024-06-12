@@ -7,7 +7,7 @@ import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 import SetMaterialOrderButton from "../../../components/button/SetMaterialOrderButton";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
-import SpecModify from "./SpecModify";
+import SpecModify from "../../../modals/Material/SpecModify";
 
 function SpecDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
