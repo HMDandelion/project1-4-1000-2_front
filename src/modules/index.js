@@ -23,8 +23,7 @@ const rootReducer = combineReducers({
     stockReducer,
     warehouseReducer,
     storageReducer,
-    authReducer,
-    releaseReducer
+    releaseReducer,
 
     //한결
     materialDropReducer,
