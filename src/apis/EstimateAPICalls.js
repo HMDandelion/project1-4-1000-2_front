@@ -1,7 +1,6 @@
 import {authRequest} from "./api";
-import {getEstimate, getEstimates, success} from "../modules/EstimateModules";
+import {getEstimate, getEstimates, success, deleted} from "../modules/EstimateModules";
 import {statusToastAlert} from "../utils/ToastUtils";
-import {deleted} from "../modules/ClientModules";
 
 export const callEstimatesAPI = ({currentPage}) => {
     return async (dispatch, getState) => {

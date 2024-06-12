@@ -21,12 +21,7 @@ function EstimateModify({isOpen, onClose, estimate}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [deadline, setDeadline] = useState(estimate.deadline);
-    const [selectedProducts, setSelectedProducts] = useState(
-        estimate.products.map(product => ({
-            ...product,
-            estimatePrice: product.price
-        }))
-    );
+    const [selectedProducts, setSelectedProducts] = useState();
 
     const { success } = useSelector(state => state.estimateReducer);
 
@@ -40,8 +35,27 @@ function EstimateModify({isOpen, onClose, estimate}) {
         dispatch(callSimpleProductsAPI());
     }, []);
 
-    useEffect(() => console.log('selectProducts : ', selectedProducts), [selectedProducts]);
-    useEffect(() => console.log('deadline : ', deadline), [deadline]);
+    useEffect(() => {
+
+        if (products && estimate.products) {
+            const updatedProducts = estimate.products.map(product => {
+                const matchedProduct = products.find(p => p.productCode === product.productCode);
+                if (matchedProduct) {
+                    return {
+                        ...product,
+                        estimatePrice: product.price,
+                        price: matchedProduct.price
+                    };
+                }
+                return {
+                    ...product,
+                    estimatePrice: product.price
+                };
+            });
+            setSelectedProducts(updatedProducts);
+        }
+    }, [products, estimate]);
+
 
     const onClickUpdateHandler = () => {
         const form = {};
@@ -110,26 +124,34 @@ function EstimateModify({isOpen, onClose, estimate}) {
                             templateColumns='repeat(1, 100%)'
                         >
                             <GridItem>
-                                <ProductSelectForm
-                                    products={products}
-                                    selectedProducts={selectedProducts}
-                                    onProductAdd={handleProductAdd}
-                                />
+                                {
+                                    selectedProducts &&
+                                    <ProductSelectForm
+                                        products={products}
+                                        selectedProducts={selectedProducts}
+                                        onProductAdd={handleProductAdd}
+                                    />
+                                }
+
                             </GridItem>
                             <Divider my='20px'/>
                             <GridItem>
-                                <PriceAndQuantityForm
-                                    selectedProducts={selectedProducts}
-                                    onQuantityChange={handleQuantityChange}
-                                    onPriceChange={handlePriceChange}
-                                    onProductRemove={handleProductRemove}
-                                />
+                                {
+                                    selectedProducts &&
+                                    <PriceAndQuantityForm
+                                        selectedProducts={selectedProducts}
+                                        onQuantityChange={handleQuantityChange}
+                                        onPriceChange={handlePriceChange}
+                                        onProductRemove={handleProductRemove}
+                                    />
+                                }
+
                             </GridItem>
                         </Grid>
                     </ModalBody>
                     <ModalFooter justifyContent='space-between'>
                         <Text fontSize='xl' color='secondaryGray.900' fontWeight='700'>
-                            견적 총액 {formatNumber(getTotalPrice(selectedProducts))}원
+                            견적 총액 {selectedProducts && formatNumber(getTotalPrice(selectedProducts))}원
                         </Text>
                         <HStack>
                             <PopoverCalendar deadline={deadline} handleDeadline={setDeadline}/>
