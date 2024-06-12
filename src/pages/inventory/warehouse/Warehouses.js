@@ -14,6 +14,7 @@ import StoreStock from "../../../modals/products/StoreStock";
 import DestroyRegist from "../../../modals/products/DestroyRegist";
 import CancelAssignment from "../../../modals/products/CancelAssignment";
 import PagingBar from "../../../components/common/PagingBar";
+import {statusToastAlert} from "../../../utils/ToastUtils";
 
 function Warehouses() {
     const dispatch = useDispatch();
@@ -161,13 +162,9 @@ function Warehouses() {
         setSelectedStorage(storage);
         dispatch(callCancelAssignmentAPI({
             onSuccess: () => {
-                toast({
-                    title: "수정 완료",
-                    description: "창고 정보가 성공적으로 수정되었습니다!",
-                    status: "success",
-                    duration: 1000,
-                    isClosable: true,
-                });
+                const title = '수정 완료';
+                const desc = '창고 정보가 성공적으로 수정되었습니다.';
+                statusToastAlert(title, desc, 'success');
                 navigate(`/inventory/warehouse`);
                 handleWarehouseSelect(warehouse);},
             storageCode:storage.storageCode}));

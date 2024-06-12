@@ -33,6 +33,7 @@ import {
     callStockAssignment, callStoragesAPI
 } from "../../apis/StorageAPICalls";
 import {callWarehousesAPI} from "../../apis/WarehouseAPICalls";
+import {statusToastAlert} from "../../utils/ToastUtils";
 
 function DestroyRegist({isOpen,onClose,selectedStorage, setSelectedStorage,warehouse},handleWarehouseSelect){
 
@@ -73,13 +74,9 @@ function DestroyRegist({isOpen,onClose,selectedStorage, setSelectedStorage,wareh
                 updateRequest: destroy,
                  onSuccess: () => {
                      dispatch(callStoragesAPI({warehouseCode: warehouse.warehouseCode}));
-                     toast({
-                         title: "파손 등록 완료",
-                         description: "파손이 성공적으로 등록되었습니다!",
-                         status: "success",
-                         duration: 1000,
-                         isClosable: true,
-                     });
+                     const title = '파손 등록 완료';
+                     const desc = '파손이 성공적으로 등록되었습니다.';
+                     statusToastAlert(title, desc, 'success');
                      onClose(); // 모달 창 닫기
                      // 현재 페이지로 다시 이동하여 컴포넌트를 새로 마운트하도록 함
                      navigate(`/inventory/warehouse`);

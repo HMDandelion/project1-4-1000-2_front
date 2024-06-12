@@ -28,6 +28,7 @@ import {
 } from "../../apis/StockAPICalls";
 import {callDestroysTotalAPI, callProductDestroyAPI, callStockAssignment} from "../../apis/StorageAPICalls";
 import {callWarehousesAPI} from "../../apis/WarehouseAPICalls";
+import {statusToastAlert} from "../../utils/ToastUtils";
 
 function WarehousAssginment({isOpen,onClose,selectedStock, setSelectedStock}){
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); // 오류 모달 상태
@@ -46,17 +47,10 @@ function WarehousAssginment({isOpen,onClose,selectedStock, setSelectedStock}){
     const stockWarehouse = useSelector(state => state.stockReducer.stockWarehouse);
 
     useEffect(() => {
-        const fetchWarehouses = async () => {
             dispatch(callWarehousesAPI());
             if(selectedStock) {
                 dispatch(callStockWarehouseAPI({stockCode: selectedStock.stockCode}));
             }
-        };
-        fetchWarehouses();
-        if(warehouses){
-            console.log("창고리스트",warehouses)
-        }
-
     }, [selectedStock]);
     if(selectedStock){
         console.log("배정 재고",stockWarehouse)
@@ -107,13 +101,9 @@ function WarehousAssginment({isOpen,onClose,selectedStock, setSelectedStock}){
                     dispatch(callDestroysTotalAPI());
                     dispatch(callProductDestroyAPI());
                     setIsUpdated(true);
-                    toast({
-                        title: "배정 완료",
-                        description: "창고에 재고가 성공적으로 배정되었습니다!",
-                        status: "success",
-                        duration: 1000,
-                        isClosable: true,
-                    });
+                    const title = '배정 완료';
+                    const desc = '창고에 재고가 성공적으로 배정되었습니다.';
+                    statusToastAlert(title, desc, 'success');
                     onClose(); // 모달 창 닫기
                     // 현재 페이지로 다시 이동하여 컴포넌트를 새로 마운트하도록 함
                     navigate(`/inventory/product`, { replace: true });

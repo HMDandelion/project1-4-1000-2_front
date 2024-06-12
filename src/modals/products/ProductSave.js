@@ -15,6 +15,7 @@ import {useNavigate} from "react-router-dom";
 import {callMaterailsAPI, callProductListAPI, callProductRegistAPI, callProductsAPI} from "../../apis/ProductAPICalls";
 import {callProductTotalAPI, callTotalStockAPI} from "../../apis/StockAPICalls";
 import {callDestroysTotalAPI, callProductDestroyAPI} from "../../apis/StorageAPICalls";
+import {statusToastAlert} from "../../utils/ToastUtils";
 
 function ProductSave({isOpen,onClose}){
 
@@ -56,13 +57,9 @@ function ProductSave({isOpen,onClose}){
                     .then(dispatch(callProductDestroyAPI()))
                     .then(() => {
                         setIsRegistered(true); // 등록 성공 시 isRegistered 상태를 true로 설정
-                        toast({ // 등록 성공 알림 메시지 표시
-                            title: "등록 완료",
-                            description: "상품이 성공적으로 등록되었습니다!",
-                            status: "success",
-                            duration: 3000,
-                            isClosable: true,
-                        });
+                        const title = '등록 완료';
+                        const desc = '상품이 성공적으로 등록되었습니다.';
+                        statusToastAlert(title, desc, 'success');
                         onClose();
                         navigate('/inventory/product');
                     });

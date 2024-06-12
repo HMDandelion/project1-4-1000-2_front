@@ -22,6 +22,7 @@ import {
 } from "../../apis/ProductAPICalls";
 import {callProductTotalAPI, callTotalStockAPI} from "../../apis/StockAPICalls";
 import {callDestroysTotalAPI, callProductDestroyAPI} from "../../apis/StorageAPICalls";
+import {statusToastAlert} from "../../utils/ToastUtils";
 
 function SpecUpdate({productCode,spec,isOpen,onClose,selectedProduct, setSelectedProduct}){
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); // 오류 모달 상태
@@ -69,13 +70,9 @@ function SpecUpdate({productCode,spec,isOpen,onClose,selectedProduct, setSelecte
                     await dispatch(callProductAPI({productCode:productCode}))
                     await dispatch(callProductSpecAPI({specCurrentPage:1,productCode}))
                     setIsUpdated(true);
-                    toast({
-                        title: "수정 완료",
-                        description: "상품 스펙이 성공적으로 수정되었습니다!",
-                        status: "success",
-                        duration: 1000,
-                        isClosable: true,
-                    });
+                    const title = '수정 완료';
+                    const desc = '상품 스펙이 성공적으로 수정되었습니다.';
+                    statusToastAlert(title, desc, 'success');
                     onClose(); // 모달 창 닫기
                     // 현재 페이지로 다시 이동하여 컴포넌트를 새로 마운트하도록 함
                     navigate(`/inventory/product/${productCode}`, {replace: true});
@@ -84,13 +81,9 @@ function SpecUpdate({productCode,spec,isOpen,onClose,selectedProduct, setSelecte
             }));
         } catch (error) {
             console.error("상품 수정 중 오류 발생:", error);
-            toast({
-                title: "오류 발생",
-                description: "상품 정보 수정 중 오류가 발생했습니다.",
-                status: "error",
-                duration: 1000,
-                isClosable: true,
-            });
+            const title = '오류 발생';
+            const desc = '상품 정보 수정 중 오류가 발생했습니다.';
+            statusToastAlert(title, desc, 'error');
         }
     };
     return(

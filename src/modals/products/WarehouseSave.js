@@ -19,6 +19,7 @@ import {
     callWarehouseMove
 } from "../../apis/StorageAPICalls";
 import {callWarehousesAPI, callWarehouseSaveAPI, callWarehouseUpdateAPI} from "../../apis/WarehouseAPICalls";
+import {statusToastAlert} from "../../utils/ToastUtils";
 
 function WarehouseSave({isOpen,onClose,warehouse,handleWarehouseSelect}){
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); // 오류 모달 상태
@@ -36,10 +37,7 @@ function WarehouseSave({isOpen,onClose,warehouse,handleWarehouseSelect}){
     const employees = useSelector(state => state.productReducer.employees);
 
     useEffect(() => {
-        const fetchEmployees = () => {
             dispatch(callEmployeesAPI());
-        };
-        fetchEmployees();
     }, []);
 
 
@@ -68,13 +66,9 @@ function WarehouseSave({isOpen,onClose,warehouse,handleWarehouseSelect}){
             await dispatch(callWarehouseSaveAPI({
                 updateRequest: warehouseInfo,
                 onSuccess: () => {
-                    toast({
-                        title: "등록 완료",
-                        description: "창고가 성공적으로 등록되었습니다!",
-                        status: "success",
-                        duration: 1000,
-                        isClosable: true,
-                    });
+                    const title = '등록 완료';
+                    const desc = '창고가 성공적으로 등록되었습니다.';
+                    statusToastAlert(title, desc, 'success');
                     onClose(); // 모달 창 닫기
                     setWarehouseInfo({
                         name:  '',

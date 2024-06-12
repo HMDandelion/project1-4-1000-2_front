@@ -19,6 +19,7 @@ import {
     callWarehouseMove
 } from "../../apis/StorageAPICalls";
 import {callWarehouseUpdateAPI} from "../../apis/WarehouseAPICalls";
+import {statusToastAlert} from "../../utils/ToastUtils";
 
 function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); // 오류 모달 상태
@@ -36,13 +37,7 @@ function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
     const employees = useSelector(state => state.productReducer.employees);
 
     useEffect(() => {
-        const fetchEmployees =  () => {
             dispatch(callEmployeesAPI());
-        };
-        fetchEmployees();
-        if(employees){
-            console.log("사원들",employees)
-        }
     }, []);
 
     useEffect(() => {
@@ -80,13 +75,9 @@ function WarehouseUpdate({isOpen,onClose,warehouse,handleWarehouseSelect}){
              dispatch(callWarehouseUpdateAPI({
                 updateRequest: warehouseInfo,
                 onSuccess: () => {
-                    toast({
-                        title: "수정 완료",
-                        description: "창고 정보가 성공적으로 수정되었습니다!",
-                        status: "success",
-                        duration: 1000,
-                        isClosable: true,
-                    });
+                    const title = '수정 완료';
+                    const desc = '창고 정보가 성공적으로 수정되었습니다!';
+                    statusToastAlert(title, desc, 'success');
                     onClose(); // 모달 창 닫기
                     // 현재 페이지로 다시 이동하여 컴포넌트를 새로 마운트하도록 함
                     navigate(`/inventory/warehouse`);
