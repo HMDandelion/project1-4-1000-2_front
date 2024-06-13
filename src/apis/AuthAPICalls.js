@@ -1,8 +1,8 @@
 import {authRequest, request} from "./api";
-import {removeToken, saveToken} from "../utils/TokenUtils";
+import {getEmployeeNo, removeToken, saveToken} from "../utils/TokenUtils";
 import 'react-toastify/dist/ReactToastify.css';
-import {success} from "../modules/AuthModules";
-import {createStandaloneToast} from "@chakra-ui/react";
+import {getEmployeeInfo, success} from "../modules/AuthModules";
+import {statusToastAlert} from "../utils/ToastUtils";
 
 export const callLoginAPI = ({loginRequest}) => {
     return async (dispatch, gateState) => {
@@ -19,15 +19,9 @@ export const callLoginAPI = ({loginRequest}) => {
             saveToken(result.headers);
             dispatch(success());
         } else {
-            const toast = createStandaloneToast();
-            toast({
-                title: '로그인에 실패했습니다.',
-                description: '사번과 비밀번호를 확인해주세요.',
-                status: 'error',
-                position: 'top',
-                isClosable: true,
-                duration: 3000
-            })
+            const title = '로그인에 실패했습니다.';
+            const desc = '사번과 비밀번호를 확인해주세요.';
+            statusToastAlert(title, desc, 'error');
         }
     }
 }
@@ -40,6 +34,17 @@ export const callLogoutAPI = () => {
         if(result?.status === 200) {
             removeToken();
             dispatch(success());
+        }
+    }
+}
+
+export const callEmployeeInfoAPI = () => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`api/v1/employee/${getEmployeeNo()}`);
+        console.log("callEmployeeInfoAPI result : ", result);
+
+        if(result?.status === 200) {
+            dispatch(getEmployeeInfo(result));
         }
     }
 }

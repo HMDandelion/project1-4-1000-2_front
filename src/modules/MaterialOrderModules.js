@@ -5,9 +5,9 @@ const initialState = {};
 
 /* 액션 */
 const GET_MATERIAL_ORDERS = 'orders/GET_MATERIAL_ORDERS';
-const GET_MATERIAL_ORDER = 'order/GET_MATERIAL_ORDER';
-const SUCCESS = 'order/SUCCESS';
-const DELETED = 'order/DELETED';
+const GET_MATERIAL_ORDER = 'orders/GET_MATERIAL_ORDER';
+const SUCCESS = 'orders/SUCCESS';
+const DELETED = 'orders/DELETED';
 
 export const { orders : {getMaterialOrders, getMaterialOrder, success, deleted}} = createActions({
     [GET_MATERIAL_ORDERS] : result => ({ orders : result.data }),

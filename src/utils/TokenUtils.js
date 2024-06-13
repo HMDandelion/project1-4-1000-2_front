@@ -19,7 +19,6 @@ export const getAccessTokenHeader = () => BEARER + getAccessToken();
 export const getRefreshTokenHeader = () => BEARER + getRefreshToken();
 
 const getDecodeAccessToken = () => {
-    console.log("access Token : ", getAccessToken());
     return jwtDecode(getAccessToken());
 }
 const getDecodeRefreshToken = () => jwtDecode(getRefreshToken());
@@ -27,7 +26,6 @@ const getDecodeRefreshToken = () => jwtDecode(getRefreshToken());
 export const isLogin = () => {
     return getAccessToken() && getRefreshToken() && (Date.now() < getDecodeRefreshToken().exp * 1000);
 }
-
 export const getEmployeeNo = () => {
     return getDecodeAccessToken().employeeNo;
 }

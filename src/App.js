@@ -14,9 +14,17 @@ import MaterialInStock from "./pages/inventory/material/MaterialInStock";
 import MaterialStocks from "./pages/inventory/material/MaterialStocks";
 import MaterialOrders from "./pages/purchase/material/MaterialOrders";
 import MaterialClients from "./pages/purchase/material/MaterialClients";
+import Estimates from "./pages/sales/estimate/Estimates";
+import EstimateDetail from "./pages/sales/estimate/EstimateDetail";
+import Orders from "./pages/sales/order/Orders";
+import OrderDetail from "./pages/sales/order/OrderDetail";
 import ProductDetail from "./pages/inventory/product/ProductDetail";
 import Release from "./pages/inventory/release/Release";
 import MaterialUsages from "./pages/production/material/MaterialUsages";
+import SpecDetail from "./pages/inventory/material/SpecDetail";
+import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
+import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
+import StockDetail from "./pages/inventory/material/StockDetail";
 
 function App() {
   return (
@@ -24,13 +32,18 @@ function App() {
           <Routes>
               <Route path="/" element={<AdminLayout/>}>
                   <Route index element={<ProtectedRoute loginCheck={true}><TestPage/></ProtectedRoute>}/> {/* 나중에 Main 컴포넌트 만들면 그걸로 바꿔주삼 */}
-
                   <Route path="sales">
                       <Route path="client">
                           <Route index element={<ProtectedRoute loginCheck={true}><Clients/></ProtectedRoute>}/>
-                          <Route path=":clientCode" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
-                          <Route index element={<Clients/>}/>
-                          <Route path=":clientCode" element={<ClientDetail/>}/>
+                          <Route path="detail" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
+                      </Route>
+                      <Route path="estimate">
+                          <Route index element={<ProtectedRoute loginCheck={true}><Estimates/></ProtectedRoute>}/>
+                          <Route path="detail" element={<ProtectedRoute loginCheck={true}><EstimateDetail/></ProtectedRoute>}/>
+                      </Route>
+                      <Route path="order">
+                          <Route index element={<ProtectedRoute loginCheck={true}><Orders/></ProtectedRoute>}/>
+                          <Route path="detail" element={<ProtectedRoute loginCheck={true}><OrderDetail/></ProtectedRoute>}/>
                       </Route>
                   </Route>
                   <Route path="inventory">
@@ -39,24 +52,32 @@ function App() {
                           <Route path=":productCode" element={<ProductDetail/>}/>
                       </Route>
                       <Route path="warehouse">
-                          <Route  index element={<Warehouses/>}/>
+                          <Route index element={<Warehouses/>}/>
                           <Route path="detail" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
-                      </Route>
-                      <Route path="estimate">
-                          <Route index element={<ProtectedRoute loginCheck={true}><Clients/></ProtectedRoute>}/>
-                          <Route path=":estimateCode" element={<ProtectedRoute loginCheck={true}><ClientDetail/></ProtectedRoute>}/>
                       </Route>
                       <Route path="material">
                           <Route path="analyze" element={<InventoryMaterailAnalyze/>}/>
                           <Route path="in-stock" element={<MaterialInStock/>}/>
-                          <Route path="Specs" element={<Specs/>}/>
-                          <Route path="stocks" element={<MaterialStocks/>}/>
+                          <Route path="Specs">
+                              <Route index element={<Specs/>}/>
+                              <Route path=":specCode" element={<SpecDetail/>}/>
+                          </Route>
+                          <Route path="stocks" >
+                              <Route index element={<MaterialStocks/>}/>
+                              <Route path=":stockCode" element={<StockDetail/>}/>
+                          </Route>
                       </Route>
                   </Route>
                   <Route path="purchase">
                       <Route path="material">
-                          <Route path="orders" element={<MaterialOrders/>}/>
-                          <Route path="clients" element={<MaterialClients/>}/>
+                          <Route path="orders" >
+                              <Route index element={<MaterialOrders/>}/>
+                              <Route path=":orderCode" element={<MaterialOrderDetail/>}/>
+                          </Route>
+                          <Route path="clients" >
+                              <Route index element={<MaterialClients/>}/>
+                              <Route path=":clientCode" element={<MaterialClientDetail/>}/>
+                          </Route>
                       </Route>
                   </Route>
                   <Route path="production">

@@ -6,6 +6,7 @@ import SelectMenu from "../../../components/common/SelectMenu";
 import ComplexTable from "../../../components/table/NewComplexTable";
 import PagingBar from "../../../components/common/PagingBar";
 import {callMaterialClientsAPI} from "../../../apis/ClientAPICalls";
+import {useNavigate} from "react-router-dom";
 
 function MaterialClients() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -13,6 +14,7 @@ function MaterialClients() {
 
     const dispatch = useDispatch();
     const { clients,success } = useSelector(state => state.clientReducer);
+    const navigate = useNavigate();
 
     useEffect(() => {
             dispatch(callMaterialClientsAPI({currentPage}));
@@ -52,17 +54,25 @@ function MaterialClients() {
         },
         {
             Header: '담당자재',
-            accessor: data => data.materials.map(material => material.materialName).join(", ")
+            accessor: data => {
+                const materialNames = data.materials.map(material => material.materialName);
+                if (materialNames.length > 3) {
+                    return materialNames.slice(0, 3).join(", ") + "...";
+                }
+                return materialNames.join(", ");
+            }
         }
     ];
-
+    const handleRowClick = (row) => {
+        navigate(`/purchase/material/clients/detail`, {state: row.original.clientCode});
+    };
     return (
         clients &&
         <>
             <HStack spacing="10px">
                 <SelectMenu onSearch={searchHandler} menuList={menuList} />
             </HStack>
-            <ComplexTable columnsData={columns} tableData={clients.data.content} />
+            <ComplexTable columnsData={columns} tableData={clients.data.content} onRowClick={handleRowClick}/>
             <PagingBar pageInfo={clients.pageInfo} setCurrentPage={setCurrentPage} />
         </>
     );

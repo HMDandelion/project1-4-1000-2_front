@@ -7,11 +7,11 @@ import SelectMenu from "../../../components/common/SelectMenu";
 import ComplexTable from "../../../components/table/NewComplexTable";
 import PagingBar from "../../../components/common/PagingBar";
 import {callMaterialOrdersAPI} from "../../../apis/MaterialOrderAPICalls";
+import {useNavigate} from "react-router-dom";
 
 function MaterialOrders() {
     const [currentPage, setCurrentPage] = useState(1);
-
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { orders,success } = useSelector(state => state.materialOrderReducer);
 
@@ -61,14 +61,16 @@ function MaterialOrders() {
             accessor: 'status'
         }
     ];
-
+    const handleRowClick = (row) => {
+        navigate(`/purchase/material/orders/detail`, {state: row.original.orderCode});
+    };
     return (
         orders &&
         <>
             <HStack spacing="10px">
                 <SelectMenu onSearch={searchHandler} menuList={menuList} />
             </HStack>
-            <ComplexTable columnsData={columns} tableData={orders.data.content} />
+            <ComplexTable columnsData={columns} tableData={orders.data.content} onRowClick={handleRowClick}/>
             <PagingBar pageInfo={orders.pageInfo} setCurrentPage={setCurrentPage} />
         </>
     );

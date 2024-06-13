@@ -19,7 +19,7 @@ import {FaTruck} from "react-icons/fa";
 
 
 function SidebarContent(props) {
-    const activeColor = useColorModeValue("orange.600", "white");
+    const activeColor = useColorModeValue("orange.400", "white");
     const inactiveColor = useColorModeValue(
         "secondaryGray.600",
         "secondaryGray.600"
@@ -64,14 +64,9 @@ function SidebarContent(props) {
                                             pt="4px"
                                             pb="4px"
                                         >
-                                            <Link
-                                                as={NavLink}
-                                                to="/inventory"
-                                                _activeLink={{ color: activeColor }}
-                                            >
-                                                <GlobeIcon h="24px" w="24px" pr="5px" />
-                                                재고·유통
-                                            </Link>
+                                            <GlobeIcon h="24px" w="24px" pr="5px" />
+                                            재고·유통
+
                                         </Text>
                                     </Box>
                                     <AccordionIcon />
