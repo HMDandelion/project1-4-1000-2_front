@@ -1,5 +1,5 @@
 import {authRequest} from "./api";
-import {getOrder, getOrders, success} from "../modules/OrderModules";
+import {canceled, getOrder, getOrders, success} from "../modules/OrderModules";
 import {statusToastAlert} from "../utils/ToastUtils";
 
 export const callOrderRegistAPI = ({ estimateCode }) => {
@@ -42,5 +42,22 @@ export const callOrderAPI = ({orderCode}) => {
         if(result.status === 200) {
             dispatch(getOrder(result));
         }
+    }
+}
+
+export const callOrderCancelAPI = ({orderCode}) => {
+    return async (dispatch, getState) => {
+        try {
+            const result = await authRequest.put(`/api/v1/orders/${orderCode}`);
+            console.log("callOrderCancelAPI result : ", result);
+            if(result.status === 201) {
+                dispatch(canceled());
+            }
+        } catch ({response}) {
+            const title = '문제가 발생했어요.';
+            const desc = `${response.data.code} : ${response.data.message}`
+            statusToastAlert(title, desc, 'error');
+        }
+
     }
 }
