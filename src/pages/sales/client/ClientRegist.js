@@ -32,7 +32,7 @@ function ClientRegist() {
     const { success } = useSelector(state => state.clientReducer);
 
     useEffect(() => {
-        if(success === true) navigate(`/sales/clients`);
+        if(success === true) navigate(`/sales/client`);
     }, [success]);
 
     const onClickRegistHandler = () => {
@@ -42,7 +42,6 @@ function ClientRegist() {
                 phone: `${prevForm.phoneFirst}-${prevForm.phoneSecond}-${prevForm.phoneThird}`,
             };
             dispatch(callClientRegistAPI({clientRequest : updatedForm}));
-            console.log("updatedForm", updatedForm);
             return updatedForm;
         });
     }
