@@ -24,6 +24,8 @@ import SpecDetail from "./pages/inventory/material/SpecDetail";
 import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
 import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
 import StockDetail from "./pages/inventory/material/StockDetail";
+import Returns from "./pages/sales/return/Returns";
+import ReturnDetail from "./pages/sales/return/ReturnDetail";
 
 function App() {
   return (
@@ -43,6 +45,10 @@ function App() {
                       <Route path="order">
                           <Route index element={<ProtectedRoute loginCheck={true}><Orders/></ProtectedRoute>}/>
                           <Route path="detail" element={<ProtectedRoute loginCheck={true}><OrderDetail/></ProtectedRoute>}/>
+                      </Route>
+                      <Route path="return">
+                          <Route index element={<ProtectedRoute loginCheck={true}><Returns/></ProtectedRoute>}/>
+                          <Route path="detail" element={<ProtectedRoute loginCheck={true}><ReturnDetail/></ProtectedRoute>}/>
                       </Route>
                   </Route>
                   <Route path="inventory">
