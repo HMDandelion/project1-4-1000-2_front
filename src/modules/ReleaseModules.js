@@ -13,9 +13,10 @@ const GET_RELEASE_LACK = 'release/GET_RELEASE_LACK';
 const GET_RELEASES = 'release/GET_RELEASES';
 const GET_RELEASES_PAGE = 'release/GET_RELEASES_PAGE';
 const GET_ORDER_INFORMATIONS = 'release/GET_ORDER_INFORMATIONS';
+const GET_SHIPPINGS = 'release/GET_SHIPPINGS';
 
 
-export const { release : {getReleaseOrders,getReleaseOrdersPage,getOrderProducts,getReleaseExpected,getReleaseLack,getReleases,getReleasesPage,getOrderInformations}} = createActions({
+export const { release : {getReleaseOrders,getReleaseOrdersPage,getOrderProducts,getReleaseExpected,getReleaseLack,getReleases,getReleasesPage,getOrderInformations,getShippings}} = createActions({
     [GET_RELEASE_ORDERS] : result => ({ orders : result.data }),
     [GET_RELEASE_ORDERS_PAGE] : result => ({ ordersPage : result.data }),
     [GET_ORDER_PRODUCTS] : result => ({ orderProducts : result.data }),
@@ -23,7 +24,8 @@ export const { release : {getReleaseOrders,getReleaseOrdersPage,getOrderProducts
     [GET_RELEASE_LACK] : result => ({ releaseLack : result.data }),
     [GET_RELEASES] : result => ({ releases : result.data }),
     [GET_RELEASES_PAGE] : result => ({ releasesPage : result.data }),
-    [GET_ORDER_INFORMATIONS] : result => ({orderInformations:result.data})
+    [GET_ORDER_INFORMATIONS] : result => ({orderInformations:result.data}),
+    [GET_SHIPPINGS] : result => ({shippings:result.data}),
 });
 
 /* 리듀서 */
@@ -57,6 +59,10 @@ const releaseReducer = handleActions({
         ...payload
     }),
     [GET_ORDER_INFORMATIONS]: (state, { payload }) => ({
+        ...state,
+        ...payload
+    }),
+    [GET_SHIPPINGS]: (state, { payload }) => ({
         ...state,
         ...payload
     })

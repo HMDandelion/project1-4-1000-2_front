@@ -8,7 +8,7 @@ import {
     getOrderProducts, getRelease,
     getReleaseExpected, getReleaseLack,
     getReleaseOrders,
-    getReleaseOrdersPage, getReleases, getReleasesPage
+    getReleaseOrdersPage, getReleases, getReleasesPage, getShippings
 } from "../modules/ReleaseModules";
 import {statusToastAlert} from "../utils/ToastUtils";
 
@@ -123,6 +123,19 @@ export const callOrderInformation =({orderCode}) =>{
         }
     }
 }
+export const callShippingsRelaseAPI =({currentPage=1}) =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `${DEFAULT_URL}/shipping?page=${currentPage}`);
+
+        console.log("callShippingsRelaseAPI : ", result);
+        console.log('페페',result.data.pageInfo);
+        if(result.status === 200) {
+            dispatch(getShippings(result));
+        }
+    }
+}
+
+
 
 
 

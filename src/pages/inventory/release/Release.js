@@ -21,6 +21,7 @@ import * as PropTypes from "prop-types";
 import {FaBuilding, FaTruck,FaFileAlt} from "react-icons/fa";
 import OrderInformation from "../../../theme/components/modals/release/OrderInformation";
 import ShippingAlertButton from "../../../components/button/ShippingAlertButton";
+import ReleaseShippingTable from "./ReleaseShippingTable";
 
 
 function Release(){
@@ -313,36 +314,12 @@ function Release(){
                             />
                         </Box>
                         <Box flex="1" mx="1" style={{ minWidth: '300px' }}>
-                            {/*<div style={{ textAlign: 'center', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>*/}
-                            {/*    <FaTruck style={{ fontSize: '40px', color: 'orange' }} />*/}
-                            {/*</div>*/}
-                            {/*<ReleaseWaitTable*/}
-                            {/*    columnsData={waitColumns}*/}
-                            {/*    tableData={processedReleases}*/}
-                            {/*    tableTitle={releaseTableTitle}*/}
-                            {/*    baseLink={releaseBaseLink}*/}
-                            {/*    idAccessor={releaseIdAccessor}*/}
-                            {/*/>*/}
-                            {/*<PagingBar*/}
-                            {/*    pageInfo={releasePageInfo}*/}
-                            {/*    setCurrentPage={setCurrentWaitPage}*/}
-                            {/*/>*/}
+                            <div style={{ textAlign: 'center', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
+                                <FaTruck style={{ fontSize: '40px', color: 'orange' }} />
+                            </div>
+                            <ReleaseShippingTable/>
                         </Box>
                         <Box flex="1" mx="1" style={{ minWidth: '300px' }}>
-                            {/*<div style={{ textAlign: 'center', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>*/}
-                            {/*    <FaBuilding style={{ fontSize: '40px', color: 'orange' }} />*/}
-                            {/*</div>*/}
-                            {/*<ReleaseWaitTable*/}
-                            {/*    columnsData={waitColumns}*/}
-                            {/*    tableData={processedReleases}*/}
-                            {/*    tableTitle={releaseTableTitle}*/}
-                            {/*    baseLink={releaseBaseLink}*/}
-                            {/*    idAccessor={releaseIdAccessor}*/}
-                            {/*/>*/}
-                            {/*<PagingBar*/}
-                            {/*    pageInfo={releasePageInfo}*/}
-                            {/*    setCurrentPage={setCurrentWaitPage}*/}
-                            {/*/>*/}
                         </Box>
                     </Box>
                 </>
