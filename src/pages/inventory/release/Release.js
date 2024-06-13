@@ -42,6 +42,7 @@ function Release(){
 
     const [currentOrderPage, setCurrentOrderPage] = useState(1);
     const [currentWaitPage, setCurrentWaitPage] = useState(1);
+    const [currentShipPage, setCurrentShipPage] = useState(1);
     const [selectedOrder,setSelectedOrder] = useState(null);
     const [selectedRelease,setSelectedRelease] = useState(null);
     const cancelRef = React.useRef();
@@ -307,7 +308,7 @@ function Release(){
                                 idAccessor={releaseIdAccessor}
                             />
                             <OrderInformation isOpen={isOrderInfoModalOpen} selectedRelease={selectedRelease}  onClose={() => { onOrderInfoModalClose(); }} setSelectedRelease={setSelectedRelease} />
-                            <ShippingAlertButton isOpen={isShippingModalOpen} leastDestructiveRef={cancelRef} onClose={() => {onShippingModalClose();}} currentOrderPage={currentOrderPage} release={selectedRelease}/>
+                            <ShippingAlertButton isOpen={isShippingModalOpen} leastDestructiveRef={cancelRef} onClose={() => {onShippingModalClose();}} currentOrderPage={currentOrderPage} currentShipPage={currentShipPage} release={selectedRelease}/>
                             <PagingBar
                                 pageInfo={releasePageInfo}
                                 setCurrentPage={setCurrentWaitPage}
@@ -317,7 +318,7 @@ function Release(){
                             <div style={{ textAlign: 'center', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
                                 <FaTruck style={{ fontSize: '40px', color: 'orange' }} />
                             </div>
-                            <ReleaseShippingTable/>
+                            <ReleaseShippingTable currentShipPage={currentShipPage} setCurrentShipPage={setCurrentShipPage}/>
                         </Box>
                         <Box flex="1" mx="1" style={{ minWidth: '300px' }}>
                         </Box>

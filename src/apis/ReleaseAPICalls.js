@@ -128,7 +128,6 @@ export const callShippingsRelaseAPI =({currentPage=1}) =>{
         const result = await request('GET', `${DEFAULT_URL}/shipping?page=${currentPage}`);
 
         console.log("callShippingsRelaseAPI : ", result);
-        console.log('페페',result.data.pageInfo);
         if(result.status === 200) {
             dispatch(getShippings(result));
         }

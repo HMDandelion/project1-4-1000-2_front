@@ -6,17 +6,17 @@ import {useDispatch, useSelector} from "react-redux";
 import {callShippingsRelaseAPI} from "../../../apis/ReleaseAPICalls";
 import OrderInformation from "../../../theme/components/modals/release/OrderInformation";
 
-function ReleaseShippingTable() {
+function ReleaseShippingTable({currentShipPage,setCurrentShipPage}) {
     const { shippings } = useSelector(state => state.releaseReducer);
     const dispatch = useDispatch();
-    const [currentPage, setCurrentPage] = useState(1);
+    // const [currentPage, setCurrentPage] = useState(1);
     const [selectedShipping, setSelectedShipping] = useState(null);
     const { isOpen: isOrderInfoModalOpen, onOpen: onOrderInfoModalOpen, onClose: onOrderInfoModalClose } = useDisclosure();
 
     useEffect(() => {
-        console.log('currentPage', currentPage);
-        dispatch(callShippingsRelaseAPI({ currentPage: currentPage }));
-    }, [currentPage]);
+        console.log('currentPage', currentShipPage);
+        dispatch(callShippingsRelaseAPI({ currentPage: currentShipPage }));
+    }, [currentShipPage]);
 
     const shipColumns = [
         {
@@ -94,7 +94,7 @@ function ReleaseShippingTable() {
                     )}
                     <PagingBar
                         pageInfo={shippings.pageInfo}
-                        setCurrentPage={setCurrentPage}
+                        setCurrentPage={setCurrentShipPage}
                     />
                 </>
             )}

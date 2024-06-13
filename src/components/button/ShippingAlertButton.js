@@ -8,13 +8,19 @@ import {
 import React, {useEffect, useRef} from "react";
 import {WarningIcon} from "@chakra-ui/icons";
 import {useDispatch} from "react-redux";
-import {callReleaseAPI, callReleaseOrdersAPI, callReleaseWaitAPI, callShippingAPI} from "../../apis/ReleaseAPICalls";
+import {
+    callReleaseAPI,
+    callReleaseOrdersAPI,
+    callReleaseWaitAPI,
+    callShippingAPI,
+    callShippingsRelaseAPI
+} from "../../apis/ReleaseAPICalls";
 import {statusToastAlert} from "../../utils/ToastUtils";
 import {useNavigate} from "react-router-dom";
 import {callWarehousesAPI} from "../../apis/WarehouseAPICalls";
 
 
-function ShippingAlertButton({isOpen, leastDestructiveRef,onClose,currentWaitPage,release}) {
+function ShippingAlertButton({isOpen, leastDestructiveRef,onClose,currentWaitPage,release,currentShipPage}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -30,6 +36,7 @@ function ShippingAlertButton({isOpen, leastDestructiveRef,onClose,currentWaitPag
                 const desc = '배송이 처리가 완료 되었습니다.';
                 statusToastAlert(title, desc, 'success');
                 dispatch(callReleaseWaitAPI({currentPage:currentWaitPage}));
+                dispatch(callShippingsRelaseAPI({currentPage:currentShipPage}));
             },
             orderCode: release.orderCode
         }));
