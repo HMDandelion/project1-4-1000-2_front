@@ -45,10 +45,10 @@ export const callOrderAPI = ({orderCode}) => {
     }
 }
 
-export const callOrderCancelAPI = ({orderCode}) => {
+export const callOrderCancelAPI = ({code}) => {
     return async (dispatch, getState) => {
         try {
-            const result = await authRequest.put(`/api/v1/orders/${orderCode}`);
+            const result = await authRequest.put(`/api/v1/orders/${code}`);
             console.log("callOrderCancelAPI result : ", result);
             if(result.status === 201) {
                 dispatch(canceled());
