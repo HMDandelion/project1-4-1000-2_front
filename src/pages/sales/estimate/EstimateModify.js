@@ -36,7 +36,6 @@ function EstimateModify({isOpen, onClose, estimate}) {
     }, []);
 
     useEffect(() => {
-
         if (products && estimate.products) {
             const updatedProducts = estimate.products.map(product => {
                 const matchedProduct = products.find(p => p.productCode === product.productCode);

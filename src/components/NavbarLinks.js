@@ -1,11 +1,8 @@
 // Chakra Imports
 import {
 	Avatar,
-	Button,
 	Flex,
 	Icon,
-	Image,
-	Link,
 	Menu,
 	MenuButton,
 	MenuItem,
@@ -14,14 +11,13 @@ import {
 	useColorModeValue
 } from '@chakra-ui/react';
 // Custom Components
-import PropTypes from 'prop-types';
 import React, {useEffect} from 'react';
 // Assets
-import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
+import { MdNotificationsNone } from 'react-icons/md';
 import { FaEthereum } from 'react-icons/fa';
 import {callEmployeeInfoAPI, callLogoutAPI} from "../apis/AuthAPICalls";
 import {useDispatch, useSelector} from "react-redux";
-import {getEmployeeNo} from "../utils/TokenUtils";
+import {getEmployeeNo, isLogin} from "../utils/TokenUtils";
 
 export default function NavbarLinks(props) {
 	const { secondary } = props;
@@ -51,7 +47,7 @@ export default function NavbarLinks(props) {
 	}, [success]);
 
 	useEffect(() => {
-		dispatch(callEmployeeInfoAPI(getEmployeeNo()));
+		isLogin() && dispatch(callEmployeeInfoAPI(getEmployeeNo()));
 	}, []);
 
 	return (
@@ -61,7 +57,7 @@ export default function NavbarLinks(props) {
 			flexDirection="row"
 			bg={menuBg}
 			flexWrap={secondary ? { base: 'wrap', md: 'nowrap' } : 'unset'}
-			p="10px"
+			p="10px 10px 10px 20px"
 			borderRadius="30px"
 			boxShadow={shadow}>
 			<Flex
@@ -99,10 +95,10 @@ export default function NavbarLinks(props) {
 					maxW={{ base: '360px', md: 'unset' }}>
 					<Flex jusitfy="space-between" w="100%" mb="20px">
 						<Text fontSize="md" fontWeight="600" color={textColor}>
-							Notifications
+							알림
 						</Text>
 						<Text fontSize="sm" fontWeight="500" color={textColorBrand} ms="auto" cursor="pointer">
-							Mark all read
+							전부 읽기
 						</Text>
 					</Flex>
 					<Flex flexDirection="column">
@@ -113,65 +109,6 @@ export default function NavbarLinks(props) {
 					</Flex>
 				</MenuList>
 			</Menu>
-
-      <Menu>
-        <MenuButton p='0px'>
-          <Icon
-            mt='6px'
-            as={MdInfoOutline}
-            color={navbarIcon}
-            w='18px'
-            h='18px'
-            me='10px'
-          />
-        </MenuButton>
-        <MenuList
-          boxShadow={shadow}
-          p='20px'
-          me={{ base: "30px", md: "unset" }}
-          borderRadius='20px'
-          bg={menuBg}
-          border='none'
-          mt='22px'
-          minW={{ base: "unset" }}
-          maxW={{ base: "360px", md: "unset" }}>
-          <Image borderRadius='16px' mb='28px' />
-          <Flex flexDirection='column'>
-            <Link
-              w='100%'
-              href='https://horizon-ui.com/pro?ref=horizon-chakra-free'>
-              <Button w='100%' h='44px' mb='10px' variant='brand'>
-                Buy Horizon UI PRO
-              </Button>
-            </Link>
-            <Link
-              w='100%'
-              href='https://horizon-ui.com/documentation/docs/introduction?ref=horizon-chakra-free'>
-              <Button
-                w='100%'
-                h='44px'
-                mb='10px'
-                border='1px solid'
-                bg='transparent'
-                borderColor={borderButton}>
-                See Documentation
-              </Button>
-            </Link>
-            <Link
-              w='100%'
-              href='https://github.com/horizon-ui/horizon-ui-chakra'>
-              <Button
-                w='100%'
-                h='44px'
-                variant='no-hover'
-                color={textColor}
-                bg='transparent'>
-                Try Horizon Free
-              </Button>
-            </Link>
-          </Flex>
-        </MenuList>
-      </Menu>
 			<Menu>
 				<MenuButton p="0px">
 					<Avatar
@@ -225,10 +162,3 @@ export default function NavbarLinks(props) {
 		</Flex>
 	);
 }
-
-NavbarLinks.propTypes = {
-	variant: PropTypes.string,
-	fixed: PropTypes.bool,
-	secondary: PropTypes.bool,
-	onOpen: PropTypes.func
-};

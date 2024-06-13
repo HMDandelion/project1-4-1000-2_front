@@ -11,9 +11,21 @@ function OrderStatusBadge(value) {
                 return (
                     <Badge colorScheme='blue' size='xs'>반품</Badge>
                 );
+            case 'IN_PRODUCTION':
+                return (
+                    <Badge colorScheme='purple' size='xs'>생산중</Badge>
+                );
+            case 'WAIT_SHIPPING':
+                return (
+                    <Badge colorScheme='pink' size='xs'>배송대기</Badge>
+                );
+            case 'SHIPPING':
+                return (
+                    <Badge colorScheme='teal' size='xs'>배송중</Badge>
+                );
             case 'CANCELED':
                 return (
-                    <Badge colorScheme='red' size='xs'>주문취소</Badge>
+                    <Badge colorScheme='cyan' size='xs'>주문취소</Badge>
                 );
             case 'COMPLETED':
                 return (
