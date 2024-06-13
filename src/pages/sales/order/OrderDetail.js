@@ -15,6 +15,8 @@ import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import {callOrderAPI} from "../../../apis/OrderAPICalls";
 import OrderStatusProgress from "./OrderStatusProgress";
+import OrderCancelButton from "../../../components/button/OrderCancelButton";
+import ReturnRegist from "./ReturnRegist";
 
 
 
@@ -26,7 +28,7 @@ function OrderDetail() {
     const navigate = useNavigate();
     const location = useLocation();
     const orderCode = location.state;
-    const { order, success } = useSelector(state => state.orderReducer);
+    const { order, success, canceled } = useSelector(state => state.orderReducer);
 
     const [columnData, setColumnData] = useState([
         { headerName: "상품번호", valueGetter: (p) => p.data.productCode, width: 100, resizable: false },
@@ -40,10 +42,10 @@ function OrderDetail() {
         dispatch(callOrderAPI({orderCode}));
         onClose();
     }, [success]);
-    //
-    // useEffect(() => {
-    //     if(deleted === true) navigate('/sales/order');
-    // }, [deleted]);
+
+    useEffect(() => {
+        if(canceled === true) navigate('/sales/order');
+    }, [canceled]);
 
     // useEffect(() => {
     //     if(orderSuccess === true) navigate('/sales/order');
@@ -85,7 +87,7 @@ function OrderDetail() {
                             </Text>
                         </Flex>
                         <Divider/>
-                        <OrderStatusProgress/>
+                        <OrderStatusProgress status={order.status}/>
                         <Flex justify='space-between'>
                             <Text fontSize='md' fontWeight='700' color={textColor} m='5px 10px'>
                                 주문일자
@@ -117,7 +119,7 @@ function OrderDetail() {
                                         <Text fontSize='md' fontWeight='700' color={textColor} m='10px'>
                                             마감까지
                                         </Text>
-                                        <Text fontSize='md' fontWeight='500' color='orange.600' m='10px'>
+                                        <Text fontSize='md' fontWeight='500' color='orange.400' m='10px'>
                                             {getDayLeft(order.deadline)}
                                         </Text>
                                     </>
@@ -157,9 +159,6 @@ function OrderDetail() {
                 </GridItem>
             </Grid>
 
-
-
-
             <Divider mt='20px'/>
 
             <Card>
@@ -167,7 +166,11 @@ function OrderDetail() {
                 <Heading fontSize='xl' color={textColor} pt='15px'>
                     <Flex justify='space-between'>
                         <span>주문 총액 {formatNumber(getTotalPrice(order.orderProducts))}원</span>
-                        {/*<OrderRegistButton isPossible={!estimate['isOrdered']} estimateCode={estimate.estimateCode}/>*/}
+                        {
+                            order.status !== 'COMPLETED' ?
+                                <OrderCancelButton isPossible={order.status === 'ORDER_RECEIVED'} orderCode={order.orderCode}/> :
+                                <ReturnRegist order={order}/>
+                        }
                     </Flex>
                 </Heading>
             </Card>
