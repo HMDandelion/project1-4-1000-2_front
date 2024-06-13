@@ -8,13 +8,13 @@ import {
 import React, {useEffect, useRef} from "react";
 import {WarningIcon} from "@chakra-ui/icons";
 import {useDispatch} from "react-redux";
-import {callReleaseAPI, callReleaseOrdersAPI, callReleaseWaitAPI} from "../../apis/ReleaseAPICalls";
+import {callReleaseAPI, callReleaseOrdersAPI, callReleaseWaitAPI, callShippingAPI} from "../../apis/ReleaseAPICalls";
 import {statusToastAlert} from "../../utils/ToastUtils";
 import {useNavigate} from "react-router-dom";
 import {callWarehousesAPI} from "../../apis/WarehouseAPICalls";
 
 
-function ReleaseAlertButton({isOpen, leastDestructiveRef,onClose,currentOrderPage,order,currentWaitPage}) {
+function ShippingAlertButton({isOpen, leastDestructiveRef,onClose,currentWaitPage,release}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -24,15 +24,14 @@ function ReleaseAlertButton({isOpen, leastDestructiveRef,onClose,currentOrderPag
 
     //출고 확인 후 핸들러
     const onClickHandler = () => {
-        dispatch(callReleaseAPI({
+        dispatch(callShippingAPI({
             onSuccess: () => {
-                const title = '출고 완료';
-                const desc = '출고가 완료 되었습니다.';
+                const title = '배송 처리 완료';
+                const desc = '배송이 처리가 완료 되었습니다.';
                 statusToastAlert(title, desc, 'success');
-                dispatch(callReleaseOrdersAPI({currentPage:currentOrderPage}));
                 dispatch(callReleaseWaitAPI({currentPage:currentWaitPage}));
             },
-            orderCode: order.orderCode
+            orderCode: release.orderCode
         }));
         onClose();
     };
@@ -60,7 +59,7 @@ function ReleaseAlertButton({isOpen, leastDestructiveRef,onClose,currentOrderPag
                             </GridItem>
                             <GridItem colSpan={4} color='secondaryGray.900'>
                                 <AlertDialogHeader fontSize='lg' fontWeight='800' p='40px 0 5px'>
-                                    정말로 출고하시겠습니까?
+                                    정말로 배송 처리하시겠습니까?
                                 </AlertDialogHeader>
                                 <AlertDialogBody p='0'>
                                     이 작업은 되돌릴 수 없습니다.
@@ -82,4 +81,4 @@ function ReleaseAlertButton({isOpen, leastDestructiveRef,onClose,currentOrderPag
     );
 }
 
-export default ReleaseAlertButton;
+export default ShippingAlertButton;

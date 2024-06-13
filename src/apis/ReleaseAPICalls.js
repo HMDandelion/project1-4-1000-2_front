@@ -92,6 +92,27 @@ export const callReleaseAPI = ({ onSuccess,orderCode }) => {
 };
 
 
+export const callShippingAPI = ({ onSuccess,orderCode }) => {
+
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('PUT',`${DEFAULT_URL}/shipping/${orderCode}`,{'Content-Type':'application/json'});
+            console.log('callShippingAPI result : ',result);
+
+            if(result.status === 201) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('배송 처리 실패:', result);
+            }
+        } catch (error) {
+            console.error('배송 처리 중 오류 발생:', error);
+            const title = '배송 처리 오류';
+            const desc = '배송에 실패하였습니다.';
+            statusToastAlert(title, desc, 'error');
+        }
+    }
+};
 export const callOrderInformation =({orderCode}) =>{
     return async (dispatch, getState) =>{
         const result = await request('GET', `/api/v1/orders/${orderCode}`);

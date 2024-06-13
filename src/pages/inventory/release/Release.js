@@ -20,6 +20,7 @@ import ReleaseWaitTable from "../../../components/table/product/ReleaseWaitTable
 import * as PropTypes from "prop-types";
 import {FaBuilding, FaTruck,FaFileAlt} from "react-icons/fa";
 import OrderInformation from "../../../theme/components/modals/release/OrderInformation";
+import ShippingAlertButton from "../../../components/button/ShippingAlertButton";
 
 
 function Release(){
@@ -36,6 +37,7 @@ function Release(){
     const { isOpen: isExpectedReleaseModalOpen, onOpen: onExpectedReleaseModalOpen, onClose: onExpectedReleaseModalClose } = useDisclosure();
     const { isOpen: isLackModalOpen, onOpen: onLackModalOpen, onClose: onLackModalClose } = useDisclosure();
     const { isOpen: isOrderInfoModalOpen, onOpen: onOrderInfoModalOpen, onClose: onOrderInfoModalClose } = useDisclosure();
+    const { isOpen: isShippingModalOpen, onOpen: onShippingModalOpen, onClose: onShippingModalClose } = useDisclosure();
 
     const [currentOrderPage, setCurrentOrderPage] = useState(1);
     const [currentWaitPage, setCurrentWaitPage] = useState(1);
@@ -202,7 +204,7 @@ function Release(){
                             <Button colorScheme='green' size='sm' onClick={handleRelease(order)}>
                                 출고 진행 <TripleArrowIcon />
                             </Button>
-                            <ReleaseAlertButton orders={orders} isOpen={isReleaseCheckOpen} leastDestructiveRef={cancelRef} onClose={() => {onReleaseCheckClose();}} currentOrderPage={currentOrderPage} order={selectedOrder}/>
+                            <ReleaseAlertButton currentWaitPage={currentWaitPage} isOpen={isReleaseCheckOpen} leastDestructiveRef={cancelRef} onClose={() => {onReleaseCheckClose();}} currentOrderPage={currentOrderPage} order={selectedOrder}/>
                                 </>
                 )}
                         </>
@@ -216,6 +218,13 @@ function Release(){
         event.stopPropagation();
         setSelectedRelease(release);
         onOrderInfoModalOpen();
+    }
+
+    //주문 정보
+    const handleShipping = (release) =>(event) =>{
+        event.stopPropagation();
+        setSelectedRelease(release);
+        onShippingModalOpen();
     }
     let processedReleases;
     if(releases) {
@@ -233,10 +242,10 @@ function Release(){
                 })(),
                 shipButton:(() => {
                     return(<>
-                            <Button colorScheme='blue' size='sm' onClick={handleRelease(release)}>
-                                배송 진행 <TripleArrowIcon />
+                            <Button colorScheme='blue' size='sm' onClick={handleShipping(release)}>
+                                배송 처리 진행 <TripleArrowIcon />
                             </Button>
-                            <ReleaseAlertButton orders={orders} isOpen={isReleaseCheckOpen} leastDestructiveRef={cancelRef} onClose={() => {onReleaseCheckClose();}} currentOrderPage={currentOrderPage} order={selectedOrder}/>
+
                         </>
                     );
                 })(),
@@ -295,6 +304,7 @@ function Release(){
                                 baseLink={releaseBaseLink}
                                 idAccessor={releaseIdAccessor}
                             />
+                            <ShippingAlertButton isOpen={isShippingModalOpen} leastDestructiveRef={cancelRef} onClose={() => {onShippingModalClose();}} currentOrderPage={currentOrderPage} release={selectedRelease}/>
                             <PagingBar
                                 pageInfo={releasePageInfo}
                                 setCurrentPage={setCurrentWaitPage}
