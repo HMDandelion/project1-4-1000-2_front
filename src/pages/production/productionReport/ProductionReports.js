@@ -1,22 +1,25 @@
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { callProductionReportsAPI } from "../../../apis/ProductionAPICalls";
-import {Button, HStack} from "@chakra-ui/react";
+import { Button, HStack, useDisclosure } from "@chakra-ui/react";
 import SelectMenu from "../../../components/common/SelectMenu";
 import ComplexTable from "../../../components/table/NewComplexTable";
 import DropDownMenu from "../../../components/common/DropDownMenu";
 import { useNavigate } from "react-router-dom";
+import PagingBar from "../../../components/common/PagingBar";
+const RegistProductionReportModal = lazy(() => import("./RegistProductionReportModal"));
 
 function ProductionReports() {
     const dispatch = useDispatch();
     const { productionReports } = useSelector((state) => state.productionReportReducer);
     const navigate = useNavigate();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const [statusType, setStatusType] = useState('type1');
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(callProductionReportsAPI({ currentPage, statusType }));
+        dispatch(callProductionReportsAPI({ currentPage }));
     }, [currentPage, statusType, dispatch]);
 
     const searchHandler = (selectedOption, selectedLabel) => {
@@ -33,6 +36,8 @@ function ProductionReports() {
 
     const columns = [
         { Header: '코드', accessor: 'productionStatusCode' },
+        { Header: '생산 상품', accessor: 'stylizationName' },
+        { Header: '총 지시 수량', accessor: 'totalOrderedQuantity' },
         { Header: '총 생산량', accessor: 'totalProductionQuantity' },
         { Header: '생산 시작 일자', accessor: 'startAt' },
         { Header: '생산 마감 일시', accessor: 'completedAt' },
@@ -41,19 +46,19 @@ function ProductionReports() {
     ];
 
     const handleRowClick = (row) => {
-        // navigate(`/production/report/detail`, { state: row.original.productionStatusCode });
         navigate(`/production/reports/${row.original.productionStatusCode}/detail`);
     };
 
     const handleAddReport = () => {
-        navigate(`/production/reports/new`);
+        onOpen();
     };
 
     const handleDeleteReport = () => {
-        // 선택된 보고서를 삭제하는 로직을 추가합니다.
+
     };
 
     return (
+        productionReports &&
         <>
             <HStack justifyContent="space-between" mb="20px">
                 <HStack spacing='10px'>
@@ -61,13 +66,17 @@ function ProductionReports() {
                     <SelectMenu onSearch={searchHandler} menuList={menuList} />
                 </HStack>
                 <HStack size='sm'>
-                    <Button colorScheme="orange" onClick={handleAddReport}>보고서 등록</Button>
-                    <Button colorScheme="red" onClick={handleDeleteReport}>보고서 삭제</Button>
+                    <Button colorScheme="orange" onClick={handleAddReport}>등록</Button>
+                    <Button colorScheme="red" onClick={handleDeleteReport}>삭제</Button>
                 </HStack>
             </HStack>
             {productionReports && (
-                <ComplexTable columnsData={columns} tableData={productionReports} onRowClick={handleRowClick} />
+                <ComplexTable columnsData={columns} tableData={productionReports.data} onRowClick={handleRowClick} />
             )}
+            <PagingBar pageInfo={productionReports.pageInfo} setCurrentPage={setCurrentPage}/>
+            <Suspense fallback={<div>Loading...</div>}>
+                <RegistProductionReportModal isOpen={isOpen} onClose={onClose} />
+            </Suspense>
         </>
     );
 }

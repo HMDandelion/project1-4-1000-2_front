@@ -5,13 +5,14 @@ import {
     getProductionReports
 } from "../modules/ProductionReportModules";
 
-export const callProductionReportsAPI = ({ currentPage = 1 }) => {
+export const callProductionReportsAPI = ({ currentPage }) => {
     return async (dispatch, getState) => {
-            const result = await authRequest.get(`/api/v1/production/reports?page=${currentPage}`);
+        console.log("실행됬음!!!!!!!!!!");
+            const result = await authRequest.get(`api/v1/production/reports?page=${currentPage}`);
             console.log("callProductionReportsAPI result : ", result);
 
             if (result.status === 200) {
-                dispatch(getProductionReports(result.data)); // sgetProductionReports에는 result 전체를 전달하는 것이 아니라 result.data를 전달해야 합니다.
+                dispatch(getProductionReports(result)); // sgetProductionReports에는 result 전체를 전달하는 것이 아니라 result.data를 전달해야 합니다.
 
         }
     }
