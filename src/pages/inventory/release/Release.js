@@ -18,10 +18,12 @@ import ReleaseAlertButton from "../../../components/button/ReleaseAlertButton";
 import {HomeIcon} from "../../../components/icons/Icons";
 import ReleaseWaitTable from "../../../components/table/product/ReleaseWaitTable";
 import * as PropTypes from "prop-types";
-import {FaBuilding, FaTruck,FaFileAlt} from "react-icons/fa";
+import {FaBuilding, FaTruck, FaFileAlt, FaCity} from "react-icons/fa";
 import OrderInformation from "../../../theme/components/modals/release/OrderInformation";
 import ShippingAlertButton from "../../../components/button/ShippingAlertButton";
 import ReleaseShippingTable from "./ReleaseShippingTable";
+import {BiSolidCity} from "react-icons/bi";
+import ReleaseCompleteTable from "./ReleaseCompleteTable";
 
 
 function Release(){
@@ -43,6 +45,7 @@ function Release(){
     const [currentOrderPage, setCurrentOrderPage] = useState(1);
     const [currentWaitPage, setCurrentWaitPage] = useState(1);
     const [currentShipPage, setCurrentShipPage] = useState(1);
+    const [currentCompletePage, setCurrentCompletePage] = useState(1);
     const [selectedOrder,setSelectedOrder] = useState(null);
     const [selectedRelease,setSelectedRelease] = useState(null);
     const cancelRef = React.useRef();
@@ -186,13 +189,11 @@ function Release(){
                     {order.isReleasePossible &&(
                         <>
                             <Button colorScheme="green" size='sm' onClick={handleReleaseExpected(order)}>출고 견적</Button>
-                            <ReleaseExpected isOpen={isExpectedReleaseModalOpen} selectedOrder={selectedOrder}  onClose={() => { onExpectedReleaseModalClose(); }} setSelectedOrder={setSelectedOrder}/>
                         </>
                     )}
                     {!order.isReleasePossible &&(
                     <>
                         <Button colorScheme="red" size='sm' onClick={handleReleaseLack(order)}>부족 재고</Button>
-                        <ReleaseLack isOpen={isLackModalOpen} selectedOrder={selectedOrder}  onClose={() => { onLackModalClose(); }} setSelectedOrder={setSelectedOrder}/>
                     </>
                 )}
                 </>
@@ -288,8 +289,40 @@ function Release(){
                             baseLink={orderBaseLink}
                             idAccessor={orderIdAccessor}
                         />
-                        <OrderProduct isOpen={isOrderProductModalOpen} selectedOrder={selectedOrder}  onClose={() => { onOrderProductModalClose(); }} setSelectedOrder={setSelectedOrder} />
-                        <ReleaseAlertButton currentWaitPage={currentWaitPage} isOpen={isReleaseCheckOpen} leastDestructiveRef={cancelRef} onClose={() => {onReleaseCheckClose();}} currentOrderPage={currentOrderPage} order={selectedOrder}/>
+                        {isOrderProductModalOpen && (
+                            <OrderProduct
+                                isOpen={isOrderProductModalOpen}
+                                selectedOrder={selectedOrder}
+                                onClose={onOrderProductModalClose}
+                                setSelectedOrder={setSelectedOrder}
+                            />
+                        )}
+                        {isLackModalOpen && (
+                            <ReleaseLack
+                                isOpen={isLackModalOpen}
+                                selectedOrder={selectedOrder}
+                                onClose={onLackModalClose}
+                                setSelectedOrder={setSelectedOrder}
+                            />
+                        )}
+                        {isExpectedReleaseModalOpen && (
+                            <ReleaseExpected
+                                isOpen={isExpectedReleaseModalOpen}
+                                selectedOrder={selectedOrder}
+                                onClose={onExpectedReleaseModalClose}
+                                setSelectedOrder={setSelectedOrder}
+                            />
+                        )}
+                        {isReleaseCheckOpen && (
+                            <ReleaseAlertButton
+                                currentWaitPage={currentWaitPage}
+                                isOpen={isReleaseCheckOpen}
+                                leastDestructiveRef={cancelRef}
+                                onClose={onReleaseCheckClose}
+                                currentOrderPage={currentOrderPage}
+                                order={selectedOrder}
+                            />
+                        )}
                         <PagingBar
                             pageInfo={orderPageInfo}
                             setCurrentPage={setCurrentOrderPage}
@@ -298,7 +331,7 @@ function Release(){
                     <Box display="flex" flexDirection="row" justifyContent="space-between">
                         <Box flex="1" mx="1" style={{ minWidth: '300px' }}>
                             <div style={{ textAlign: 'center', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
-                                <HomeIcon style={{ fontSize: '40px', color: 'orange' }} />
+                                <HomeIcon style={{ fontSize: '40px', color: 'orange', marginBottom: '16px' }} />
                             </div>
                             <ReleaseWaitTable
                                 columnsData={waitColumns}
@@ -307,8 +340,24 @@ function Release(){
                                 baseLink={releaseBaseLink}
                                 idAccessor={releaseIdAccessor}
                             />
-                            <OrderInformation isOpen={isOrderInfoModalOpen} selectedRelease={selectedRelease}  onClose={() => { onOrderInfoModalClose(); }} setSelectedRelease={setSelectedRelease} />
-                            <ShippingAlertButton isOpen={isShippingModalOpen} leastDestructiveRef={cancelRef} onClose={() => {onShippingModalClose();}} currentOrderPage={currentOrderPage} currentShipPage={currentShipPage} release={selectedRelease}/>
+                            {isOrderInfoModalOpen && (
+                                <OrderInformation
+                                    isOpen={isOrderInfoModalOpen}
+                                    selectedRelease={selectedRelease}
+                                    onClose={onOrderInfoModalClose}
+                                    setSelectedRelease={setSelectedRelease}
+                                />
+                            )}
+                            {isShippingModalOpen && (
+                                <ShippingAlertButton
+                                    isOpen={isShippingModalOpen}
+                                    leastDestructiveRef={cancelRef}
+                                    onClose={onShippingModalClose}
+                                    currentOrderPage={currentOrderPage}
+                                    currentShipPage={currentShipPage}
+                                    release={selectedRelease}
+                                />
+                            )}
                             <PagingBar
                                 pageInfo={releasePageInfo}
                                 setCurrentPage={setCurrentWaitPage}
@@ -318,15 +367,20 @@ function Release(){
                             <div style={{ textAlign: 'center', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
                                 <FaTruck style={{ fontSize: '40px', color: 'orange' }} />
                             </div>
-                            <ReleaseShippingTable currentShipPage={currentShipPage} setCurrentShipPage={setCurrentShipPage}/>
+                            <ReleaseShippingTable currentShipPage={currentShipPage} setCurrentShipPage={setCurrentShipPage} />
                         </Box>
                         <Box flex="1" mx="1" style={{ minWidth: '300px' }}>
+                            <div style={{ textAlign: 'center', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
+                                <FaBuilding style={{ fontSize: '40px', color: 'orange' }} />
+                            </div>
+                            <ReleaseCompleteTable currentCompletePage={currentCompletePage} setCurrentCompletePage={setCurrentCompletePage} />
                         </Box>
                     </Box>
                 </>
             )}
         </>
     );
+
 
 }
 export default Release;

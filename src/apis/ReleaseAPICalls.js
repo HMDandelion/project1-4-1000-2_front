@@ -4,6 +4,7 @@ import {getInventoryProducts, success} from "../modules/ProductModules";
 import {getInventoryStocks} from "../modules/StockModules";
 import {getInventoryWarehouse, getInventoryWarehouses} from "../modules/WarehouseModules";
 import {
+    getCompletes,
     getExpectedRelease, getOrderInformations,
     getOrderProducts, getRelease,
     getReleaseExpected, getReleaseLack,
@@ -130,6 +131,17 @@ export const callShippingsRelaseAPI =({currentPage=1}) =>{
         console.log("callShippingsRelaseAPI : ", result);
         if(result.status === 200) {
             dispatch(getShippings(result));
+        }
+    }
+}
+
+export const callCompletesRelaseAPI =({currentPage=1}) =>{
+    return async (dispatch, getState) =>{
+        const result = await request('GET', `${DEFAULT_URL}/complete?page=${currentPage}`);
+
+        console.log("callCompletesRelaseAPI : ", result);
+        if(result.status === 200) {
+            dispatch(getCompletes(result));
         }
     }
 }
