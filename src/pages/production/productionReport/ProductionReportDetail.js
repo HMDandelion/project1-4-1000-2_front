@@ -25,6 +25,10 @@ function ProductionReportDetail() {
 
         { Header: "상세정보 코드", accessor: "productionDetailCode" },
         { Header: "업무 지시서 코드", accessor: "workOrderCode" },
+        { Header: "라인", accessor: "lineName" },
+        { Header: "담당자", accessor: "employeeName" },
+        { Header: "생산 상품", accessor: "productName" },
+        { Header: "지시 수량", accessor: "orderedQuantity" },
         { Header: "생산량", accessor: "productionQuantity" },
         { Header: "불량 수량", accessor: "defectQuantity" },
         { Header: "양품 수량", accessor: "completelyQuantity" },
@@ -33,6 +37,9 @@ function ProductionReportDetail() {
         { Header: "비고", accessor: "productionMemo" },
         { Header: "생산 상태", accessor: "productionStatusType" },
     ];
+
+
+
 
     const handleRowClick = (row) => {
         // navigate(`/production/report/detail`, { state: row.original.productionStatusCode });

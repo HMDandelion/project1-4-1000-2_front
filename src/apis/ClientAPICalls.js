@@ -4,7 +4,7 @@ import {
     getMaterialClient,
     getMaterialClients,
     getSalesClient,
-    getSalesClients,
+    getSalesClients, getSimpleSalesClients,
     success
 } from "../modules/ClientModules";
 import {statusToastAlert} from "../utils/ToastUtils";

@@ -8,17 +8,23 @@ const initialState = {};
 const GET_PRODUCTION_REPORTS = 'production/GET_PRODUCTION_REPORTS';
 const GET_PRODUCTION_REPORT = 'production/GET_PRODUCTION_REPORT';
 const GET_DEFECT_DETAILS = 'production/GET_DEFECT_DETAILS';
+const SUCCESS = 'client/SUCCESS';
+const DELETED = 'client/DELETED';
 export const {production:{getProductionReports, getProductionReport, getDefectDetails}} = createActions({
     [GET_PRODUCTION_REPORTS]: result => ({productionReports: result.data}),
     [GET_PRODUCTION_REPORT]: result => ({productionReport: result.data}),
-    [GET_DEFECT_DETAILS]: result => ({defectDetails: result.data})
+    [GET_DEFECT_DETAILS]: result => ({defectDetails: result.data}),
+    [SUCCESS] : () => ({success : true}),
+    [DELETED] : () => ({deleted : true})
 });
 
 /* 리듀서 */
 const productionReportReducer = handleActions({
     [GET_PRODUCTION_REPORTS]: (state, { payload }) => payload,
     [GET_PRODUCTION_REPORT]: (state, {payload}) => payload,
-    [GET_DEFECT_DETAILS]: (state, {payload}) => payload
+    [GET_DEFECT_DETAILS]: (state, {payload}) => payload,
+    [SUCCESS] : (state, {payload}) => payload,
+    [DELETED] : (state, {payload}) => payload
 }, initialState);
 
 export default productionReportReducer;

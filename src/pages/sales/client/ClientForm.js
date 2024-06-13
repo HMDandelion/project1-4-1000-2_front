@@ -35,7 +35,7 @@ function ClientForm({ client, setForm }) {
             address : data.address,
             postcode : data.zonecode,
         })
-        onClose();
+         onClose();
     }
 
     return (

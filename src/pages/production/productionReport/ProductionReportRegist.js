@@ -6,31 +6,110 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
-    ModalOverlay
+    ModalOverlay,
+    VStack,
+    Grid,
+    GridItem, ChakraProvider
 } from "@chakra-ui/react";
+import {useState} from "react";
+import ProductionReportForm from "./ProductionReportForm";
+import ProductionDetailForm from "./ProductionDetailForm";
+import DefectDetailForm from "./DefectDetailForm";
 
-function RegistProductionReportModal({ isOpen, onClose }) {
+function ProductionReportRegist({isOpen, onClose}) {
+    const [reportData, setReportData] = useState({
+        stylizationName: '',
+        totalOrderedQuantity: 0,
+        totalProductionQuantity: 0,
+        startAt: '',
+        completedAt: '',
+        productionFile: null,
+        productionStatus: ''
+    });
+
+    const [detailData, setDetailData] = useState({
+        productionDetailCode: '',
+        workOrderCode: '',
+        lineName: '',
+        employeeName: '',
+        productName: '',
+        orderedQuantity: 0,
+        productionQuantity: 0,
+        defectQuantity: 0,
+        completelyQuantity: 0,
+        inspectionDate: '',
+        inspectionStatusType: '',
+        productionMemo: '',
+        productionStatusType: ''
+    });
+
+    const [defectData, setDefectData] = useState({
+        productionDetailCode: '',
+        defectCode: '',
+        defectFile: null,
+        defectReason: '',
+        defectStatus: ''
+    });
+
+    const handleReportDataChange = (updatedData) => {
+        console.log(updatedData)
+        setReportData({...reportData, ...updatedData});
+    };
+
+    const handleDetailDataChange = (updatedData) => {
+        setDetailData({...detailData, ...updatedData});
+    };
+
+    const handleDefectDataChange = (updatedData) => {
+        setDefectData({...defectData, ...updatedData});
+    };
+
+    const handleSave = () => {
+
+        console.log('Report Data:', reportData);
+        console.log('Detail Data:', detailData);
+        console.log('Defect Data:', defectData);
+        onClose();
+    };
+
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>보고서 등록</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                    {/* 모달 내용 작성 */}
-                </ModalBody>
-                <ModalFooter>
-                    <Button colorScheme="blue" mr={3} onClick={onClose}>
-                        닫기
-                    </Button>
-                    <Button variant="ghost">저장</Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+        <ChakraProvider>
+
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay/>
+                <ModalContent maxW="80vw">
+                    <ModalHeader>보고서 등록</ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody>
+                        <Grid templateColumns="repeat(2, 1fr)" templateRows="repeat(2, 1fr)" gap={4}>
+                            <GridItem colSpan={1} rowSpan={1}>
+                                <ProductionReportForm productionReport={reportData} setForm={handleReportDataChange}/>
+                            </GridItem>
+                            <GridItem colSpan={1} rowSpan={1}>
+                                <DefectDetailForm defectDetail={defectData} setForm={handleDefectDataChange}/>
+                            </GridItem>
+                            <GridItem colSpan={2} rowSpan={1}>
+                                <ProductionDetailForm productionDetail={detailData} setForm={handleDetailDataChange}/>
+                            </GridItem>
+                        </Grid>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                            닫기
+                        </Button>
+                        <Button variant="ghost" onClick={handleSave}>
+                            저장
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </ChakraProvider>
     );
 }
 
-export default RegistProductionReportModal;
+export default ProductionReportRegist;
+
 
 // import React, { useEffect, useState } from "react";
 // import { useDispatch, useSelector } from "react-redux";

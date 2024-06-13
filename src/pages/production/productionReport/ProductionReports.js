@@ -7,7 +7,7 @@ import ComplexTable from "../../../components/table/NewComplexTable";
 import DropDownMenu from "../../../components/common/DropDownMenu";
 import { useNavigate } from "react-router-dom";
 import PagingBar from "../../../components/common/PagingBar";
-const RegistProductionReportModal = lazy(() => import("./RegistProductionReportModal"));
+const RegistProductionReportModal = lazy(() => import("./ProductionReportRegist"));
 
 function ProductionReports() {
     const dispatch = useDispatch();
