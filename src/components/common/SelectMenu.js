@@ -12,8 +12,8 @@ function SelectMenu({onSearch, menuList}) {
 
     return (
         <>
-            <InputGroup>
-                <InputLeftAddon borderRadius='30px'>
+            <InputGroup isolation='auto'>
+                <InputLeftAddon borderRadius='30px 0 0 30px' bg='white'>
                     <Menu>
                         <MenuButton fontWeight='600' fontSize='14px' color='secondaryGray.600'>
                             {selectedOption}

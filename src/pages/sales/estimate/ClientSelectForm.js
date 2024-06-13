@@ -84,7 +84,7 @@ function ClientSelectForm({handleClientType, handleNewClient, handleExistingClie
                                                 overflow="hidden"
                                                 bg={existingClient == client.clientCode ? 'orange.400' : 'gray.100'}
                                                 color={existingClient == client.clientCode ? 'secondaryGray.900' : 'secondaryGray.800'}
-                                                _hover={{bg: existingClient == client.clientCode ? 'orange.600' : 'gray.200'}}
+                                                _hover={{bg: existingClient == client.clientCode ? 'orange.400' : 'gray.200'}}
                                                 py={2}
                                                 cursor="pointer"
                                                 {...(clientType !== 'existing') && {
