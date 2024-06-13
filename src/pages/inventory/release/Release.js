@@ -222,7 +222,7 @@ function Release(){
         onOrderInfoModalOpen();
     }
 
-    //주문 정보
+    //배송 처리 진행
     const handleShipping = (release) =>(event) =>{
         event.stopPropagation();
         setSelectedRelease(release);
@@ -331,7 +331,7 @@ function Release(){
                     <Box display="flex" flexDirection="row" justifyContent="space-between">
                         <Box flex="1" mx="1" style={{ minWidth: '300px' }}>
                             <div style={{ textAlign: 'center', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
-                                <HomeIcon style={{ fontSize: '40px', color: 'orange', marginBottom: '16px' }} />
+                                <HomeIcon style={{ fontSize: '40px', color: 'orange' }} />
                             </div>
                             <ReleaseWaitTable
                                 columnsData={waitColumns}
@@ -367,7 +367,7 @@ function Release(){
                             <div style={{ textAlign: 'center', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
                                 <FaTruck style={{ fontSize: '40px', color: 'orange' }} />
                             </div>
-                            <ReleaseShippingTable currentShipPage={currentShipPage} setCurrentShipPage={setCurrentShipPage} />
+                            <ReleaseShippingTable currentShipPage={currentShipPage} setCurrentShipPage={setCurrentShipPage} currentCompletePage={currentCompletePage} setCurrentCompletePage={setCurrentCompletePage} cancelRef={cancelRef}/>
                         </Box>
                         <Box flex="1" mx="1" style={{ minWidth: '300px' }}>
                             <div style={{ textAlign: 'center', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>

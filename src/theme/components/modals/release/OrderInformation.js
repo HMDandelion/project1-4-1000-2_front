@@ -30,7 +30,7 @@ function OrderInformation({isOpen,selectedRelease,onClose,setSelectedRelease}){
     }
     return (
         <>
-            <Modal isOpen={isOpen} onClose={() => { onClose(); setSelectedRelease(null); }}>
+            <Modal isOpen={isOpen} onClose={() => { onClose();  }}>
                 <ModalOverlay />
                 <ModalContent maxWidth="xl"> {/* 모달 크기 조정 */}
                     <ModalHeader color={"navy"}>주문 명세서</ModalHeader>

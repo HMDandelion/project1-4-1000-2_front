@@ -28,6 +28,10 @@ function ReleaseCompleteTable({currentCompletePage,setCurrentCompletePage}) {
             accessor: 'clientName'
         },
         {
+            Header: '마감 준수',
+            accessor: 'isDeadline'
+        },
+        {
             Header: '주문 명세서',
             accessor: 'orderInformation'
         },
@@ -44,9 +48,10 @@ function ReleaseCompleteTable({currentCompletePage,setCurrentCompletePage}) {
     // 주문 정보
     const handleOrderInformation = (complete) => (event) => {
         event.stopPropagation();
-        selectedComplete(complete);
+        setSelectedComplete(complete);
         onOrderInfoModalOpen();
     };
+
 
     let processedComplete = {};
     if (completes) {
@@ -61,6 +66,15 @@ function ReleaseCompleteTable({currentCompletePage,setCurrentCompletePage}) {
                     </div>
                 );
             })(),
+            isDeadline: complete.isDeadline ? (
+                <div className="status-container">
+                    <div className="status-circle green">&#10003;</div>
+                    <span className="status-text" style={{ color: 'green' }}>마감준수</span>
+                </div>
+            ) : <div className="status-container">
+                <div className="status-circle red">&#10005;</div>
+                <span className="status-text" style={{ color: 'red' }}>미준수</span>
+            </div>,
         }));
     }
 

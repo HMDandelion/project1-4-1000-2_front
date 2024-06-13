@@ -146,6 +146,27 @@ export const callCompletesRelaseAPI =({currentPage=1}) =>{
     }
 }
 
+export const callCompleteAPI = ({ onSuccess,orderCode }) => {
+
+    return async (dispatch, getState) => {
+        try {
+            const result = await request('PUT',`${DEFAULT_URL}/complete/${orderCode}`,{'Content-Type':'application/json'});
+            console.log('callCompleteAPI result : ',result);
+
+            if(result.status === 201) {
+                dispatch(success());
+                onSuccess && onSuccess();
+            }else {
+                console.error('주문 완료 처리 실패:', result);
+            }
+        } catch (error) {
+            console.error('주문 완료 중 오류 발생:', error);
+            const title = '주문 완료 처리 오류';
+            const desc = '주문 완료에 실패하였습니다.';
+            statusToastAlert(title, desc, 'error');
+        }
+    }
+};
 
 
 

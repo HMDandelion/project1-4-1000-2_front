@@ -5,13 +5,18 @@ import {Button, useDisclosure} from "@chakra-ui/react";
 import {useDispatch, useSelector} from "react-redux";
 import {callShippingsRelaseAPI} from "../../../apis/ReleaseAPICalls";
 import OrderInformation from "../../../theme/components/modals/release/OrderInformation";
+import {TripleArrowIcon} from "../../../components/icons/ArrowIcon";
+import {FaCheck} from "react-icons/fa";
+import CompleteAlertButton from "../../../components/button/CompleteAlertButton";
+import ShippingAlertButton from "../../../components/button/ShippingAlertButton";
 
-function ReleaseShippingTable({currentShipPage,setCurrentShipPage}) {
+function ReleaseShippingTable({currentShipPage,setCurrentShipPage,currentCompletePage,setCurrentCompletePage,cancelRef}) {
     const { shippings } = useSelector(state => state.releaseReducer);
     const dispatch = useDispatch();
     // const [currentPage, setCurrentPage] = useState(1);
     const [selectedShipping, setSelectedShipping] = useState(null);
     const { isOpen: isOrderInfoModalOpen, onOpen: onOrderInfoModalOpen, onClose: onOrderInfoModalClose } = useDisclosure();
+    const { isOpen: isCompleteModalOpen, onOpen: onCompleteModalOpen, onClose: onCompleteModalClose } = useDisclosure();
 
     useEffect(() => {
         console.log('currentPage', currentShipPage);
@@ -37,7 +42,7 @@ function ReleaseShippingTable({currentShipPage,setCurrentShipPage}) {
         },
         {
             Header: '',
-            accessor: 'shipButton'
+            accessor: 'completeButton'
         },
         {
             Header: '배송 시작 시간',
@@ -53,11 +58,16 @@ function ReleaseShippingTable({currentShipPage,setCurrentShipPage}) {
     const handleOrderInformation = (shipping) => (event) => {
         event.stopPropagation();
         setSelectedShipping(shipping);
-        console.log('슬라임', shipping.orderCode);
         onOrderInfoModalOpen();
     };
+    const handleComplete = (shipping) => (event) => {
+        event.stopPropagation();
+        setSelectedShipping(shipping);
+        onCompleteModalOpen();
+    };
 
-    let processedShipping = {};
+// 기존의 processedShipping 부분을 다음과 같이 수정
+    let processedShipping;
     if (shippings) {
         processedShipping = shippings.data.map(shipping => ({
             ...shipping,
@@ -70,8 +80,16 @@ function ReleaseShippingTable({currentShipPage,setCurrentShipPage}) {
                     </div>
                 );
             })(),
+            completeButton: (() => {
+                return (
+                    <Button colorScheme="green" size="sm" onClick={handleComplete(shipping)}>
+                        주문 완료 처리 <FaCheck />
+                    </Button>
+                );
+            })(),
         }));
     }
+
 
     return (
         <>
@@ -85,13 +103,29 @@ function ReleaseShippingTable({currentShipPage,setCurrentShipPage}) {
                         idAccessor={shipIdAccessor}
                     />
                     {selectedShipping && isOrderInfoModalOpen && (
+                        <>
                         <OrderInformation
                             isOpen={isOrderInfoModalOpen}
                             selectedRelease={selectedShipping}
                             onClose={onOrderInfoModalClose}
                             setSelectedRelease={setSelectedShipping}
                         />
+                        </>
                     )}
+                    {selectedShipping && isCompleteModalOpen && (
+                        <>
+                            <CompleteAlertButton
+                                isOpen={isCompleteModalOpen}
+                                leastDestructiveRef={cancelRef}
+                                onClose={onCompleteModalClose}
+                                currentShipPage={currentShipPage}
+                                currentCompletePage={currentCompletePage}
+                                release={selectedShipping}
+                            />
+                        </>
+                    )}
+
+
                     <PagingBar
                         pageInfo={shippings.pageInfo}
                         setCurrentPage={setCurrentShipPage}
