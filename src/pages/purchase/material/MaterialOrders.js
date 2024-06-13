@@ -8,6 +8,7 @@ import ComplexTable from "../../../components/table/NewComplexTable";
 import PagingBar from "../../../components/common/PagingBar";
 import {callMaterialOrdersAPI} from "../../../apis/MaterialOrderAPICalls";
 import {useNavigate} from "react-router-dom";
+import MaterialClientRegist from "../../../modals/Material/MaterialClientRegist";
 
 function MaterialOrders() {
     const [currentPage, setCurrentPage] = useState(1);

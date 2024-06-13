@@ -3,11 +3,14 @@ import {getMaterialSpec, getMaterialSpecs,success,deleted} from "../modules/Mate
 import {successDrop} from "../modules/MaterialStockDDModules";
 import {statusToastAlert} from "../utils/ToastUtils";
 
-export const callMaterialSpecsAPI = ({currentPage = 1, searchParams}) => {
+export const callMaterialSpecsAPI = ({currentPage = 1, searchParams,size}) => {
     return async (dispatch, getState) => {
         let url = `/api/v1/material/spec?page= ${currentPage}`;
         if (searchParams.searchText) {
             url = url + `&materialName=${searchParams.searchText}`;
+        }
+        if (size) {
+            url += `&size=${size}`;
         }
         const result = await authRequest.get(url);
 
