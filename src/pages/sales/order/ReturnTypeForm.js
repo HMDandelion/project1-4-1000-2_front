@@ -58,7 +58,7 @@ function ReturnTypeForm({manageType, setManageType, deadline, onDeadlineChange})
             </Flex>
             {
                 manageType === 'EXCHANGE' ?
-                    <Box mx={4} height='200px'>
+                    <Box mx={4}>
                         <Grid Grid templateColumns='repeat(3, 1fr)'>
                             <GridItem>
                                 <Text fontWeight='700' color='secondaryGray.900' mt='4px' textAlign='center'>마감일자</Text>
