@@ -19,7 +19,7 @@ import {FaTruck} from "react-icons/fa";
 
 
 function SidebarContent(props) {
-    const activeColor = useColorModeValue("orange.600", "white");
+    const activeColor = useColorModeValue("orange.400", "white");
     const inactiveColor = useColorModeValue(
         "secondaryGray.600",
         "secondaryGray.600"

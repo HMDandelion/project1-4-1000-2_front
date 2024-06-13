@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getAccessTokenHeader, getRefreshTokenHeader, saveToken} from "../utils/TokenUtils";
+import {getAccessTokenHeader, getRefreshTokenHeader, removeToken, saveToken} from "../utils/TokenUtils";
 
 const SERVER_IP = `${process.env.REACT_APP_RESTAPI_SERVER_IP}`;
 const SERVER_PORT = `${process.env.REACT_APP_RESTAPI_SERVER_PORT}`;
@@ -47,6 +47,9 @@ authRequest.interceptors.response.use(
                 saveToken(response.headers);
                 originRequest.headers['Access-Token'] = getAccessTokenHeader();
                 return axios(originRequest);
+            } else {
+                removeToken();
+                window.location.replace('/');
             }
         }
 
