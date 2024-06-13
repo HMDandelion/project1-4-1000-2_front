@@ -6,17 +6,18 @@ import {
     ModalContent,
     ModalFooter, ModalHeader,
     ModalOverlay,
-    Text,
     useDisclosure
 } from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
 import ReturnSelectForm from "./ReturnSelectForm";
 import ReturnQuantityForm from "./ReturnQuantityForm";
 import ReturnTypeForm from "./ReturnTypeForm";
-import PopoverCalendar from "../../../components/calendar/PopoverCalendar";
+import {callReturnRegistAPI} from "../../../apis/ReturnAPICalls";
+import {useDispatch} from "react-redux";
 
 function ReturnRegist({order}) {
+    const dispatch = useDispatch();
+
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [manageType, setManageType] = useState('REFUND');
     const [deadline, setDeadline] = useState();
@@ -30,17 +31,28 @@ function ReturnRegist({order}) {
         const form = {};
         form.orderCode = order.orderCode;
         form.manageType = manageType;
-        form.products = selectedProducts;
         if(manageType === 'EXCHANGE') form.deadline = deadline;
+        form.products = selectedProducts.map(product => ({
+            ...product,
+            quantity: product.returnQuantity,
+            refundPrice: product.price
+        }));
 
-        //TODO : API Calls
+        dispatch(callReturnRegistAPI({ returnRequest : form }));
+    }
+
+    const onCloseHandler = () => {
+        onClose();
+        setSelectedProducts([]);
+        setManageType('REFUND');
+        setDeadline(undefined);
     }
 
     const handleProductAdd = (product) => {
         if (!selectedProducts.includes(product)) {
             setSelectedProducts([
                 ...selectedProducts,
-                { ...product, estimatePrice: product.price, quantity: 1 }
+                { ...product, returnQuantity: 1 }
             ]);
         }
     };
@@ -51,29 +63,21 @@ function ReturnRegist({order}) {
 
     const handleQuantityChange = (product, quantity) => {
         setSelectedProducts((prev) =>
-            prev.map((p) => (p.productCode === product.productCode ? { ...p, quantity: parseInt(quantity, 10) } : p))
+            prev.map((p) => (p.productCode === product.productCode ? { ...p, returnQuantity: parseInt(quantity, 10) } : p))
         );
     };
-
-    const getTotalPrice = (products) => {
-        return products.reduce((total, product) => {
-            const calculated = product.quantity * product.price;
-            return total + (isNaN(calculated) ? 0 : calculated);
-        }, 0);
-    }
-    const formatNumber = (number) => new Intl.NumberFormat('ko-KR').format(number);
 
     return (
         <>
             <Button colorScheme='orange' size='sm' onClick={onOpen}>
                 반품 접수
             </Button>
-            <Modal isOpen={isOpen} onClose={onClose} size='xl' scrollBehavior='inside'>
+            <Modal isOpen={isOpen} onClose={onCloseHandler} size='xl' scrollBehavior='inside'>
                 <ModalOverlay/>
                 <ModalContent maxW='800px'>
                     <ModalBody>
                         <ModalHeader fontWeight='800' color='secondaryGray.900' px='0'>반품 신청</ModalHeader>
-                        <Grid templateColumns='repeat(11, 1fr)'>
+                        <Grid templateColumns='repeat(11, 1fr)' mt={4}>
                             <GridItem colSpan={5}>
                                 <ReturnTypeForm
                                     manageType={manageType}
@@ -101,13 +105,10 @@ function ReturnRegist({order}) {
                             onProductRemove={handleProductRemove}
                         />
                     </ModalBody>
-                    <ModalFooter justifyContent='space-between'>
-                        <Text fontSize='xl' color='secondaryGray.900' fontWeight='700'>
-                            견적 총액 {products && formatNumber(getTotalPrice(products))}원
-                        </Text>
+                    <ModalFooter justifyContent='flex-end' borderTop='1px' borderColor='gray.200'>
                         <HStack>
                             <Button colorScheme='orange' mx={1} onClick={onClickRegistHandler}>등록</Button>
-                            <Button variant='outline' mx={1} onClick={onClose}>
+                            <Button variant='outline' mx={1} onClick={onCloseHandler}>
                                 취소
                             </Button>
                         </HStack>
