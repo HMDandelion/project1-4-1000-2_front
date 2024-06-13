@@ -10,7 +10,7 @@ import MiniCalendar from "./MiniCalendar";
 import {useEffect, useState} from "react";
 import {CalendarIcon} from "@chakra-ui/icons";
 
-function PopoverCalendar({handleDeadline}) {
+function PopoverCalendar({deadline, handleDeadline}) {
     const getFormattedDate = date => {
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
     }
@@ -18,9 +18,8 @@ function PopoverCalendar({handleDeadline}) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-
     const { onOpen, onClose, isOpen } = useDisclosure();
-    const [selectedDate, setSelectedDate] = useState(getFormattedDate(tomorrow));
+    const [selectedDate, setSelectedDate] = useState(deadline ? deadline : getFormattedDate(tomorrow));
 
     useEffect(() => handleDeadline(selectedDate), [selectedDate]);
 

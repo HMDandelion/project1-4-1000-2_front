@@ -87,6 +87,7 @@ function EstimateForm({handleClientType, handleNewClient, handleExistingClient, 
                         onQuantityChange={handleQuantityChange}
                         onPriceChange={handlePriceChange}
                         onProductRemove={handleProductRemove}
+                        mode='regist'
                     />
                 </GridItem>
             </Grid>

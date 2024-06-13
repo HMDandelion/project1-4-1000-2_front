@@ -23,9 +23,9 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
-import {callEstimateAPI} from "../../../apis/EstimateAPICalls";
-import {WarningIcon} from "@chakra-ui/icons";
+import {callEstimateAPI, callEstimateDeleteAPI} from "../../../apis/EstimateAPICalls";
 import OrderRegistButton from "../../../components/button/OrderRegistButton";
+import EstimateModify from "./EstimateModify";
 
 
 function EstimateDetail() {
@@ -76,11 +76,12 @@ function EstimateDetail() {
                     견적 상세
                 </Text>
                 <div>
-                    <Button colorScheme='gray' size='xs' onClick={onOpen}>
+                    <Button colorScheme='gray' size='xs' onClick={onOpen} isDisabled={estimate['isOrdered']}>
                         수정
                     </Button>
-                    <DeleteAlertButton/>
+                    <DeleteAlertButton code={estimateCode} deleteAPI={callEstimateDeleteAPI}/>
                 </div>
+                <EstimateModify isOpen={isOpen} onClose={onClose} estimate={estimate}/>
             </Flex>
 
             <Text fontWeight='bold' color={textColor}>

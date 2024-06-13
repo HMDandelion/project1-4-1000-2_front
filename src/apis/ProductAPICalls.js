@@ -8,6 +8,8 @@ import {
     getInventoryProducts, getProductClient, getSimpleProducts, getSpec, getSpecPaging,
     success
 } from "../modules/ProductModules";
+import {getStore} from "../modules/StorageModules";
+import {statusToastAlert} from "../utils/ToastUtils";
 
 
 const DEFAULT_URL = `/api/v1/product`;
@@ -136,7 +138,9 @@ export const callBomUpdateAPI = ({ updateRequest,onSuccess,bomCode }) => {
                 console.error('bom 수정 실패:', result);
             }
         } catch (error) {
-            console.error('bom 수정 중 오류 발생:', error);
+            const title = '값을 모두 입력해주세요.';
+            const desc = '다시 시도해주세요.';
+            statusToastAlert(title, desc, 'error');
         }
     }
 };

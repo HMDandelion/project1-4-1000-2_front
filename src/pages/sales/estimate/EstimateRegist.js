@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {
     Button,
-    Container, HStack,
+    HStack,
     Modal,
     ModalBody,
     ModalContent,
@@ -35,23 +35,24 @@ function EstimateRegist() {
         if(success === true) navigate(`/sales/estimate`);
     }, [success]);
 
-    useEffect(() => console.log('selectProducts : ', selectedProducts), [selectedProducts]);
-    useEffect(() => console.log('clientType : ', clientType), [clientType]);
-    useEffect(() => console.log('existingClient : ', existingClient), [existingClient]);
-    useEffect(() => console.log('newClient : ', newClient), [newClient]);
-    useEffect(() => console.log('deadline : ', deadline), [deadline]);
-
     const onClickRegistHandler = () => {
         const form = {};
         form.deadline = deadline;
-        form.products = selectedProducts;
+        form.products = selectedProducts.map(product => ({
+            ...product,
+            price: product.estimatePrice
+        }));
 
         if(clientType === 'existing')
             form.clientCode = existingClient;
-        else
-            form.client = newClient;
+        else {
+            form.client = {
+                ...newClient,
+                phone: `${newClient.phoneFirst}-${newClient.phoneSecond}-${newClient.phoneThird}`
+            };
+        }
 
-        dispatch(callEstimateRegistAPI({ registRequest : form }));
+        dispatch(callEstimateRegistAPI({ estimateRequest : form }));
     }
 
     const getTotalPrice = (products) => {

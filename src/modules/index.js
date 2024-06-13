@@ -9,18 +9,36 @@ import estimateReducer from "./EstimateModules";
 import workOrderReducer from "./WorkOrderModules";
 import orderReducer from "./OrderModules";
 import planningReducer from "./PlanningModules";
+import materialSpecReducer from "./MaterialSpecModules";
+import materialStockReducer from "./MaterialStockModules";
+import materialOrderReducer from "./MaterialOrderModules";
+import materialDropReducer from "./MaterialStockDDModules";
+import materialUsageReducer from "./MaterialUsageModules";
 
 const rootReducer = combineReducers({
+
+    //예원
     clientReducer,
+    authReducer,
+    estimateReducer,
+    orderReducer,
+
+    //동환
     productReducer,
     stockReducer,
     warehouseReducer,
     storageReducer,
-    authReducer,
-    estimateReducer,
-    orderReducer,
+
     // 나윤
     workOrderReducer,planningReducer,
+
+    //한결
+    materialDropReducer,
+    materialOrderReducer,
+    materialSpecReducer,
+    materialStockReducer,
+    materialUsageReducer
+
 });
 
 export default rootReducer;

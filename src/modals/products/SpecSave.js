@@ -25,6 +25,7 @@ import {
 } from "../../apis/ProductAPICalls";
 import {callProductTotalAPI, callTotalStockAPI} from "../../apis/StockAPICalls";
 import {callDestroysTotalAPI, callProductDestroyAPI} from "../../apis/StorageAPICalls";
+import {statusToastAlert} from "../../utils/ToastUtils";
 
 function SpecSave({onClose,productCode,isOpen}){
 
@@ -64,13 +65,9 @@ function SpecSave({onClose,productCode,isOpen}){
                     .then(dispatch(callProductAPI({productCode})))
                     .then(() => {
                         setIsRegistered(true); // 등록 성공 시 isRegistered 상태를 true로 설정
-                        toast({ // 등록 성공 알림 메시지 표시
-                            title: "등록 완료",
-                            description: "상품 스펙이 성공적으로 등록되었습니다!",
-                            status: "success",
-                            duration: 3000,
-                            isClosable: true,
-                        });
+                        const title = '등록 완료';
+                        const desc = '상품 스펙이 성공적으로 등록되었습니다.';
+                        statusToastAlert(title, desc, 'success');
                         onClose();
                         navigate(`/inventory/product/${productCode}`);
                     });
@@ -84,7 +81,7 @@ function SpecSave({onClose,productCode,isOpen}){
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader color={"navy"}>BOM 등록</ModalHeader>
+                    <ModalHeader color={"navy"}>상품 스펙 등록</ModalHeader>
                     <ModalCloseButton />
                         <ModalBody borderTop='1px solid' borderColor='secondaryGray.100' p='30px 40px'>
                             <VStack spacing={4} align="stretch">

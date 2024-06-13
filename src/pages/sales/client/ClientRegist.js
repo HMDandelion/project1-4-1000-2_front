@@ -42,7 +42,6 @@ function ClientRegist() {
                 phone: `${prevForm.phoneFirst}-${prevForm.phoneSecond}-${prevForm.phoneThird}`,
             };
             dispatch(callClientRegistAPI({clientRequest : updatedForm}));
-            console.log("updatedForm", updatedForm);
             return updatedForm;
         });
     }
