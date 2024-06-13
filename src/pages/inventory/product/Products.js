@@ -37,6 +37,8 @@ import CustomizedTable from "../../../components/table/productTable/CustomizedTa
 import ProductClient from "../../../modals/products/ProductClient";
 import StockUpdate from "../../../modals/products/StockUpdate";
 import WarehouseAssignment from "../../../modals/products/WarehouseAssignment";
+import StoreStock from "../../../modals/products/StoreStock";
+import {statusToastAlert} from "../../../utils/ToastUtils";
 
 function Products() {
     const dispatch = useDispatch();
@@ -47,6 +49,7 @@ function Products() {
     const { isOpen: isClientModalOpen, onOpen: onClientModalOpen, onClose: onClientModalClose } = useDisclosure();
     const { isOpen: isStockEditModalOpen, onOpen: onStockEditModalOpen, onClose: onStockEditModalClose } = useDisclosure();
     const { isOpen: isAssignmentModalOpen, onOpen: onAssignmentModalOpen, onClose: onAssignmentModalClose } = useDisclosure();
+    const { isOpen: isStoreModalOpen, onOpen: onStoreModalOpen, onClose: onStoreModalClose } = useDisclosure();
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedStock, setSelectedStock] = useState(null);
@@ -120,6 +123,10 @@ function Products() {
             accessor: 'assignmentStatus',
         },
         {
+            HEADER:'창고 내 재고',
+            accessor: 'store'
+        },
+        {
             Header: '종류',
             accessor: 'type'
         },
@@ -146,7 +153,6 @@ function Products() {
     const stockIdAccessor = "stockCode";     // id로 사용할 컬럼 지정
 
     useEffect(() => {
-        const fetchData =  () => {
             setLoading(true);
              dispatch(callStockTodayAPI());
              dispatch(callProductTotalAPI());
@@ -161,9 +167,6 @@ function Products() {
                  dispatch(callStocksAPI({ currentPage }));
             }
             setLoading(false);
-        };
-
-        fetchData();
     }, [currentPage, activeTab]);
 
 
@@ -193,13 +196,9 @@ function Products() {
         setSelectedProduct(product);
         dispatch(callProductUpdateStatusAPI({
             onSuccess: () => {
-                toast({
-                    title: "상품 생산 상태 변경 완료",
-                    description: "상품 생산 상태가 성공적으로 수정되었습니다!",
-                    status: "success",
-                    duration: 1000,
-                    isClosable: true,
-                });
+                const title = '상품 생산 상태 변경 완료';
+                const desc = '상품 생산 상태가 성공적으로 수정되었습니다.';
+                statusToastAlert(title, desc, 'success');
                  dispatch(callProductsAPI({ currentPage: 1 }));
                  dispatch(callProductListAPI());
                 dispatch(callDestroysTotalAPI());
@@ -242,15 +241,15 @@ function Products() {
         edit: (() => {
             return (
                 <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button colorScheme="orange"size='xs' onClick={handleEditClick(product)} style={{ marginRight: '8px' }}>상품 수정</Button>
+                    <Button colorScheme="orange"size='sm' onClick={handleEditClick(product)} style={{ marginRight: '8px' }}>상품 수정</Button>
                     {product.status === 'in_production' && (
                         <>
-                        <Button colorScheme="red"size='xs' onClick={handleDeleteClick(product)}>생산 중단</Button>
+                        <Button colorScheme="red"size='sm' onClick={handleDeleteClick(product)}>생산 중단</Button>
                         </>
                     )}
                     {product.status === 'production_discontinued' && (
                         <>
-                        <Button colorScheme="green" size='xs' onClick={handleDeleteClick(product)}>재 생산</Button>
+                        <Button colorScheme="green" size='sm' onClick={handleDeleteClick(product)}>재 생산</Button>
                         </>
                         )}
                     <ProductUpdate isOpen={isEditModalOpen} onClose={() => { onEditModalClose(); setSelectedProduct(null); }} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
@@ -260,7 +259,7 @@ function Products() {
         clients:(() => {
            return(
                <div>
-                   <Button colorScheme='gray' size='xs' onClick={handleClientDetail(product)}>
+                   <Button colorScheme='gray' size='sm' onClick={handleClientDetail(product)}>
                        상세보기
                    </Button>
                    <ProductClient isOpen={isClientModalOpen} selectedProduct={selectedProduct}  onClose={() => { onClientModalClose(); }} setSelectedProduct={setSelectedProduct} />
@@ -282,13 +281,9 @@ function Products() {
         setSelectedStock(stock);
         dispatch(callStockDeleteAPI({
             onSuccess: () => {
-                toast({
-                    title: "재고 삭제 완료",
-                    description: "재고가 성공적으로 삭제되었습니다!",
-                    status: "success",
-                    duration: 1000,
-                    isClosable: true,
-                });
+                const title = '재고 삭제 완료';
+                const desc = '재고가 성공적으로 삭제되었습니다.';
+                statusToastAlert(title, desc, 'success');
                 dispatch(callStocksAPI({ currentPage: 1 }));
                 dispatch(callProductListAPI());
                 dispatch(callDestroysTotalAPI());
@@ -309,16 +304,21 @@ function Products() {
         setSelectedStock(stock);
         onAssignmentModalOpen();
     };
-
+    //재고의 창고 배정 정보 onClick이벤트 핸들러
+    const handleStoreDetail = (stock) =>(event) =>{
+        event.stopPropagation();
+        setSelectedStock(stock);
+        onStoreModalOpen();
+    }
 
     const processedStocks = stocks?.data?.content.map(stock => ({
         ...stock,
         editStock: (() => {
             return (
                 <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative', width: '200px' }}>
-                    <Button colorScheme="orange" size='xs' onClick={handleStockUpdate(stock)} style={{ marginRight: '8px' }}>재고 수정</Button>
-                    <Button colorScheme="green" size='xs' onClick={handleWarehouseAssignment(stock)} style={{ marginRight: '8px', visibility: stock.assignmentStatus !== 'fully_assigned' ? 'visible' : 'hidden' }}>창고 배정</Button>
-                    <Button colorScheme="red" size='xs' onClick={handleStockDelete(stock)} style={{ marginRight: '8px', visibility: stock.assignmentStatus === 'not_assignment' ? 'visible' : 'hidden' }}>재고 삭제</Button>
+                    <Button colorScheme="orange" size='sm' onClick={handleStockUpdate(stock)} style={{ marginRight: '8px' }}>재고 수정</Button>
+                    <Button colorScheme="green" size='sm' onClick={handleWarehouseAssignment(stock)} style={{ marginRight: '8px', visibility: stock.assignmentStatus !== 'fully_assigned' ? 'visible' : 'hidden' }}>창고 배정</Button>
+                    <Button colorScheme="red" size='sm' onClick={handleStockDelete(stock)} style={{ marginRight: '8px', visibility: stock.assignmentStatus === 'not_assignment' ? 'visible' : 'hidden' }}>재고 삭제</Button>
                     <StockUpdate isOpen={isStockEditModalOpen} onClose={() => { onStockEditModalClose(); setSelectedStock(null); }} selectedStock={selectedStock} setSelectedStock={setSelectedStock} />
                     <WarehouseAssignment isOpen={isAssignmentModalOpen} onClose={() => { onAssignmentModalClose(); }} selectedStock={selectedStock} setSelectedStock={setSelectedStock}/>
                 </div>
@@ -327,6 +327,16 @@ function Products() {
         isToday: stock.isToday ? (
             <div className="today-label">Today!</div>
         ) : '',
+        store:(() => {
+            return(
+                <div>
+                    <Button colorScheme='gray' size='sm'onClick={handleStoreDetail(stock)}>
+                        재고배정창고
+                    </Button>
+                    <StoreStock isOpen={isStoreModalOpen} selectedStock={selectedStock}  onClose={() => { onStoreModalClose(); }} setSelectedStock={setSelectedStock} />
+                </div>
+            )
+        })(),
         assignmentStatus: (() => {
             switch(stock.assignmentStatus) {
                 case 'partially_assigned':
@@ -470,7 +480,7 @@ function Products() {
 
                 {activeTab === 'products' && (
                     <>
-                        <Button colorScheme="orange" size='xs' onClick={handleSaveClick} float="right" ml={5}>상품 등록</Button>
+                        <Button colorScheme="orange" size='sm' onClick={handleSaveClick} float="right" ml={5}>상품 등록</Button>
                         <ProductSave isOpen={isSaveModalOpen} onClose={onSaveModalClose} />
                         {products && (
                             <>

@@ -1,6 +1,23 @@
 import {authRequest} from "./api";
-import {deleted, getMaterialClients, getSalesClient, getSalesClients, success} from "../modules/ClientModules";
+import {
+    deleted,
+    getMaterialClient,
+    getMaterialClients,
+    getSalesClient,
+    getSalesClients,
+    success
+} from "../modules/ClientModules";
 import {statusToastAlert} from "../utils/ToastUtils";
+
+export const callSimpleSalesClientsAPI = () => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`/api/v1/clients/simple`);
+        console.log("callSimpleSalesClientsAPI result : ", result);
+        if(result.status === 200) {
+            dispatch(getSimpleSalesClients(result));
+        }
+    }
+}
 
 export const callSalesClientsAPI = ({currentPage = 1}) => {
     return async (dispatch, getState) => {
@@ -15,53 +32,74 @@ export const callSalesClientsAPI = ({currentPage = 1}) => {
 
 export const callSalesClientAPI = ({ clientCode }) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.get(`/api/v1/clients/${clientCode}`);
+        try {
+            const result = await authRequest.get(`/api/v1/clients/${clientCode}`);
 
-        console.log("callSalesClientAPI result : ", result);
-        if(result.status === 200) {
-            dispatch(getSalesClient(result));
+            console.log("callSalesClientAPI result : ", result);
+            if(result.status === 200) {
+                dispatch(getSalesClient(result));
+            }
+        } catch ({response}) {
+            const title = '문제가 발생했어요.';
+            const desc = `${response.data.code} : ${response.data.message}`
+            statusToastAlert(title, desc, 'error');
         }
     }
 }
 
 export const callClientRegistAPI = ({clientRequest}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.post(`/api/v1/clients`, clientRequest);
-        console.log("callClientRegistAPI result : ", result);
+        try {
+            const result = await authRequest.post(`/api/v1/clients`, clientRequest);
+            console.log("callClientRegistAPI result : ", result);
 
-        if(result.status === 201) {
-            dispatch(success());
+            if(result.status === 201) {
+                dispatch(success());
+            }
+        } catch ({response}) {
+            const title = '문제가 발생했어요.';
+            const desc = `${response.data.code} : ${response.data.message}`
+            statusToastAlert(title, desc, 'error');
         }
     }
 }
 
 export const callClientModifyAPI = ({clientCode, clientRequest}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.put(`/api/v1/clients/${clientCode}`, clientRequest);
-        console.log("callClientModifyAPI result : ", result);
+        try {
+            const result = await authRequest.put(`/api/v1/clients/${clientCode}`, clientRequest);
+            console.log("callClientModifyAPI result : ", result);
 
-        if(result.status === 201) {
-            dispatch(success());
+            if(result.status === 201) {
+                dispatch(success());
+            }
+        } catch ({response}) {
+            const title = '문제가 발생했어요.';
+            const desc = `${response.data.code} : ${response.data.message}`
+            statusToastAlert(title, desc, 'error');
         }
     }
 }
 
 export const callClientDeleteAPI = ({code}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.delete(`/api/v1/clients/${code}`);
-        console.log("callClientDeleteAPI result : ", result);
+        try {
+            const result = await authRequest.delete(`/api/v1/clients/${code}`);
+            console.log("callClientDeleteAPI result : ", result);
 
-        if(result.status === 204) {
-            const title = '성공적으로 처리되었어요.';
-            statusToastAlert(title, null, 'success');
-            dispatch(deleted());
-        } else {
+            if(result.status === 204) {
+                const title = '성공적으로 처리되었어요.';
+                statusToastAlert(title, null, 'success');
+                dispatch(deleted());
+            }
+        } catch ({response}) {
             const title = '문제가 발생했어요.';
-            const desc = '다시 시도해주세요.';
+            const desc = `${response.data.code} : ${response.data.message}`
             statusToastAlert(title, desc, 'error');
         }
     }
 }
+
 //이하 원자재 공급업체=================================================================================================
 
 export const callMaterialClientsAPI = ({currentPage}) =>{
@@ -74,3 +112,13 @@ export const callMaterialClientsAPI = ({currentPage}) =>{
         }
     };
 }
+export const callMaterialClientAPI = ({clientCode}) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`api/v1/material/clients/${clientCode}`);
+        console.log("callMaterialClientAPI result : ", result);
+
+        if (result.status === 200) {
+            dispatch(getMaterialClient(result));
+        }
+    };
+};

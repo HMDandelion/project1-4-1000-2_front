@@ -1,17 +1,30 @@
-import {request} from "./api";
-import {getSalesClient, getSalesClients} from "../modules/ClientModules";
+import {authRequest, request} from "./api";
 import {
     getBomPaging,
     getInventoryMaterials,
     getInventoryProduct,
     getInventoryProductBom,
     getInventoryProductList,
-    getInventoryProducts, getProductClient, getSpec, getSpecPaging,
+    getInventoryProducts, getProductClient, getSimpleProducts, getSpec, getSpecPaging,
     success
 } from "../modules/ProductModules";
+import {getStore} from "../modules/StorageModules";
+import {statusToastAlert} from "../utils/ToastUtils";
 
 
 const DEFAULT_URL = `/api/v1/product`;
+
+export const callSimpleProductsAPI = () => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`${DEFAULT_URL}/simple`);
+        console.log("callSimpleProductsAPI result : ", result);
+        if(result.status === 200) {
+            dispatch(getSimpleProducts(result));
+        }
+    }
+}
+
+
 export const callProductsAPI =({currentPage = 1}) =>{
     return async (dispatch, getState) =>{
         const result = await request('GET', `${DEFAULT_URL}?page=${currentPage}`);
@@ -125,7 +138,9 @@ export const callBomUpdateAPI = ({ updateRequest,onSuccess,bomCode }) => {
                 console.error('bom 수정 실패:', result);
             }
         } catch (error) {
-            console.error('bom 수정 중 오류 발생:', error);
+            const title = '값을 모두 입력해주세요.';
+            const desc = '다시 시도해주세요.';
+            statusToastAlert(title, desc, 'error');
         }
     }
 };

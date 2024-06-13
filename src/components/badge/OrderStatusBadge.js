@@ -15,6 +15,10 @@ function OrderStatusBadge(value) {
                 return (
                     <Badge colorScheme='red' size='xs'>주문취소</Badge>
                 );
+            case 'COMPLETED':
+                return (
+                    <Badge colorScheme='green' size='xs'>최종완료</Badge>
+                );
         }
     };
 

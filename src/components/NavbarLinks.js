@@ -19,8 +19,9 @@ import React, {useEffect} from 'react';
 // Assets
 import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { FaEthereum } from 'react-icons/fa';
-import {callLogoutAPI} from "../apis/AuthAPICalls";
+import {callEmployeeInfoAPI, callLogoutAPI} from "../apis/AuthAPICalls";
 import {useDispatch, useSelector} from "react-redux";
+import {getEmployeeNo} from "../utils/TokenUtils";
 
 export default function NavbarLinks(props) {
 	const { secondary } = props;
@@ -41,13 +42,17 @@ export default function NavbarLinks(props) {
 
 	const dispatch = useDispatch();
 
-	const { success } = useSelector(state => state.authReducer);
+	const { employee, success } = useSelector(state => state.authReducer);
 
 	useEffect(() => {
 		if(success === true) {
 			window.location.replace('/');
 		}
 	}, [success]);
+
+	useEffect(() => {
+		dispatch(callEmployeeInfoAPI(getEmployeeNo()));
+	}, []);
 
 	return (
 		<Flex
@@ -179,40 +184,43 @@ export default function NavbarLinks(props) {
 						h="40px"
 					/>
 				</MenuButton>
-				<MenuList boxShadow={shadow} p="0px" mt="10px" borderRadius="20px" bg={menuBg} border="none">
-					<Flex w="100%" mb="0px">
-						<Text
-							ps="20px"
-							pt="16px"
-							pb="10px"
-							w="100%"
-							borderBottom="1px solid"
-							borderColor={borderColor}
-							fontSize="sm"
-							fontWeight="700"
-							color={textColor}>
-							👋&nbsp; 이름이랑 부서직급
-						</Text>
-					</Flex>
-					<Flex flexDirection="column" p="10px">
-						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
-							<Text fontSize="sm">여기 사번 띄우고</Text>
-						</MenuItem>
-						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
-							<Text fontSize="sm">여기 이메일 띄워야지</Text>
-						</MenuItem>
-						<MenuItem
-							_hover={{ bg: 'none' }}
-							_focus={{ bg: 'none' }}
-							color="red.400"
-							borderRadius="8px"
-							px="14px"
-							onClick={ () => dispatch(callLogoutAPI())}
-						>
-							<Text fontSize="sm">로그아웃</Text>
-						</MenuItem>
-					</Flex>
-				</MenuList>
+				{
+					employee &&
+					<MenuList boxShadow={shadow} p="0px" mt="10px" borderRadius="20px" bg={menuBg} border="none">
+						<Flex w="100%" mb="0px">
+							<Text
+								ps="20px"
+								pt="16px"
+								pb="10px"
+								w="100%"
+								borderBottom="1px solid"
+								borderColor={borderColor}
+								fontSize="sm"
+								fontWeight="700"
+								color={textColor}>
+								👋&nbsp; 환영합니다, {employee.employeeName}님!
+							</Text>
+						</Flex>
+						<Flex flexDirection="column" p="10px">
+							<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
+								<Text fontSize="sm">{employee.departmentName} {employee.positionName}</Text>
+							</MenuItem>
+							<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
+								<Text fontSize="sm">{employee.email}</Text>
+							</MenuItem>
+							<MenuItem
+								_hover={{ bg: 'none' }}
+								_focus={{ bg: 'none' }}
+								color="red.400"
+								borderRadius="8px"
+								px="14px"
+								onClick={ () => dispatch(callLogoutAPI())}
+							>
+								<Text fontSize="sm">로그아웃</Text>
+							</MenuItem>
+						</Flex>
+					</MenuList>
+				}
 			</Menu>
 		</Flex>
 	);

@@ -5,7 +5,7 @@ const initialState = {};
 
 /* 액션 */
 const GET_MATERIAL_STOCKS = 'stocks/GET_MATERIAL_STOCKS';
-const GET_MATERIAL_STOCK = 'stock/GET_MATERIAL_STOCK';
+const GET_MATERIAL_STOCK = 'stocks/GET_MATERIAL_STOCK';
 const SUCCESS = 'stock/SUCCESS';
 const DELETED = 'stock/DELETED';
 

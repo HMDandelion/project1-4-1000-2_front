@@ -21,6 +21,7 @@ import {
 } from "../../apis/ProductAPICalls";
 import {callProductTotalAPI, callStocksAPI, callStockUpdateAPI, callTotalStockAPI} from "../../apis/StockAPICalls";
 import {callDestroysTotalAPI, callProductDestroyAPI} from "../../apis/StorageAPICalls";
+import {statusToastAlert} from "../../utils/ToastUtils";
 
 function StockUpdate({isOpen,onClose,selectedStock, setSelectedStock}){
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); // 오류 모달 상태
@@ -37,13 +38,7 @@ function StockUpdate({isOpen,onClose,selectedStock, setSelectedStock}){
     const productList = useSelector(state => state.productReducer.productList);
 
     useEffect(() => {
-        const fetchProducts = async () => {
             dispatch(callProductListAPI());
-        };
-        fetchProducts();
-        if(productList){
-            console.log("상품리스트",productList)
-        }
     }, []);
 
     useEffect(() => {
@@ -86,13 +81,9 @@ function StockUpdate({isOpen,onClose,selectedStock, setSelectedStock}){
                      dispatch(callDestroysTotalAPI());
                      dispatch(callProductDestroyAPI());
                     setIsUpdated(true);
-                    toast({
-                        title: "수정 완료",
-                        description: "재고 정보가 성공적으로 수정되었습니다!",
-                        status: "success",
-                        duration: 1000,
-                        isClosable: true,
-                    });
+                    const title = '수정 완료';
+                    const desc = '재고 정보가 성공적으로 수정되었습니다.';
+                    statusToastAlert(title, desc, 'success');
                     onClose(); // 모달 창 닫기
                     // 현재 페이지로 다시 이동하여 컴포넌트를 새로 마운트하도록 함
                     navigate(`/inventory/product`, {replace: true});
@@ -101,13 +92,9 @@ function StockUpdate({isOpen,onClose,selectedStock, setSelectedStock}){
             }));
         } catch (error) {
             console.error("상품 수정 중 오류 발생:", error);
-            toast({
-                title: "오류 발생",
-                description: "상품 정보 수정 중 오류가 발생했습니다.",
-                status: "error",
-                duration: 1000,
-                isClosable: true,
-            });
+            const title = '오류 발생';
+            const desc = '상품 정보 수정 중 오류가 발생했습니다.';
+            statusToastAlert(title, desc, 'error');
         }
     };
     return(

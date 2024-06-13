@@ -1,7 +1,7 @@
 import {authRequest, request} from "./api";
-import {removeToken, saveToken} from "../utils/TokenUtils";
+import {getEmployeeNo, removeToken, saveToken} from "../utils/TokenUtils";
 import 'react-toastify/dist/ReactToastify.css';
-import {success} from "../modules/AuthModules";
+import {getEmployeeInfo, success} from "../modules/AuthModules";
 import {createStandaloneToast} from "@chakra-ui/react";
 
 export const callLoginAPI = ({loginRequest}) => {
@@ -40,6 +40,17 @@ export const callLogoutAPI = () => {
         if(result?.status === 200) {
             removeToken();
             dispatch(success());
+        }
+    }
+}
+
+export const callEmployeeInfoAPI = () => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`api/v1/employee/${getEmployeeNo()}`);
+        console.log("callEmployeeInfoAPI result : ", result);
+
+        if(result?.status === 200) {
+            dispatch(getEmployeeInfo(result));
         }
     }
 }
