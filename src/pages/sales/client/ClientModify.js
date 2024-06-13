@@ -25,7 +25,7 @@ function ClientModify({ isOpen, onClose, client }) {
     const { success } = useSelector(state => state.clientReducer);
 
     useEffect(() => {
-        if(success === true) navigate(`/sales/client/${client.clientCode}`);
+        if(success === true) navigate(`/sales/client/detail`, {state: client.clientCode});
     }, [success]);
 
     const onClickUpdateHandler = () => {
