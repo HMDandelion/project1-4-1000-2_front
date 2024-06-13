@@ -1,5 +1,5 @@
 import {authRequest} from "./api";
-import {getMaterialSpec, getMaterialSpecs,success} from "../modules/MaterialSpecModules";
+import {getMaterialSpec, getMaterialSpecs,success,deleted} from "../modules/MaterialSpecModules";
 import {successDrop} from "../modules/MaterialStockDDModules";
 import {statusToastAlert} from "../utils/ToastUtils";
 
@@ -29,13 +29,19 @@ export const callMaterialSpecAPI = ({specCode}) => {
     };
 };
 
-export const callMaterialSpecDeleteAPI = ({specCode}) => {
+export const callMaterialSpecDeleteAPI = ({code}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.delete(`api/v1/material/spec/`, specCode);
-        console.log("callMaterialSpecAPI result : ", result);
-        if (result.status === 204) {
-            dispatch(success(true));
+        try {
+            console.log(code);
+            const result = await authRequest.delete(`api/v1/material/spec/${code}`);
+            console.log("callMaterialSpecAPI result : ", result);
+            if (result.status === 204) {
+                dispatch(deleted(true));
+            }
+        } catch (e){
+            statusToastAlert(e.response.data.code, e.response.data.message, 'error');
         }
+
     };
 };
 

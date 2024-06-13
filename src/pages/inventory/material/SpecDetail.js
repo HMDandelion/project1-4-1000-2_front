@@ -1,4 +1,4 @@
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import {callMaterialSpecAPI, callMaterialSpecDeleteAPI} from "../../../apis/MaterialSpecAPICalls";
@@ -12,11 +12,12 @@ import SpecModify from "../../../modals/Material/SpecModify";
 function SpecDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const navigate = useNavigate();
 
     const location = useLocation();
     const {id} = useParams();
     const specCode = location.state ? location.state : id;
-    const { spec } = useSelector(state => state.materialSpecReducer);
+    const { spec,deleted } = useSelector(state => state.materialSpecReducer);
     const dispatch = useDispatch();
 
     const [columnData, setColumnData] = useState([
@@ -29,9 +30,13 @@ function SpecDetail() {
 
 
     useEffect(() => {
+        if (!deleted) {
             dispatch(callMaterialSpecAPI({specCode}));
+        } else {
+            navigate(`/inventory/material/specs`);
+        }
 
-        },[]
+        },[deleted]
     );
     return (
         spec &&

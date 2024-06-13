@@ -60,7 +60,13 @@ function CategoryModal() {
                                     <IconButton icon={<AddIcon/>} onClick={addCategory} ml='5px' bg='secondaryGray.300'/>
                                 </InputGroup>
                                 <Divider mb={5} color="gray.500"/>
-                                <Box maxHeight="400px" overflowY="auto" mb={2}>
+                                <Box maxHeight="400px" overflowY="scroll" mb={2}
+                                sx={{
+                                    '&::-webkit-scrollbar': {
+                                        display: 'none',
+                                },
+                                    '-ms-overflow-style': 'none',}
+                                    }>
                                     {
                                         dropdown &&
                                         dropdown.map(category => (<CategoryItem key={category.code} category={category}/>))
