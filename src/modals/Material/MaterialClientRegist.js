@@ -68,7 +68,7 @@ function MaterialClientRegist() {
                 phone: `${prevForm.phoneFirst}-${prevForm.phoneSecond}-${prevForm.phoneThird}`,
                 specCodes: materialForm.materials.map(material => material.specCode)
             };
-            dispatch(callMaterialClientRegistAPI({MaterialClientCreateRequest : updatedForm}));
+            dispatch(callMaterialClientRegistAPI({materialClientCreateRequest : updatedForm}));
             return updatedForm;
         });
     }

@@ -26,6 +26,7 @@ function SimpleSpecs({addMaterial}) {
             materialName: row.original.materialName,
             categoryName: row.original.categoryName
         });
+
     };
     useEffect(() => {
             addMaterial(newMaterial);

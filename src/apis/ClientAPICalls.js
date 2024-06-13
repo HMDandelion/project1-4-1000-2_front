@@ -123,8 +123,23 @@ export const callMaterialClientAPI = ({clientCode}) => {
         }
     };
 };
-export const callMaterialClientRegistAPI = ({MaterialClientCreateRequest}) => {
+export const callMaterialClientRegistAPI = ({materialClientCreateRequest}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.post('api/v1/material/clients',MaterialClientCreateRequest)
+        const result = await authRequest.post('api/v1/material/clients',materialClientCreateRequest)
+
+        if (result.status === 201) {
+            dispatch(success());
+        }
+    };
+};
+
+export const callMaterialClientModifyAPI = ({clientCode,clientRequest}) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.put(`api/v1/material/clients/${clientCode}`, clientRequest);
+
+        if (result.status === 201) {
+            dispatch(success());
+        }
+
     };
 };

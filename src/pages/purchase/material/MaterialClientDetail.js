@@ -9,6 +9,7 @@ import Card from "../../../components/card/Card";
 import AgGrid from "../../../components/table/AgGrid";
 import {callClientDeleteAPI, callMaterialClientAPI} from "../../../apis/ClientAPICalls";
 import ClientModify from "../../sales/client/ClientModify";
+import MaterialClientModify from "../../../modals/Material/MaterialClientModify";
 
 function MaterialClientDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -16,7 +17,7 @@ function MaterialClientDetail() {
 
     const location = useLocation();
     const clientCode = location.state;
-    const { client } = useSelector(state => state.clientReducer);
+    const { client, success } = useSelector(state => state.clientReducer);
     const dispatch = useDispatch();
 
     const [columnData, setColumnData] = useState([
@@ -31,7 +32,7 @@ function MaterialClientDetail() {
 
     useEffect(() => {
             dispatch(callMaterialClientAPI({clientCode}));
-        },[]
+        },[success]
     );
     return (
         client &&
@@ -46,7 +47,7 @@ function MaterialClientDetail() {
                     </Button>
                     <DeleteAlertButton code={clientCode} deleteAPI={callClientDeleteAPI}/>
                 </div>
-                <ClientModify isOpen={isOpen} onClose={onClose} client={client}/>
+                <MaterialClientModify isOpen={isOpen} onClose={onClose} client={client}/>
             </Flex>
 
             <Text fontWeight='bold' color={textColor}>
