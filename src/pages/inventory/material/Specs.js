@@ -5,23 +5,25 @@ import ComplexTable from "../../../components/table/NewComplexTable";
 import PagingBar from "../../../components/common/PagingBar";
 import {HStack} from "@chakra-ui/react";
 import SelectMenu from "../../../components/common/SelectMenu";
+import {useNavigate} from "react-router-dom";
 
 function Specs() {
     const [currentPage, setCurrentPage] = useState(1);
     const dispatch = useDispatch();
     const {specs, success} = useSelector(state => state.materialSpecReducer);
+    const navigate = useNavigate();
 
-    useEffect(() => {
-            dispatch(callMaterialSpecsAPI({currentPage}));
-        }, [currentPage, success]
-    );
 
-    //검색
     const menuList = ['자재명'];
     const [searchParams, setSearchParams] = useState({
             selectedOption: menuList[0],
             searchText: ""
         }
+    );
+
+    useEffect(() => {
+            dispatch(callMaterialSpecsAPI({currentPage, searchParams}));
+        }, [currentPage, success, searchParams]
     );
     const searchHandler = (selectedOption, searchText) => {
         setSearchParams({selectedOption, searchText});
@@ -54,13 +56,16 @@ function Specs() {
             accessor: 'remarks'
         }
     ];
+    const handleRowClick = (row) => {
+        navigate(`/inventory/material/specs/detail`, {state: row.original.specCode});
+    };
     return (
         specs &&
         <>
             <HStack spacing="10px">
                 <SelectMenu onSearch={searchHandler} menuList={menuList} />
             </HStack>
-            <ComplexTable columnsData={columns} tableData={specs.data} />
+            <ComplexTable columnsData={columns} tableData={specs.data} onRowClick={handleRowClick}/>
             <PagingBar pageInfo={specs.pageInfo} setCurrentPage={setCurrentPage} />
         </>
     );

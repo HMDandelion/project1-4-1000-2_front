@@ -6,36 +6,18 @@ import ComplexTable from "../../../components/table/NewComplexTable";
 import PagingBar from "../../../components/common/PagingBar";
 import {callMaterialDropAPI, callMaterialStocksAPI} from "../../../apis/MaterialStockAPICalls";
 import DropDownMenu from "../../../components/common/DropDownMenu";
+import {useNavigate} from "react-router-dom";
 
 function MaterialStocks() {
     const [currentPage, setCurrentPage] = useState(1);
     const [warehouseCode, setWarehouseCode] = useState(1);
     const [specCategoryCode, setCategoryCode] = useState(1);
-
     const [searchType, setSearchType] = useState("w");
 
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const {stocks, success} = useSelector(state => state.materialStockReducer);
     const {dropdown} = useSelector(state => state.materialDropReducer);
-
-    useEffect(() => {
-            if (searchType === "w") {
-                dispatch(callMaterialDropAPI({searchType}))
-                    .then(() => {
-                        // 첫 번째 작업이 완료된 후 두 번째 작업 실행
-                        dispatch(callMaterialStocksAPI({currentPage, warehouseCode}));
-                    });
-            } else {
-                dispatch(callMaterialDropAPI({searchType}))
-                    .then(() => {
-                        // 첫 번째 작업이 완료된 후 두 번째 작업 실행
-                        dispatch(callMaterialStocksAPI({currentPage, specCategoryCode}));
-                    });
-            }
-
-        }, [currentPage, success, warehouseCode, specCategoryCode, searchType]
-    );
 
     //검색
     const menuList = ['자재명'];
@@ -44,6 +26,26 @@ function MaterialStocks() {
             searchText: ""
         }
     );
+
+    useEffect(() => {
+            if (searchType === "w") {
+                dispatch(callMaterialDropAPI({searchType}))
+                    .then(() => {
+                        // 첫 번째 작업이 완료된 후 두 번째 작업 실행
+                        dispatch(callMaterialStocksAPI({currentPage, warehouseCode,searchParams}));
+                    });
+            } else {
+                dispatch(callMaterialDropAPI({searchType}))
+                    .then(() => {
+                        // 첫 번째 작업이 완료된 후 두 번째 작업 실행
+                        dispatch(callMaterialStocksAPI({currentPage, specCategoryCode,searchParams}));
+                    });
+            }
+
+        }, [currentPage, success, warehouseCode, specCategoryCode, searchType,searchParams]
+    );
+
+
     const searchHandler = (selectedOption, searchText) => {
         setSearchParams({selectedOption, searchText});
     };
@@ -110,7 +112,10 @@ function MaterialStocks() {
             accessor: 'specification'
         }
     ];
-
+    const handleRowClick = (row) => {
+        console.log(row.original.stockCode);
+        navigate(`/inventory/material/stocks/detail`, {state: row.original.stockCode});
+    };
     return (
         stocks &&
         <>
@@ -124,7 +129,7 @@ function MaterialStocks() {
                 <DropDownMenu dropDownList={dropdown} setValue={dropDownHandler} mr="20px"/>
                 <SelectMenu onSearch={searchHandler} menuList={menuList} />
             </HStack>
-            <ComplexTable columnsData={searchType === "w" ? columnsW : columnsC} tableData={stocks.data} />
+            <ComplexTable columnsData={searchType === "w" ? columnsW : columnsC} tableData={stocks.data} onRowClick={handleRowClick}/>
             <PagingBar pageInfo={stocks.pageInfo} setCurrentPage={setCurrentPage} />
         </>
     );
