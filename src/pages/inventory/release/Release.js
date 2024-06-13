@@ -176,7 +176,6 @@ function Release(){
                         <Button colorScheme='blackAlpha' size='sm' onClick={handleOrderProduct(order)}>
                             상세보기
                         </Button>
-                        <OrderProduct isOpen={isOrderProductModalOpen} selectedOrder={selectedOrder}  onClose={() => { onOrderProductModalClose(); }} setSelectedOrder={setSelectedOrder} />
                     </div>
                 )
             })(),
@@ -204,7 +203,7 @@ function Release(){
                             <Button colorScheme='green' size='sm' onClick={handleRelease(order)}>
                                 출고 진행 <TripleArrowIcon />
                             </Button>
-                            <ReleaseAlertButton currentWaitPage={currentWaitPage} isOpen={isReleaseCheckOpen} leastDestructiveRef={cancelRef} onClose={() => {onReleaseCheckClose();}} currentOrderPage={currentOrderPage} order={selectedOrder}/>
+
                                 </>
                 )}
                         </>
@@ -236,7 +235,7 @@ function Release(){
                             <Button colorScheme='orange' size='sm' onClick={handleOrderInformation(release)}>
                                 주문정보
                             </Button>
-                            <OrderInformation isOpen={isOrderInfoModalOpen} selectedRelease={selectedRelease}  onClose={() => { onOrderInfoModalClose(); }} setSelectedRelease={setSelectedRelease} />
+
                         </div>
                     )
                 })(),
@@ -287,6 +286,8 @@ function Release(){
                             baseLink={orderBaseLink}
                             idAccessor={orderIdAccessor}
                         />
+                        <OrderProduct isOpen={isOrderProductModalOpen} selectedOrder={selectedOrder}  onClose={() => { onOrderProductModalClose(); }} setSelectedOrder={setSelectedOrder} />
+                        <ReleaseAlertButton currentWaitPage={currentWaitPage} isOpen={isReleaseCheckOpen} leastDestructiveRef={cancelRef} onClose={() => {onReleaseCheckClose();}} currentOrderPage={currentOrderPage} order={selectedOrder}/>
                         <PagingBar
                             pageInfo={orderPageInfo}
                             setCurrentPage={setCurrentOrderPage}
@@ -304,6 +305,7 @@ function Release(){
                                 baseLink={releaseBaseLink}
                                 idAccessor={releaseIdAccessor}
                             />
+                            <OrderInformation isOpen={isOrderInfoModalOpen} selectedRelease={selectedRelease}  onClose={() => { onOrderInfoModalClose(); }} setSelectedRelease={setSelectedRelease} />
                             <ShippingAlertButton isOpen={isShippingModalOpen} leastDestructiveRef={cancelRef} onClose={() => {onShippingModalClose();}} currentOrderPage={currentOrderPage} release={selectedRelease}/>
                             <PagingBar
                                 pageInfo={releasePageInfo}
