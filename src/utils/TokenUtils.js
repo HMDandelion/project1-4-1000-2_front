@@ -1,5 +1,4 @@
 import {jwtDecode} from "jwt-decode";
-import {statusToastAlert} from "./ToastUtils";
 
 const BEARER = 'Bearer ';
 
@@ -13,10 +12,7 @@ export const removeToken = () => {
     localStorage.removeItem("refresh-token");
 }
 
-const getAccessToken = () => {
-    const accessToken = localStorage.getItem('access-token');
-    return accessToken ? accessToken : statusToastAlert("토큰값이 유효하지 않습니다.", null, 'error');
-}
+const getAccessToken = () => localStorage.getItem('access-token');
 const getRefreshToken = () => localStorage.getItem('refresh-token');
 
 export const getAccessTokenHeader = () => BEARER + getAccessToken();
