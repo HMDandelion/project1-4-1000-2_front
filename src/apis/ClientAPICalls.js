@@ -123,3 +123,8 @@ export const callMaterialClientAPI = ({clientCode}) => {
         }
     };
 };
+export const callMaterialClientRegistAPI = ({MaterialClientCreateRequest}) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.post('api/v1/material/clients',MaterialClientCreateRequest)
+    };
+};

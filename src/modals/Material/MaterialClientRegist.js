@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {Button, Divider, Modal, ModalContent, ModalFooter, ModalOverlay, useDisclosure} from "@chakra-ui/react";
-import {callClientRegistAPI} from "../../apis/ClientAPICalls";
+import { callMaterialClientRegistAPI} from "../../apis/ClientAPICalls";
 import ClientForm from "../../pages/sales/client/ClientForm";
 import MaterialClientSpecForm from "./MaterialClientSpecForm";
 import SimpleSpecs from "../../pages/inventory/material/SimpleSpecs";
@@ -66,8 +66,9 @@ function MaterialClientRegist() {
             const updatedForm = {
                 ...prevForm,
                 phone: `${prevForm.phoneFirst}-${prevForm.phoneSecond}-${prevForm.phoneThird}`,
+                specCodes: materialForm.materials.map(material => material.specCode)
             };
-            dispatch(callClientRegistAPI({clientRequest : updatedForm}));
+            dispatch(callMaterialClientRegistAPI({MaterialClientCreateRequest : updatedForm}));
             return updatedForm;
         });
     }
