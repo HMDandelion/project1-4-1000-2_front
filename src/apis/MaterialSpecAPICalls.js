@@ -1,5 +1,7 @@
 import {authRequest} from "./api";
 import {getMaterialSpec, getMaterialSpecs,success} from "../modules/MaterialSpecModules";
+import {successDrop} from "../modules/MaterialStockDDModules";
+import {statusToastAlert} from "../utils/ToastUtils";
 
 export const callMaterialSpecsAPI = ({currentPage = 1, searchParams}) => {
     return async (dispatch, getState) => {
@@ -62,5 +64,34 @@ export const callMaterialSpecModifyAPI = ({specCode,specRequest}) => {
         if (result.status === 201) {
             dispatch(success(true));
         }
+    };
+};
+
+export const callMaterialCateCreateAPI = (text) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.post(`api/v1/material/spec/category?newCategoryName=${text}`);
+
+        console.log("callMaterialCateCreateAPI result : ", result);
+        if (result.status === 201) {
+            dispatch(successDrop(true));
+        }
+
+    };
+};
+
+export const callMaterialCateDeleteAPI = ({code}) => {
+    return async (dispatch, getState) => {
+        try {
+            console.log(code);
+            const result = await authRequest.delete(`api/v1/material/spec/category?categoryCode=${code}`);
+
+            console.log("callMaterialCateCreateAPI result : ", result);
+            if (result.status === 204) {
+                dispatch(successDrop(true));
+            }
+        }catch (e) {
+            statusToastAlert(e.status, e.message, 'error');
+        }
+
     };
 };
