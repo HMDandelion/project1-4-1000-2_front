@@ -9,17 +9,12 @@ import {useNavigate} from "react-router-dom";
 import {callReturnsAPI} from "../../../apis/ReturnAPICalls";
 import ManageStatusBadge from "../../../components/badge/ManageStatusBadge";
 import ReturnStatusBadge from "../../../components/badge/ReturnStatusBadge";
+import {searchOption} from "../../../utils/SearchOptionUtils";
 
 function Returns() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {returns, success} = useSelector(state => state.returnReducer);
-
-    // 페이지네이션
-    const [currentPage, setCurrentPage] = useState(1);
-    useEffect(() => {
-        dispatch(callReturnsAPI({currentPage}));
-    }, [currentPage, success]);
 
     // 검색 옵션
     const menuList = ['상품명', '거래처명'];
@@ -28,7 +23,14 @@ function Returns() {
         searchText : '',
     });
 
+    // 페이지네이션
+    const [currentPage, setCurrentPage] = useState(1);
+    useEffect(() => {
+        dispatch(callReturnsAPI({currentPage, searchParams}));
+    }, [currentPage, success, searchParams]);
+
     const handleSearch = (selectedOption, searchText) => {
+        selectedOption = searchOption(selectedOption);
         setSearchParams({ selectedOption, searchText });
     };
 
