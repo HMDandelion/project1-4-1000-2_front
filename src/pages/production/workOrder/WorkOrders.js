@@ -12,7 +12,7 @@ import WorkOrderModify from "./WorkOrderModify";
 import CalendarPlan from "../plan/CalendarPlan";
 import CalendarPlans from "../plan/CalendarPlans";
 
-function ProductionWorkOrders(){
+function WorkOrders(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1);
@@ -117,4 +117,4 @@ function ProductionWorkOrders(){
     )
 }
 
-export default ProductionWorkOrders;
+export default WorkOrders;

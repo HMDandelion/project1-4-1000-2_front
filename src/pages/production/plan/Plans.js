@@ -9,7 +9,7 @@ import PlanRegist from "./PlanRegist";
 import PagingBar from "../../../components/common/PagingBar";
 
 
-function ProductionPlans() {
+function Plans() {
     const dispatch = useDispatch();
     const { planningOrder, success } = useSelector(state => state.planningOrderReducer);
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -87,4 +87,4 @@ function ProductionPlans() {
     );
 }
 
-export default ProductionPlans;
+export default Plans;

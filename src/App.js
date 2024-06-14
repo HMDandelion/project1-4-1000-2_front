@@ -31,8 +31,8 @@ import MaterialUsages from "./pages/production/material/MaterialUsages";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {setRedirectPath} from "./modules/NavigationModules";
-import ProductionPlans from "./pages/production/plan/ProductionPlans";
-import ProductionWorkOrders from "./pages/production/workOrder/ProductionWorkOrders";
+import WorkOrders from "./pages/production/workOrder/WorkOrders";
+import Plans from "./pages/production/plan/Plans";
 
 function App() {
     const redirectPath = useSelector(state => state.navigationReducer);
@@ -114,10 +114,10 @@ function App() {
                   </Route>
                   <Route path="production">
                       <Route path="work-order">
-                          <Route index element={<ProductionWorkOrders/>}/>
+                          <Route index element={<WorkOrders/>}/>
                       </Route>
                       <Route path="plan">
-                          <Route index element={<ProductionPlans/>}/>
+                          <Route index element={<Plans/>}/>
                       </Route>
                   </Route>
                   </Route>
