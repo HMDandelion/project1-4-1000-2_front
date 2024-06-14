@@ -24,8 +24,8 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.AUTO_ACTIONS }}
         with:
           source-directory: 'output'
-          destination-github-username: [내 깃허브 계정 이름]
-          destination-repository-name: [배포한 내 레포지토리 이름]
+          destination-github-username: 'midwit0828'
+          destination-repository-name: 'project1-4-1000-2_front'
           user-email: ${{ secrets.EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
