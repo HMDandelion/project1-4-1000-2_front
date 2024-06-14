@@ -1,15 +1,13 @@
 import {authRequest} from "./api";
-import {canceled, getOrder, getOrders, success} from "../modules/OrderModules";
 import {statusToastAlert} from "../utils/ToastUtils";
+import {canceled, getReturn, getReturns, success} from "../modules/ReturnModules";
 
-export const callOrderRegistAPI = ({ estimateCode }) => {
-    const formData = new URLSearchParams();
-    formData.append('estimateCode', estimateCode);
-
+export const callReturnRegistAPI = ({ returnRequest }) => {
     return async (dispatch, getState) => {
         try {
-            const result = await authRequest.post(`/api/v1/orders`, formData);
-            console.log("callOrderRegistAPI result : ", result);
+            const result = await authRequest.post(`/api/v1/returns`, returnRequest);
+
+            console.log("callReturnRegistAPI result : ", result);
             if(result.status === 201) {
                 const title = '성공적으로 처리되었어요.';
                 statusToastAlert(title, null, 'success');
@@ -21,35 +19,36 @@ export const callOrderRegistAPI = ({ estimateCode }) => {
             statusToastAlert(title, desc, 'error');
         }
     }
-
 }
 
-export const callOrdersAPI = ({currentPage}) => {
+export const callReturnsAPI = ({currentPage}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.get(`/api/v1/orders?page=${currentPage}`);
+        const result = await authRequest.get(`/api/v1/returns?page=${currentPage}`);
+        console.log("callReturnsAPI result : ", result);
 
-        console.log("callOrdersAPI result : ", result);
         if(result.status === 200) {
-            dispatch(getOrders(result));
+            dispatch(getReturns(result));
         }
     }
 }
 
-export const callOrderAPI = ({orderCode}) => {
+export const callReturnAPI = ({returnCode}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.get(`/api/v1/orders/${orderCode}`);
-        console.log("callOrderAPI result : ", result);
+        const result = await authRequest.get(`/api/v1/returns/${returnCode}`);
+        console.log("callReturnAPI result : ", result);
+
         if(result.status === 200) {
-            dispatch(getOrder(result));
+            dispatch(getReturn(result));
         }
     }
 }
 
-export const callOrderCancelAPI = ({code}) => {
+export const callReturnCancelAPI = ({code}) => {
     return async (dispatch, getState) => {
         try {
-            const result = await authRequest.put(`/api/v1/orders/${code}`);
-            console.log("callOrderCancelAPI result : ", result);
+            const result = await authRequest.put(`/api/v1/returns/${code}`);
+            console.log("callReturnCancelAPI result ", result);
+
             if(result.status === 201) {
                 dispatch(canceled());
             }
@@ -58,6 +57,5 @@ export const callOrderCancelAPI = ({code}) => {
             const desc = `${response.data.code} : ${response.data.message}`
             statusToastAlert(title, desc, 'error');
         }
-
     }
 }

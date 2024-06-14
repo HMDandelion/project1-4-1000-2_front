@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
-import {Badge, HStack, Text} from "@chakra-ui/react";
+import {HStack, Text} from "@chakra-ui/react";
 import PagingBar from "../../../components/common/PagingBar";
 import SelectMenu from "../../../components/common/SelectMenu";
 import ComplexTable from "../../../components/table/NewComplexTable";
@@ -65,9 +65,10 @@ function Orders() {
                 return (
                     row.original.status === 'COMPLETED' ?
                         <Text color='green'>완료</Text> :
-                        daysLeft > 0 ?
-                            <Text color={daysLeft < 3 ? 'red' : ''}>{daysLeft}일</Text> :
-                            <Text>마감</Text>
+                        row.original.status === 'CANCELED' || row.original.status === 'RETURNED' ? <Text>-</Text> :
+                            daysLeft > 0 ?
+                                <Text color={daysLeft < 3 ? 'red' : ''}>{daysLeft}일</Text> :
+                                <Text>마감</Text>
                 );
             }
         }

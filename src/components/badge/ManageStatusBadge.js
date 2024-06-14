@@ -1,15 +1,15 @@
 import {Badge} from "@chakra-ui/react";
 
-function OrderStatusBadge(value) {
+function ManageStatusBadge(value) {
     const getStatusText = (value) => {
         switch (value) {
-            case 'ORDER_RECEIVED':
+            case 'RETURN_RECEIVED':
                 return (
-                    <Badge colorScheme='orange' size='xs'>주문접수</Badge>
+                    <Badge colorScheme='orange' size='xs'>반품접수</Badge>
                 );
-            case 'RETURNED':
+            case 'REFUNDED':
                 return (
-                    <Badge colorScheme='blue' size='xs'>반품</Badge>
+                    <Badge colorScheme='green' size='xs'>환불됨</Badge>
                 );
             case 'IN_PRODUCTION':
                 return (
@@ -23,13 +23,13 @@ function OrderStatusBadge(value) {
                 return (
                     <Badge colorScheme='teal' size='xs'>배송중</Badge>
                 );
-            case 'CANCELED':
-                return (
-                    <Badge colorScheme='red' size='xs'>주문취소</Badge>
-                );
             case 'COMPLETED':
                 return (
                     <Badge colorScheme='green' size='xs'>최종완료</Badge>
+                );
+            case 'CANCELED':
+                return (
+                    <Badge colorScheme='red' size='xs'>반품취소</Badge>
                 );
         }
     };
@@ -39,4 +39,4 @@ function OrderStatusBadge(value) {
     );
 }
 
-export default OrderStatusBadge;
+export default ManageStatusBadge;

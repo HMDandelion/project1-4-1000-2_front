@@ -1,5 +1,5 @@
-import {Box, Heading, IconButton, Input, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
-import {AddIcon, MinusIcon} from "@chakra-ui/icons";
+import {Box, Heading, IconButton, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
+import {AddIcon} from "@chakra-ui/icons";
 import React from "react";
 
 function ReturnSelectForm({ products, selectedProducts, onProductAdd }) {
@@ -11,7 +11,7 @@ function ReturnSelectForm({ products, selectedProducts, onProductAdd }) {
                     <Thead>
                         <Tr>
                             <Th/>
-                            <Th w='70px'>상품코드</Th>
+                            <Th w='70px' whiteSpace='nowrap'>상품코드</Th>
                             <Th w='200px'>상품명</Th>
                             <Th></Th>
                         </Tr>
@@ -22,7 +22,8 @@ function ReturnSelectForm({ products, selectedProducts, onProductAdd }) {
                                 <Td>
                                     <IconButton
                                         icon={<AddIcon />}
-                                        size="sm"
+                                        size="xs"
+                                        my={1}
                                         color='green'
                                         onClick={() => onProductAdd(product)}
                                         isDisabled={selectedProducts.some(p => p.productCode === product.productCode)}

@@ -216,12 +216,18 @@ function SidebarContent(props) {
                                 </AccordionButton>
                             </h2>
                             <AccordionPanel pb={4}>
-                                <UnorderedList>
+                                <UnorderedList listStyleType='none'>
                                     <ListItem>
                                         <Link as={NavLink}
                                               to="/sales/order"
                                               _activeLink={{color: activeColor}}
                                         >주문 관리</Link>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Link as={NavLink}
+                                              to="/sales/return"
+                                              _activeLink={{color: activeColor}}
+                                        >반품 관리</Link>
                                     </ListItem>
                                     <ListItem>
                                         <Link as={NavLink}

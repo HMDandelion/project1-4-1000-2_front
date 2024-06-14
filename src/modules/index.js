@@ -12,6 +12,7 @@ import materialStockReducer from "./MaterialStockModules";
 import materialOrderReducer from "./MaterialOrderModules";
 import materialDropReducer from "./MaterialStockDDModules";
 import materialUsageReducer from "./MaterialUsageModules";
+import returnReducer from "./ReturnModules";
 
 const rootReducer = combineReducers({
 
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     authReducer,
     estimateReducer,
     orderReducer,
+    returnReducer,
 
     //동환
     productReducer,
