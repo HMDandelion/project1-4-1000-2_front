@@ -9,6 +9,7 @@ import PagingBar from "../../../components/common/PagingBar";
 import {callMaterialOrdersAPI} from "../../../apis/MaterialOrderAPICalls";
 import {useNavigate} from "react-router-dom";
 import MaterialClientRegist from "../../../modals/Material/MaterialClientRegist";
+import MaterialOrderRegist from "../../../modals/Material/MaterialOrderRegist";
 
 function MaterialOrders() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -70,6 +71,7 @@ function MaterialOrders() {
         <>
             <HStack spacing="10px">
                 <SelectMenu onSearch={searchHandler} menuList={menuList} />
+                <MaterialOrderRegist/>
             </HStack>
             <ComplexTable columnsData={columns} tableData={orders.data.content} onRowClick={handleRowClick}/>
             <PagingBar pageInfo={orders.pageInfo} setCurrentPage={setCurrentPage} />

@@ -1,5 +1,5 @@
 import {Badge, Button, Divider, Flex, Heading, Text, useColorModeValue, useDisclosure} from "@chakra-ui/react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import SetMaterialOrderButton from "../../../components/button/SetMaterialOrderButton";
@@ -7,17 +7,18 @@ import {callMaterialSpecAPI, callMaterialSpecDeleteAPI} from "../../../apis/Mate
 import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 import Card from "../../../components/card/Card";
 import AgGrid from "../../../components/table/AgGrid";
-import {callClientDeleteAPI, callMaterialClientAPI} from "../../../apis/ClientAPICalls";
+import {callClientDeleteAPI, callMaterialClientAPI, callMaterialClientDeleteAPI} from "../../../apis/ClientAPICalls";
 import ClientModify from "../../sales/client/ClientModify";
 import MaterialClientModify from "../../../modals/Material/MaterialClientModify";
 
 function MaterialClientDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const navigate = useNavigate();
 
     const location = useLocation();
     const clientCode = location.state;
-    const { client, success } = useSelector(state => state.clientReducer);
+    const {client, success, deleted } = useSelector(state => state.clientReducer);
     const dispatch = useDispatch();
 
     const [columnData, setColumnData] = useState([
@@ -34,6 +35,11 @@ function MaterialClientDetail() {
             dispatch(callMaterialClientAPI({clientCode}));
         },[success]
     );
+
+    useEffect(() => {
+            if (deleted) navigate('/purchase/material/clients');
+        },[ deleted]
+    );
     return (
         client &&
         <>
@@ -45,7 +51,7 @@ function MaterialClientDetail() {
                     <Button colorScheme='gray' size='xs' onClick={onOpen}>
                         수정
                     </Button>
-                    <DeleteAlertButton code={clientCode} deleteAPI={callClientDeleteAPI}/>
+                    <DeleteAlertButton code={clientCode} deleteAPI={callMaterialClientDeleteAPI}/>
                 </div>
                 <MaterialClientModify isOpen={isOpen} onClose={onClose} client={client}/>
             </Flex>

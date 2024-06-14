@@ -12,6 +12,7 @@ import materialStockReducer from "./MaterialStockModules";
 import materialOrderReducer from "./MaterialOrderModules";
 import materialDropReducer from "./MaterialStockDDModules";
 import materialUsageReducer from "./MaterialUsageModules";
+import planningReducer from "./PlanningModules";
 
 const rootReducer = combineReducers({
 
@@ -32,7 +33,10 @@ const rootReducer = combineReducers({
     materialOrderReducer,
     materialSpecReducer,
     materialStockReducer,
-    materialUsageReducer
+    materialUsageReducer,
+
+    //나윤
+    planningReducer
 
 });
 
