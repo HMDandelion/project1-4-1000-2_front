@@ -16,9 +16,12 @@ import materialOrderReducer from "./MaterialOrderModules";
 import materialDropReducer from "./MaterialStockDDModules";
 import materialUsageReducer from "./MaterialUsageModules";
 import returnReducer from "./ReturnModules";
+import navigationReducer from "./NavigationModules";
 import planningOrderReducer from "./PlanningOrderModules";
 
 const rootReducer = combineReducers({
+
+    navigationReducer,
 
     //예원
     clientReducer,

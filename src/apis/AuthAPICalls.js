@@ -1,8 +1,9 @@
 import {authRequest, request} from "./api";
 import {getEmployeeNo, removeToken, saveToken} from "../utils/TokenUtils";
 import 'react-toastify/dist/ReactToastify.css';
-import {getEmployeeInfo, success} from "../modules/AuthModules";
+import {getEmployeeInfo, logout, success} from "../modules/AuthModules";
 import {statusToastAlert} from "../utils/ToastUtils";
+import {setRedirectPath} from "../modules/NavigationModules";
 
 export const callLoginAPI = ({loginRequest}) => {
     return async (dispatch, gateState) => {
@@ -33,7 +34,8 @@ export const callLogoutAPI = () => {
 
         if(result?.status === 200) {
             removeToken();
-            dispatch(success());
+            dispatch(logout());
+            dispatch(setRedirectPath('/login'));
         }
     }
 }
