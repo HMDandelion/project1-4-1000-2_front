@@ -14,6 +14,7 @@ import materialStockReducer from "./MaterialStockModules";
 import materialOrderReducer from "./MaterialOrderModules";
 import materialDropReducer from "./MaterialStockDDModules";
 import materialUsageReducer from "./MaterialUsageModules";
+import planningOrderReducer from "./PlanningOrderModules";
 
 const rootReducer = combineReducers({
 
@@ -30,7 +31,9 @@ const rootReducer = combineReducers({
     storageReducer,
 
     // 나윤
-    workOrderReducer,planningReducer,
+    workOrderReducer,
+    planningReducer,
+    planningOrderReducer,
 
     //한결
     materialDropReducer,

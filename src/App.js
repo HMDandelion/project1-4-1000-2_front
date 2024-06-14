@@ -7,7 +7,6 @@ import ProtectedRoute from "./components/router/ProtectedRoute";
 import ClientDetail from "./pages/sales/client/ClientDetail";
 import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
-import ProtectedRoute from "./components/router/ProtectedRoute";
 import InventoryMaterailAnalyze from "./pages/inventory/material/InventoryMaterailAnalyze";
 import Specs from "./pages/inventory/material/Specs";
 import MaterialInStock from "./pages/inventory/material/MaterialInStock";
@@ -21,11 +20,13 @@ import OrderDetail from "./pages/sales/order/OrderDetail";
 import ProductDetail from "./pages/inventory/product/ProductDetail";
 import WorkOrders from "./pages/Production/workOrder/WorkOrders";
 import Plans from "./pages/Production/plan/Plans";
-import MaterialUsages from "./pages/production/material/MaterialUsages";
 import SpecDetail from "./pages/inventory/material/SpecDetail";
 import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
 import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
 import StockDetail from "./pages/inventory/material/StockDetail";
+import Products from "./pages/inventory/product/Products";
+import Warehouses from "./pages/inventory/warehouse/Warehouses";
+import MaterialUsages from "./pages/Production/material/MaterialUsages";
 
 function App() {
   return (
@@ -85,7 +86,6 @@ function App() {
                       <Route path="material">
                           <Route path="usage" element={<MaterialUsages/>}/>
                       </Route>
-                      </Route>
                   </Route>
                   <Route path="production">
                       <Route path="work-order">
@@ -93,8 +93,9 @@ function App() {
                       </Route>
                       <Route path="plan">
                           <Route index element={<Plans/>}/>
+                      </Route>
                   </Route>
-              </Route>
+                  </Route>
               <Route path="/login" element={<AuthLayout/>}>
                   <Route index element={<ProtectedRoute loginCheck={false}><LogIn/></ProtectedRoute>}/>
               </Route>

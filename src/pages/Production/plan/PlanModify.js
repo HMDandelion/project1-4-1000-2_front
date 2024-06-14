@@ -1,52 +1,47 @@
-import {
-    Button,
-    Modal,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
-} from "@chakra-ui/react";
-import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, Button } from "@chakra-ui/react";
 import PlanForm from "./PlanForm";
-import {callPlanningModifyAPI} from "../../../apis/PlanningAPICalls";
+import { callPlanningModifyAPI } from "../../../apis/PlanningAPICalls";
+import { useNavigate } from "react-router-dom";
 
-function PlanModify({ isOpen, onClose, plan }) {
+function PlanModify({ isOpen, onClose, plans = [] }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [form, setForm] = useState({
-        ...plan,
-
-    });
-
-    const { success } = useSelector(state => state.planningReducer);
+    const [form, setForm] = useState(plans);
+    const { success, error } = useSelector(state => state.planningReducer);
 
     useEffect(() => {
-        if(success === true) navigate(`/production/planning/${plan.planCode}`);
+        if (success === true) navigate(`/production/planning/${plans.planCode}`);
     }, [success]);
 
-    const onClickUpdateHandler = () => {
-        setForm(prevForm => {
-            const updatedForm = {
-                ...prevForm,
-                phone: `${prevForm.phoneFirst}-${prevForm.phoneSecond}-${prevForm.phoneThird}`,
-            };
+    useEffect(() => {
+        setForm(plans);
+    }, [plans]);
+
+    const onClickUpdateHandler = async () => {
+        try {
             dispatch(callPlanningModifyAPI({
-                planCode: plan.planCode,
-                planRequest : updatedForm
+                planCode: form.planCode,
+                planRequest: form
             }));
-            return updatedForm;
-        });
-    }
+            onClose();
+        } catch (error) {
+            console.error("Error updating plan:", error);
+        }
+    };
+    // console.log( 'form.planCode ',  form.planCode)
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay/>
+            <ModalOverlay />
             <ModalContent>
-                <PlanForm plan={form} setForm={setForm}/>
-                <ModalFooter justifyContent='center'>
-                    <Button colorScheme='orange' mx={1} onClick={onClickUpdateHandler}>수정</Button>
-                    <Button variant='outline' mx={1} onClick={onClose}>
+                <PlanForm form={form} setForm={setForm}/>
+                <ModalFooter justifyContent="center">
+                    <Button colorScheme="orange" mx={1} onClick={onClickUpdateHandler}>
+                        수정
+                    </Button>
+                    <Button variant="outline" mx={1} onClick={onClose}>
                         취소
                     </Button>
                 </ModalFooter>

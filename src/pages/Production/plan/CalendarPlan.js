@@ -49,6 +49,7 @@ function CalendarPlan(){
         }
     }, [deleted, dispatch, currentPage]);
 
+
     console.log(plans);
 
     return(

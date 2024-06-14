@@ -5,16 +5,19 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import { callPlanningsAPI } from '../../../apis/PlanningAPICalls';
 import CustomToolbar from './CustomToolbar';
+import { Button, useDisclosure } from "@chakra-ui/react";
+import PlanModify from "./PlanModify";
 
 const localizer = momentLocalizer(moment);
 moment.locale('ko');
 
 function CalendarPlans() {
     const dispatch = useDispatch();
-    const {plannings} = useSelector((state) => state.planningReducer);
+    const { plannings } = useSelector((state) => state.planningReducer);
     const [events, setEvents] = useState([]);
     const [currentDate, setCurrentDate] = useState(moment());
-    const [selectedEvent, setSelectedEvent] = useState(null); // 선택된 이벤트의 상태
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const fetchPlans = (date) => {
         const formattedDate = date.format('YYYY-MM');
@@ -29,17 +32,17 @@ function CalendarPlans() {
         if (plannings?.data?.length > 0) {
             const eventMap = {};
             plannings.data.forEach(item => {
-                const key = `${item.startAt}_${item.endAt}`; // 생산 계획 기간으로 고유한 키 생성
+                const key = `${item.startAt}_${item.endAt}`;
                 if (!eventMap[key]) {
                     eventMap[key] = {
                         title: `${moment(item.startAt).format('YYYY-MM-DD')} ~ ${moment(item.endAt).format('YYYY-MM-DD')}`,
                         start: new Date(item.startAt),
                         end: new Date(item.endAt),
                         color: '#ff912e',
-                        data: [item], // 해당 기간에 대한 모든 상품 정보를 담는 배열
+                        data: [item],
                     };
                 } else {
-                    eventMap[key].data.push(item); // 이미 있는 이벤트에 상품 정보를 추가
+                    eventMap[key].data.push(item);
                 }
             });
 
@@ -66,30 +69,38 @@ function CalendarPlans() {
             style,
         };
     };
+
     const handleSelectEvent = (event) => {
-        setSelectedEvent(event.data); // 선택된 이벤트의 데이터를 상태로 저장
+        setSelectedEvent(event.data);
     };
+
+    const handleModify = () => {
+        onOpen();
+    };
+
     return (
-        <div style={{width: '100%', display:'flex'}}>
-            <div style={{width: '60%'}}>
+        <div style={{ width: '100%', display: 'flex' }}>
+            <PlanModify isOpen={isOpen} onClose={onClose} plans={selectedEvent} />
+            <div style={{ width: '50%' }}>
                 <Calendar
                     localizer={localizer}
                     events={events}
                     startAccessor="start"
                     endAccessor="end"
-                    style={{height: 500}}
+                    style={{ height: 500 }}
                     views={['month']}
                     eventPropGetter={eventStyleGetter}
                     components={{
                         toolbar: CustomToolbar,
                     }}
-                    onNavigate={handleNavigate} // 달력이 이동할 때 호출되는 콜백 함수
-                    onSelectEvent={handleSelectEvent} // 이벤트를 클릭할 때 호출되는 콜백 함수
+                    onNavigate={handleNavigate}
+                    onSelectEvent={handleSelectEvent}
                 />
             </div>
-            <div style={{width: '40%'}}>
+            <div style={{ width: '50%' }}>
                 {selectedEvent && (
                     <div>
+                        <Button colorScheme="gray" backgroundColor="orange" onClick={handleModify}>수정</Button>
                         <table>
                             <thead>
                             <tr>
@@ -98,6 +109,7 @@ function CalendarPlans() {
                                 <th>코드</th>
                                 <th>품목</th>
                                 <th>총수량</th>
+                                <th>적요</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -108,6 +120,7 @@ function CalendarPlans() {
                                     <td>{item.productCode}</td>
                                     <td>{item.productName}</td>
                                     <td>{item.requiredQuantity}</td>
+                                    <td>{item.description}</td>
                                 </tr>
                             ))}
                             </tbody>
