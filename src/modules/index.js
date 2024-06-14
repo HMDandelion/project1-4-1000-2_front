@@ -5,6 +5,7 @@ import stockReducer from "./StockModules";
 import warehouseReducer from "./WarehouseModules";
 import storageReducer from "./StorageModules";
 import authReducer from "./AuthModules";
+import releaseReducer from "./ReleaseModules";
 import estimateReducer from "./EstimateModules";
 import workOrderReducer from "./WorkOrderModules";
 import orderReducer from "./OrderModules";
@@ -14,6 +15,7 @@ import materialStockReducer from "./MaterialStockModules";
 import materialOrderReducer from "./MaterialOrderModules";
 import materialDropReducer from "./MaterialStockDDModules";
 import materialUsageReducer from "./MaterialUsageModules";
+import returnReducer from "./ReturnModules";
 import planningOrderReducer from "./PlanningOrderModules";
 
 const rootReducer = combineReducers({
@@ -23,12 +25,14 @@ const rootReducer = combineReducers({
     authReducer,
     estimateReducer,
     orderReducer,
+    returnReducer,
 
     //동환
     productReducer,
     stockReducer,
     warehouseReducer,
     storageReducer,
+    releaseReducer,
 
     // 나윤
     workOrderReducer,

@@ -12,13 +12,13 @@ import {useDispatch} from "react-redux";
 import {WarningIcon} from "@chakra-ui/icons";
 import {callOrderCancelAPI} from "../../apis/OrderAPICalls";
 
-function OrderCancelButton({isPossible, orderCode}) {
+function OrderCancelButton({isPossible, code, cancelAPI}) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
     const dispatch = useDispatch();
 
     const onClickHandler = () => {
-        dispatch(callOrderCancelAPI({orderCode}));
+        dispatch(cancelAPI({code}));
         onClose();
     }
 
@@ -48,7 +48,7 @@ function OrderCancelButton({isPossible, orderCode}) {
                             </GridItem>
                             <GridItem colSpan={4} color='secondaryGray.900'>
                                 <AlertDialogHeader fontSize='lg' fontWeight='800'  p='40px 0 5px'>
-                                    해당 주문을 취소하시겠습니까?
+                                    해당 건을 취소하시겠습니까?
                                 </AlertDialogHeader>
                                 <AlertDialogBody p='0'>
                                     이 작업은 되돌릴 수 없습니다.

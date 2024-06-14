@@ -5,8 +5,11 @@ import Clients from "./pages/sales/client/Clients";
 import React from "react";
 import ProtectedRoute from "./components/router/ProtectedRoute";
 import ClientDetail from "./pages/sales/client/ClientDetail";
+import Products from "./pages/inventory/product/Products";
+import Warehouses from "./pages/inventory/warehouse/Warehouses";
 import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
+import ProtectedRoute from "./components/router/ProtectedRoute";
 import InventoryMaterailAnalyze from "./pages/inventory/material/InventoryMaterailAnalyze";
 import Specs from "./pages/inventory/material/Specs";
 import MaterialInStock from "./pages/inventory/material/MaterialInStock";
@@ -18,12 +21,16 @@ import EstimateDetail from "./pages/sales/estimate/EstimateDetail";
 import Orders from "./pages/sales/order/Orders";
 import OrderDetail from "./pages/sales/order/OrderDetail";
 import ProductDetail from "./pages/inventory/product/ProductDetail";
+import Release from "./pages/inventory/release/Release";
+import MaterialUsages from "./pages/production/material/MaterialUsages";
 import WorkOrders from "./pages/Production/workOrder/WorkOrders";
 import Plans from "./pages/Production/plan/Plans";
 import SpecDetail from "./pages/inventory/material/SpecDetail";
 import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
 import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
 import StockDetail from "./pages/inventory/material/StockDetail";
+import Returns from "./pages/sales/return/Returns";
+import ReturnDetail from "./pages/sales/return/ReturnDetail";
 import Products from "./pages/inventory/product/Products";
 import Warehouses from "./pages/inventory/warehouse/Warehouses";
 import MaterialUsages from "./pages/Production/material/MaterialUsages";
@@ -46,6 +53,10 @@ function App() {
                       <Route path="order">
                           <Route index element={<ProtectedRoute loginCheck={true}><Orders/></ProtectedRoute>}/>
                           <Route path="detail" element={<ProtectedRoute loginCheck={true}><OrderDetail/></ProtectedRoute>}/>
+                      </Route>
+                      <Route path="return">
+                          <Route index element={<ProtectedRoute loginCheck={true}><Returns/></ProtectedRoute>}/>
+                          <Route path="detail" element={<ProtectedRoute loginCheck={true}><ReturnDetail/></ProtectedRoute>}/>
                       </Route>
                   </Route>
                   <Route path="inventory">
@@ -85,6 +96,11 @@ function App() {
                   <Route path="production">
                       <Route path="material">
                           <Route path="usage" element={<MaterialUsages/>}/>
+                      </Route>
+                  </Route>
+                  <Route path="circulation">
+                      <Route path="release">
+                          <Route index element={<Release/>}/>
                       </Route>
                   </Route>
                   <Route path="production">

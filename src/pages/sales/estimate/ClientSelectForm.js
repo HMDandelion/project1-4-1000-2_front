@@ -4,14 +4,12 @@ import {
     Button,
     Center, Container, Divider, FormControl,
     Grid,
-    GridItem, HStack, IconButton,
-    Input,
-    InputGroup,
-    InputRightElement, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger,
+    GridItem, HStack,
+    Input, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger,
     Radio,
-    RadioGroup, Select, Stack, Text,
+    RadioGroup, Stack, Text,
     useDisclosure,
-    VStack, Wrap
+    VStack
 } from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
 import {callSimpleSalesClientsAPI} from "../../../apis/ClientAPICalls";
