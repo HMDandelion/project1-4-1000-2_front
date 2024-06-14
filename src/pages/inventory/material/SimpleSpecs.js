@@ -18,17 +18,22 @@ function SimpleSpecs({addMaterial}) {
     const [newMaterial, setNewMaterial] = useState({
         specCode: '',
         materialName: '',
-        categoryName: ''
+        categoryName: '',
+        orderQuantity: 0,
+        price: 0
     });
     const handleRowClick = (row) => {
         setNewMaterial({
             specCode: row.original.specCode,
             materialName: row.original.materialName,
-            categoryName: row.original.categoryName
+            categoryName: row.original.categoryName,
+            orderQuantity: 0,
+            price: 0
         });
 
     };
     useEffect(() => {
+        console.log(newMaterial);
             addMaterial(newMaterial);
         }, [newMaterial]
     );

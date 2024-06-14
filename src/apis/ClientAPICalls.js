@@ -157,10 +157,10 @@ export const callMaterialClientDeleteAPI = ({code}) => {
 export const callSimpleMaterialClientsAPI = () => {
     return async (dispatch, getState) => {
         const result = await authRequest.get(`api/v1/material/clients?page=1&size=1000`);
-        console.log("callMaterialClientsAPI result : ", result);
+        console.log("callSimpleMaterialClientsAPI result : ", result);
 
         if (result.status === 200) {
-            dispatch(getSimpleSalesClients(result.data.content));
+            dispatch(getSimpleSalesClients(result));
         }
 
     };

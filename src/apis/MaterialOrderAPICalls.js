@@ -25,3 +25,10 @@ export const callMaterialOrderAPI = ({orderCode}) => {
 
     };
 };
+
+export const callMaterialOrderRegistAPI = ({orderRequest}) => {
+    return async (dispatch, getState) => {
+        console.log(orderRequest);
+
+    };
+};

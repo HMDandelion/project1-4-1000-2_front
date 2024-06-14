@@ -18,6 +18,7 @@ import {
 import DaumPostcodeEmbed from "react-daum-postcode";
 import React, {useEffect} from "react";
 import ClientSelectForm from "../../pages/sales/estimate/ClientSelectForm";
+import MaterialCSelectForm from "./MaterialCSelectForm";
 
 function MaterialOrderForm({handleClientType, handleNewClient, handleExistingClient, order, setForm}) {
     const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -44,11 +45,10 @@ function MaterialOrderForm({handleClientType, handleNewClient, handleExistingCli
             <ModalHeader fontWeight='800' color={textColor}>주문 설정</ModalHeader>
             <ModalCloseButton/>
             <ModalBody borderTop='1px solid' borderColor='secondaryGray.100' p='30px 40px'>
-                <ClientSelectForm
+                <MaterialCSelectForm
                     handleClientType={handleClientType}
                     handleNewClient={handleNewClient}
                     handleExistingClient={handleExistingClient}
-                    clientDivide='material'
                 />
             </ModalBody>
         </>
