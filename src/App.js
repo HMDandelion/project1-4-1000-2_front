@@ -85,11 +85,11 @@ function App() {
                           <Route path="in-stock" element={<MaterialInStock/>}/>
                           <Route path="Specs">
                               <Route index element={<Specs/>}/>
-                              <Route path=":specCode" element={<SpecDetail/>}/>
+                              <Route path=":id" element={<SpecDetail/>}/>
                           </Route>
                           <Route path="stocks" >
                               <Route index element={<MaterialStocks/>}/>
-                              <Route path=":stockCode" element={<StockDetail/>}/>
+                              <Route path=":id" element={<StockDetail/>}/>
                           </Route>
                       </Route>
                   </Route>
@@ -97,11 +97,11 @@ function App() {
                       <Route path="material">
                           <Route path="orders" >
                               <Route index element={<MaterialOrders/>}/>
-                              <Route path=":orderCode" element={<MaterialOrderDetail/>}/>
+                              <Route path=":id" element={<MaterialOrderDetail/>}/>
                           </Route>
                           <Route path="clients" >
                               <Route index element={<MaterialClients/>}/>
-                              <Route path=":clientCode" element={<MaterialClientDetail/>}/>
+                              <Route path=":id" element={<MaterialClientDetail/>}/>
                           </Route>
                       </Route>
                   </Route>

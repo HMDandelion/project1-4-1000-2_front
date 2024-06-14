@@ -18,6 +18,7 @@ import materialUsageReducer from "./MaterialUsageModules";
 import returnReducer from "./ReturnModules";
 import navigationReducer from "./NavigationModules";
 import planningOrderReducer from "./PlanningOrderModules";
+import planningReducer from "./PlanningModules";
 
 const rootReducer = combineReducers({
 
