@@ -25,9 +25,10 @@ export const callOrderRegistAPI = ({ estimateCode }) => {
 
 }
 
-export const callOrdersAPI = ({currentPage}) => {
+export const callOrdersAPI = ({currentPage, searchParams}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.get(`/api/v1/orders?page=${currentPage}`);
+        let queryString = searchParams.searchText ? `&${searchParams.selectedOption}=${searchParams.searchText}` : '';
+        const result = await authRequest.get(`/api/v1/orders?page=${currentPage}${queryString}`);
 
         console.log("callOrdersAPI result : ", result);
         if(result.status === 200) {

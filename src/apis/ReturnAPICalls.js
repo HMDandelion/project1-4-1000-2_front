@@ -21,9 +21,12 @@ export const callReturnRegistAPI = ({ returnRequest }) => {
     }
 }
 
-export const callReturnsAPI = ({currentPage}) => {
+export const callReturnsAPI = ({currentPage, searchParams}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.get(`/api/v1/returns?page=${currentPage}`);
+        let queryString = searchParams.searchText ? `&${searchParams.selectedOption}=${searchParams.searchText}` : '';
+        console.log("queryString : ", queryString);
+
+        const result = await authRequest.get(`/api/v1/returns?page=${currentPage}${queryString}`);
         console.log("callReturnsAPI result : ", result);
 
         if(result.status === 200) {
