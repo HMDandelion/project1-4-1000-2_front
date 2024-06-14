@@ -1,4 +1,4 @@
-import {request} from "./api";
+import {authRequest, request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
 import {getEmployees, getInventoryProducts, getProductClient, success} from "../modules/ProductModules";
 import {
@@ -15,7 +15,7 @@ const DEFAULT_URL = `/api/v1/storage`;
 export const callWarehouseMove =({currentPage=1,warehouseCode}) =>{
     return async (dispatch, getState) =>{
         console.log("번호",+warehouseCode)
-        const result = await request('GET', `${DEFAULT_URL}/warehouse/${warehouseCode}?page=${currentPage}`);
+        const result = await authRequest.get( `${DEFAULT_URL}/warehouse/${warehouseCode}?page=${currentPage}`);
 
         console.log("callWarehouseMove : ", result);
         if(result.status === 200) {
@@ -27,7 +27,7 @@ export const callWarehouseMove =({currentPage=1,warehouseCode}) =>{
 
 export const callDestroysTotalAPI =() =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/destroy`);
+        const result = await authRequest.get(`${DEFAULT_URL}/destroy`);
 
         console.log("result : ", result);
         if(result.status === 200) {
@@ -38,7 +38,7 @@ export const callDestroysTotalAPI =() =>{
 
 export const callProductDestroyAPI =() =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/product/destroy`);
+        const result = await authRequest.get( `${DEFAULT_URL}/product/destroy`);
 
         console.log("result : ", result);
         if(result.status === 200) {
@@ -51,7 +51,7 @@ export const callRegistDestroyAPI = ({ updateRequest,onSuccess,storageCode }) =>
 
     return async (dispatch, getState) => {
         try {
-            const result = await request('PUT',`${DEFAULT_URL}/destroy/${storageCode}`,{'Content-Type':'application/json'}, JSON.stringify(updateRequest));
+            const result = await authRequest.put(`${DEFAULT_URL}/destroy/${storageCode}`,updateRequest);
             console.log('callRegistDestroyAPI result : ',result);
 
             if(result.status === 201) {
@@ -74,7 +74,7 @@ export const callStockAssignment = ({ updateRequest,onSuccess,stockCode }) => {
 
     return async (dispatch, getState) => {
         try {
-            const result = await request('POST',`/api/v1/storage/stock/${stockCode}`,{'Content-Type':'application/json'}, JSON.stringify(updateRequest));
+            const result = await authRequest.post(`/api/v1/storage/stock/${stockCode}`,updateRequest);
             console.log('callStockAssignment result : ',result);
 
             if(result.status === 201) {
@@ -91,7 +91,7 @@ export const callStockAssignment = ({ updateRequest,onSuccess,stockCode }) => {
 
 export const callStoreAPI =({stockCode}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/stock/${stockCode}`);
+        const result = await authRequest.get(`${DEFAULT_URL}/stock/${stockCode}`);
 
         console.log("callStoreAPI : ", result);
         if(result.status === 200) {
@@ -101,7 +101,7 @@ export const callStoreAPI =({stockCode}) =>{
 }
 export const callStoragesAPI =({warehouseCode,currentPage=1}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/filter/${warehouseCode}?page=${currentPage}`);
+        const result = await authRequest.get(`${DEFAULT_URL}/filter/${warehouseCode}?page=${currentPage}`);
 
         console.log("callStoragesAPI : ", result);
 
@@ -115,7 +115,7 @@ export const callStoragesAPI =({warehouseCode,currentPage=1}) =>{
 
 export const callEmployeesAPI =() =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `/api/v1/employee/list`);
+        const result = await authRequest.get( `/api/v1/employee/list`);
 
         console.log("callEmployeesAPI : ", result);
         if(result.status === 200) {
@@ -127,7 +127,7 @@ export const callEmployeesAPI =() =>{
 export const callCancelAssignmentAPI = ({onSuccess,storageCode}) =>{
     return async(dispatch,getState) => {
         try {
-            const result = await request('DELETE',`${DEFAULT_URL}/${storageCode}`,{'Content-Type':'application/json'});
+            const result = await authRequest.delete(`${DEFAULT_URL}/${storageCode}`);
             console.log('callCancelAssignmentAPI result : ',result);
 
             if(result.status === 204) {

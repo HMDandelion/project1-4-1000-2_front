@@ -162,8 +162,8 @@ function Warehouses() {
         setSelectedStorage(storage);
         dispatch(callCancelAssignmentAPI({
             onSuccess: () => {
-                const title = '수정 완료';
-                const desc = '창고 정보가 성공적으로 수정되었습니다.';
+                const title = '취소 완료';
+                const desc = '창고 배정이 성공적으로 취소되었습니다.';
                 statusToastAlert(title, desc, 'success');
                 navigate(`/inventory/warehouse`);
                 handleWarehouseSelect(warehouse);},
