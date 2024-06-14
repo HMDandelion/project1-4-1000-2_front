@@ -34,7 +34,6 @@
 .today-label {
     background-color: red;
     color: white;
-    padding: 5px;
     border-radius: 3px;
     display: inline-block;
     animation: float 2s ease-in-out infinite, glow 1.5s ease-in-out infinite;
