@@ -61,7 +61,7 @@ function MaterialOrderRegist() {
         }
     };
     const setMaterials = (updatedData) => {
-        const updatedMaterials = materialForm.map(material => {
+        const updatedMaterials = materialForm.materials.map(material => {
             if (material.specCode === updatedData.specCode) {
                 return {
                     ...material,

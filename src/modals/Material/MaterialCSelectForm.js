@@ -46,7 +46,10 @@ function MaterialCSelectForm({handleClientType, handleNewClient, handleExistingC
 
     useEffect(() => handleClientType(clientType), [clientType]);
     useEffect(() => handleNewClient(newClient), [newClient]);
-    useEffect(() => handleExistingClient(existingClient), [existingClient]);
+    useEffect(() => {
+        console.log(existingClient);
+        handleExistingClient(existingClient);
+    }, [existingClient]);
 
     const handleExistingClientChange = (value) => setExistingClient(value);
 

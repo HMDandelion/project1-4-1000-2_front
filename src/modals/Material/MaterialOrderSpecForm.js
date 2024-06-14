@@ -95,6 +95,24 @@ function MaterialOrderSpecForm({materials, removeMaterial, setMaterials}) {
 
     };
 
+    const onCellValueChanged = (params) => {
+        const updatedData = params.data;
+        console.log(materials);
+        const updatedMaterials = materials.materials.map(material => {
+            if (material.specCode === updatedData.specCode) {
+                return {
+                    ...material,
+                    orderQuantity: updatedData.orderQuantity,
+                    price: updatedData.price
+                };
+            }
+            return material;
+        });
+        console.log(updatedMaterials);
+
+        setMaterials(updatedMaterials);
+    };
+
     const [columnData, setColumnData] = useState([
         { headerName: "코드", field: 'specCode', width: 100, resizable: false },
         { headerName: "자재명", field: "materialName" },
@@ -110,7 +128,10 @@ function MaterialOrderSpecForm({materials, removeMaterial, setMaterials}) {
                         <span>주문 목록</span>
                     </Flex>
                 </Heading>
-                <AgGrid columnsData={columnData} tableData={materials.materials}/>
+                <AgGrid columnsData={columnData} tableData={materials.materials}
+                        onGridReady={onGridReady}
+                        onCellValueChanged={onCellValueChanged}
+                />
             </Card>
         </>
     );
