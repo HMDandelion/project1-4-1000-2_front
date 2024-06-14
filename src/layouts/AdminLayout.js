@@ -60,7 +60,7 @@ import Card from "../components/card/Card";
                         gap={{ base: "20px", xl: "20px" }}>
 
                     </Grid>
-                    <Card direction='column' w='95%' m='0 auto'>
+                    <Card direction='column' w='100%'>
                         <Outlet/>
                     </Card>
                 </Box>
