@@ -26,6 +26,7 @@ import DestroyRegist from "../../../modals/products/DestroyRegist";
 import CancelAssignment from "../../../modals/products/CancelAssignment";
 import PagingBar from "../../../components/common/PagingBar";
 import {statusToastAlert} from "../../../utils/ToastUtils";
+import {callProductsAPI} from "../../../apis/ProductAPICalls";
 
 function Warehouses() {
     const dispatch = useDispatch();

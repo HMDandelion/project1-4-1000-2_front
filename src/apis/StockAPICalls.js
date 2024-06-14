@@ -5,9 +5,9 @@ import {getInventoryStocks, getStockWarehouse, getTodayStock, productTotal, tota
 import {callProductUpdateStatusAPI} from "./ProductAPICalls";
 
 const DEFAULT_URL = `/api/v1/stock`;
-export const callStocksAPI =({currentPage = 0}) =>{
+export const callStocksAPI =({currentPage = 1, startDate = '', endDate = '' }) =>{
     return async (dispatch, getState) =>{
-        const result = await authRequest.get( `${DEFAULT_URL}?page=${currentPage}`);
+        const result = await authRequest.get( `${DEFAULT_URL}?page=${currentPage}&startDate=${startDate}&endDate=${endDate}`);
 
         console.log("result : ", result);
         if(result.status === 200) {

@@ -31,7 +31,9 @@ import {callDestroysTotalAPI, callProductDestroyAPI} from "../../../apis/Storage
 import PagingBar from "../../../components/common/PagingBar";
 
 import {useNavigate} from "react-router-dom";
-
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css"; // 스타일 파일 추가
+import { format } from 'date-fns';
 import ProductUpdate from "../../../modals/products/ProductUpdate";
 import CustomizedTable from "../../../components/table/product/CustomizedTable";
 import ProductClient from "../../../modals/products/ProductClient";
@@ -53,9 +55,14 @@ function Products() {
     const { isOpen: isAssignmentModalOpen, onOpen: onAssignmentModalOpen, onClose: onAssignmentModalClose } = useDisclosure();
     const { isOpen: isStoreModalOpen, onOpen: onStoreModalOpen, onClose: onStoreModalClose } = useDisclosure();
     const [loading, setLoading] = useState(true);
+
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedStock, setSelectedStock] = useState(null);
     const navigate = useNavigate();
+
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [filteredStocks, setFilteredStocks] = useState([]);
 
 
     const products = useSelector(state => state.productReducer.products);
@@ -177,7 +184,17 @@ function Products() {
             setLoading(false);
     }, [currentPage, activeTab]);
 
-
+    useEffect(() => {
+        if (startDate && endDate) {
+            const filtered = stocks?.data?.content.filter(stock => {
+                const createdAt = new Date(stock.createdAt);
+                return createdAt >= startDate && createdAt <= endDate;
+            });
+            setFilteredStocks(filtered);
+        } else {
+            setFilteredStocks(stocks?.data?.content || []);
+        }
+    }, [startDate, endDate, stocks]);
 
 
 // 상품 수정 버튼의 onClick 이벤트 핸들러
@@ -450,6 +467,13 @@ function Products() {
         setSearchParams({ selectedOption, searchText });
         dispatch(callProductsAPI({ searchText }));
     };
+
+    const handleSearchStock = () => {
+        const formattedStartDate = startDate ? startDate.toISOString().split('T')[0] : '';
+        const formattedEndDate = endDate ? endDate.toISOString().split('T')[0] : '';
+        dispatch(callStocksAPI({ startDate: formattedStartDate, endDate: formattedEndDate }));
+    }
+
     return (
         <>
             <Flex justifyContent="space-between">
@@ -514,13 +538,12 @@ function Products() {
                     </TabList>
                 </Tabs>
 
-
                 {activeTab === 'products' && (
                     <>
                         <Button colorScheme="orange" size='sm' onClick={handleSaveClick} float="right" ml={5}>상품 등록</Button>
                         <ProductSave isOpen={isSaveModalOpen} onClose={onSaveModalClose} />
                         {products && (
-                            <>{/*<SearchRadioButton isChecked={isChecked} setIsChecked={setIsChecked} text='주문 진행중'/>*/}
+                            <>
                                 <SelectMenu onSearch={handleSearch} menuList={menuList}/>
                                 <CustomizedTable
                                     columnsData={productColumns}
@@ -537,6 +560,40 @@ function Products() {
 
                 {activeTab === 'inventory' && stocks && (
                     <>
+                        <Flex mb="20px" justifyContent="space-between">
+                            <Flex alignItems="center">
+                                <label>시작 날짜 </label>
+                                <DatePicker
+                                    selected={startDate}
+                                    onChange={(date) => setStartDate(date)}
+                                    selectsStart
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    dateFormat="yyyy-MM-dd"
+                                    customInput={
+                                        <Button colorScheme="orange" variant="outline" size="sm" ml={2}>
+                                            {startDate ? startDate.toLocaleDateString() : "날짜 선택"}
+                                        </Button>
+                                    }
+                                />
+                                <label>종료 날짜 </label>
+                                <DatePicker
+                                    selected={endDate}
+                                    onChange={(date) => setEndDate(date)}
+                                    selectsEnd
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    minDate={startDate}
+                                    dateFormat="yyyy-MM-dd"
+                                    customInput={
+                                        <Button colorScheme="orange" variant="outline" size="sm" ml={2}>
+                                            {endDate ? endDate.toLocaleDateString() : "날짜 선택"}
+                                        </Button>
+                                    }
+                                />
+                                <Button onClick={handleSearchStock} colorScheme="orange" ml={2}>검색</Button>
+                            </Flex>
+                        </Flex>
                         <CustomizedTable
                             columnsData={stockColumns}
                             tableData={processedStocks}
