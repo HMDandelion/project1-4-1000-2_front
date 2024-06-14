@@ -1,18 +1,4 @@
-import {
-    Box,
-    Button, Divider,
-    IconButton, Input,
-    InputGroup,
-    InputLeftAddon, InputRightAddon,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
-    Select,
-    Stack
-} from "@chakra-ui/react";
-import {ChevronDownIcon, SearchIcon} from "@chakra-ui/icons";
-import React, {useState} from "react";
+import React from "react";
 import ColumnsTable from "../components/table/ComplexTable";
 import OrderStatusBadge from "../components/badge/OrderStatusBadge";
 import MiniCalendar from "../components/calendar/MiniCalendar";

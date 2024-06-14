@@ -1,20 +1,8 @@
 import {
-    Box, Button, Center, Divider, Flex, FormControl, Grid, GridItem,
-    Heading, HStack,
-    IconButton,
-    Input,
-    InputGroup,
-    InputRightElement, ModalHeader, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger,
-    Radio,
-    RadioGroup, Select,
-    Stack, Table, Tbody, Td, Th, Thead, Tr, useDisclosure,
-    VStack
+    Divider, Grid, GridItem, ModalHeader
 } from "@chakra-ui/react";
-import {AddIcon, MinusIcon, SearchIcon} from "@chakra-ui/icons";
 import React, {useEffect, useState} from "react";
-import DaumPostcodeEmbed from "react-daum-postcode";
 import {useDispatch, useSelector} from "react-redux";
-import {callSimpleSalesClientsAPI} from "../../../apis/ClientAPICalls";
 import ClientSelectForm from "./ClientSelectForm";
 import PriceAndQuantityForm from "./PriceAndQuantityForm";
 import ProductSelectForm from "./ProductSelectForm";
@@ -87,7 +75,6 @@ function EstimateForm({handleClientType, handleNewClient, handleExistingClient, 
                         onQuantityChange={handleQuantityChange}
                         onPriceChange={handlePriceChange}
                         onProductRemove={handleProductRemove}
-                        mode='regist'
                     />
                 </GridItem>
             </Grid>

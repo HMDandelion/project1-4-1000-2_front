@@ -25,7 +25,7 @@ function PriceAndQuantityForm({ selectedProducts, onQuantityChange, onPriceChang
                                 <Td>
                                     <IconButton
                                         icon={<MinusIcon />}
-                                        size="sm"
+                                        size="xs"
                                         color="red"
                                         onClick={() => onProductRemove(product.productCode)}
                                     />

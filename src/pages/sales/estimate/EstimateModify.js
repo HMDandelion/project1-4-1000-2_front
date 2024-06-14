@@ -36,7 +36,6 @@ function EstimateModify({isOpen, onClose, estimate}) {
     }, []);
 
     useEffect(() => {
-
         if (products && estimate.products) {
             const updatedProducts = estimate.products.map(product => {
                 const matchedProduct = products.find(p => p.productCode === product.productCode);
@@ -71,7 +70,7 @@ function EstimateModify({isOpen, onClose, estimate}) {
         }));
     }
 
-    const onClickCancelHandler = () => {
+    const onCloseHandler = () => {
         onClose();
         setDeadline(estimate.deadline);
         setSelectedProducts(estimate.products.map(product => ({
@@ -114,7 +113,7 @@ function EstimateModify({isOpen, onClose, estimate}) {
     const formatNumber = (number) => new Intl.NumberFormat('ko-KR').format(number);
 
     return (
-            <Modal isOpen={isOpen} onClose={onClose} size='xl' scrollBehavior='inside'>
+            <Modal isOpen={isOpen} onClose={onCloseHandler} size='xl' scrollBehavior='inside'>
                 <ModalOverlay/>
                 <ModalContent maxW='800px'>
                     <ModalBody>
@@ -156,7 +155,7 @@ function EstimateModify({isOpen, onClose, estimate}) {
                         <HStack>
                             <PopoverCalendar deadline={deadline} handleDeadline={setDeadline}/>
                             <Button colorScheme='orange' mx={1} onClick={onClickUpdateHandler}>수정</Button>
-                            <Button variant='outline' mx={1} onClick={onClickCancelHandler}>
+                            <Button variant='outline' mx={1} onClick={onCloseHandler}>
                                 취소
                             </Button>
                         </HStack>

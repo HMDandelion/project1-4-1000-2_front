@@ -1,33 +1,32 @@
 import {
-    Text,
-    Badge,
     useColorModeValue,
     Heading,
     Flex,
-    Button,
-    useDisclosure,
-    Divider
+    Divider, GridItem, Center, Grid
 } from "@chakra-ui/react";
 
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
-import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
-import {callEstimateAPI} from "../../../apis/EstimateAPICalls";
-import {callOrderAPI} from "../../../apis/OrderAPICalls";
+import {callOrderAPI, callOrderCancelAPI} from "../../../apis/OrderAPICalls";
+import OrderCancelButton from "../../../components/button/OrderCancelButton";
+import ReturnRegist from "./ReturnRegist";
+import OrderProgressDetail from "./OrderProgressDetail";
+import OrderClientDetail from "./OrderClientDetail";
+
 
 
 function OrderDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
-    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
     const orderCode = location.state;
-    const { order, success } = useSelector(state => state.orderReducer);
+    const { order, success, canceled } = useSelector(state => state.orderReducer);
+    const { returnSuccess } = useSelector(state => state.returnReducer);
 
     const [columnData, setColumnData] = useState([
         { headerName: "상품번호", valueGetter: (p) => p.data.productCode, width: 100, resizable: false },
@@ -39,16 +38,15 @@ function OrderDetail() {
 
     useEffect(() => {
         dispatch(callOrderAPI({orderCode}));
-        onClose();
     }, [success]);
-    //
-    // useEffect(() => {
-    //     if(deleted === true) navigate('/sales/order');
-    // }, [deleted]);
 
-    // useEffect(() => {
-    //     if(orderSuccess === true) navigate('/sales/order');
-    // }, [orderSuccess]);
+    useEffect(() => {
+        if(canceled === true) navigate('/sales/order');
+    }, [canceled]);
+
+    useEffect(() => {
+        if(returnSuccess === true) navigate('/sales/return');
+    }, [returnSuccess]);
 
     const getTotalPrice = (products) => {
         return products.reduce((total, product) => total + (product.quantity * product.price), 0);
@@ -61,18 +59,19 @@ function OrderDetail() {
     return (
         order &&
         <>
-            <Flex justify='space-between'>
-                <Text fontSize='3xl' fontWeight='800' color={textColor} m='10px'>
-                    주문 상세
-                </Text>
-                <div>
-                    <Button colorScheme='gray' size='xs' onClick={onOpen}>
-                        수정
-                    </Button>
-                    <DeleteAlertButton/>
-                </div>
-            </Flex>
-
+            <Grid templateColumns='repeat(15, 1fr)'>
+                <GridItem colSpan={7}>
+                    <OrderProgressDetail type='order' order={order}/>
+                </GridItem>
+                <GridItem >
+                    <Center height='260px'>
+                        <Divider orientation='vertical'/>
+                    </Center>
+                </GridItem>
+                <GridItem colSpan={7}>
+                    <OrderClientDetail client={order.client}/>
+                </GridItem>
+            </Grid>
 
             <Divider mt='20px'/>
 
@@ -81,7 +80,12 @@ function OrderDetail() {
                 <Heading fontSize='xl' color={textColor} pt='15px'>
                     <Flex justify='space-between'>
                         <span>주문 총액 {formatNumber(getTotalPrice(order.orderProducts))}원</span>
-                        {/*<OrderRegistButton isPossible={!estimate['isOrdered']} estimateCode={estimate.estimateCode}/>*/}
+                        {
+                            order.status !== 'COMPLETED' ?
+                                <OrderCancelButton isPossible={order.status === 'ORDER_RECEIVED'}
+                                                   cancelAPI={callOrderCancelAPI} code={order.orderCode}/> :
+                                <ReturnRegist order={order}/>
+                        }
                     </Flex>
                 </Heading>
             </Card>

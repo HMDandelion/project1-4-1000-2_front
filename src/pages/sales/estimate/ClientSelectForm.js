@@ -4,14 +4,12 @@ import {
     Button,
     Center, Container, Divider, FormControl,
     Grid,
-    GridItem, HStack, IconButton,
-    Input,
-    InputGroup,
-    InputRightElement, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger,
+    GridItem, HStack,
+    Input, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger,
     Radio,
-    RadioGroup, Select, Stack, Text,
+    RadioGroup, Stack, Text,
     useDisclosure,
-    VStack, Wrap
+    VStack
 } from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
 import {callSimpleSalesClientsAPI} from "../../../apis/ClientAPICalls";
@@ -84,7 +82,7 @@ function ClientSelectForm({handleClientType, handleNewClient, handleExistingClie
                                                 overflow="hidden"
                                                 bg={existingClient == client.clientCode ? 'orange.400' : 'gray.100'}
                                                 color={existingClient == client.clientCode ? 'secondaryGray.900' : 'secondaryGray.800'}
-                                                _hover={{bg: existingClient == client.clientCode ? 'orange.600' : 'gray.200'}}
+                                                _hover={{bg: existingClient == client.clientCode ? 'orange.400' : 'gray.200'}}
                                                 py={2}
                                                 cursor="pointer"
                                                 {...(clientType !== 'existing') && {
