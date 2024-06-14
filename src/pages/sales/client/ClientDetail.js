@@ -11,7 +11,7 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import {callClientDeleteAPI, callSalesClientAPI} from "../../../apis/ClientAPICalls";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import ViewDetailButton from "../../../components/button/ViewDetailButton";
@@ -36,7 +36,7 @@ function ClientDetail() {
         { headerName: "마감기한", valueGetter: (p) => p.data.deadline },
         { headerName: "주문총액", valueGetter: (p) => p.data.totalPrice },
         { headerName: "진행상태", cellRenderer: (p) => OrderStatusBadge(p.data.status), width: 150 },
-        { headerName: null, cellRenderer: (p) => ViewDetailButton(`/sales/orders/${p.data.orderCode}`), width: 100, resizable: false}
+        { headerName: null, cellRenderer: (p) => ViewDetailButton(`/sales/order/detail`, p.data.orderCode), width: 100, resizable: false}
     ]);
 
     useEffect(() => {

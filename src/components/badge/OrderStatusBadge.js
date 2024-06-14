@@ -17,7 +17,7 @@ function OrderStatusBadge(value) {
                 );
             case 'WAIT_SHIPPING':
                 return (
-                    <Badge colorScheme='pink' size='xs'>배송대기</Badge>
+                    <Badge colorScheme='cyan' size='xs'>배송대기</Badge>
                 );
             case 'SHIPPING':
                 return (
@@ -25,7 +25,7 @@ function OrderStatusBadge(value) {
                 );
             case 'CANCELED':
                 return (
-                    <Badge colorScheme='cyan' size='xs'>주문취소</Badge>
+                    <Badge colorScheme='red' size='xs'>주문취소</Badge>
                 );
             case 'COMPLETED':
                 return (
