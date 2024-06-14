@@ -562,7 +562,6 @@ function Products() {
                     <>
                         <Flex mb="20px" justifyContent="space-between">
                             <Flex alignItems="center">
-                                <label>시작 날짜 </label>
                                 <DatePicker
                                     selected={startDate}
                                     onChange={(date) => setStartDate(date)}
@@ -576,7 +575,9 @@ function Products() {
                                         </Button>
                                     }
                                 />
-                                <label>종료 날짜 </label>
+                                <Box mx={2} color="orange">
+                                    -
+                                </Box>
                                 <DatePicker
                                     selected={endDate}
                                     onChange={(date) => setEndDate(date)}
