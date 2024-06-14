@@ -2,9 +2,11 @@ import {authRequest} from "./api";
 import {getEstimate, getEstimates, success, deleted} from "../modules/EstimateModules";
 import {statusToastAlert} from "../utils/ToastUtils";
 
-export const callEstimatesAPI = ({currentPage}) => {
+export const callEstimatesAPI = ({currentPage, searchParams}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.get(`/api/v1/estimates?page=${currentPage}`);
+        let queryString = searchParams.searchText ? `&${searchParams.selectedOption}=${searchParams.searchText}` : '';
+
+        const result = await authRequest.get(`/api/v1/estimates?page=${currentPage}${queryString}`);
 
         console.log("callEstimatesAPI result : ", result);
         if(result.status === 200) {

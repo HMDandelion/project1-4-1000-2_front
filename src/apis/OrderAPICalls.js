@@ -1,6 +1,7 @@
 import {authRequest} from "./api";
 import {canceled, getOrder, getOrders, success} from "../modules/OrderModules";
 import {statusToastAlert} from "../utils/ToastUtils";
+import {getPlanningOrder} from "../modules/PlanningOrderModules";
 
 export const callOrderRegistAPI = ({ estimateCode }) => {
     const formData = new URLSearchParams();
@@ -24,9 +25,10 @@ export const callOrderRegistAPI = ({ estimateCode }) => {
 
 }
 
-export const callOrdersAPI = ({currentPage}) => {
+export const callOrdersAPI = ({currentPage, searchParams}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.get(`/api/v1/orders?page=${currentPage}`);
+        let queryString = searchParams.searchText ? `&${searchParams.selectedOption}=${searchParams.searchText}` : '';
+        const result = await authRequest.get(`/api/v1/orders?page=${currentPage}${queryString}`);
 
         console.log("callOrdersAPI result : ", result);
         if(result.status === 200) {
@@ -59,5 +61,17 @@ export const callOrderCancelAPI = ({code}) => {
             statusToastAlert(title, desc, 'error');
         }
 
+    }
+}
+
+/* 나윤 */
+export const callPlanningOrdersAPI = ({currentPage}) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`/api/v1/orders/production/planning/list?page=${currentPage}`);
+
+        console.log("callPlanningOrdersAPI result : ", result);
+        if(result.status === 200) {
+            dispatch(getPlanningOrder(result));
+        }
     }
 }

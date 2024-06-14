@@ -7,16 +7,22 @@ import storageReducer from "./StorageModules";
 import authReducer from "./AuthModules";
 import releaseReducer from "./ReleaseModules";
 import estimateReducer from "./EstimateModules";
+import workOrderReducer from "./WorkOrderModules";
 import orderReducer from "./OrderModules";
+import planningReducer from "./PlanningModules";
 import materialSpecReducer from "./MaterialSpecModules";
 import materialStockReducer from "./MaterialStockModules";
 import materialOrderReducer from "./MaterialOrderModules";
 import materialDropReducer from "./MaterialStockDDModules";
 import materialUsageReducer from "./MaterialUsageModules";
 import returnReducer from "./ReturnModules";
+import navigationReducer from "./NavigationModules";
+import planningOrderReducer from "./PlanningOrderModules";
 import planningReducer from "./PlanningModules";
 
 const rootReducer = combineReducers({
+
+    navigationReducer,
 
     //예원
     clientReducer,
@@ -32,15 +38,17 @@ const rootReducer = combineReducers({
     storageReducer,
     releaseReducer,
 
+    // 나윤
+    workOrderReducer,
+    planningReducer,
+    planningOrderReducer,
+
     //한결
     materialDropReducer,
     materialOrderReducer,
     materialSpecReducer,
     materialStockReducer,
-    materialUsageReducer,
-
-    //나윤
-    planningReducer
+    materialUsageReducer
 
 });
 

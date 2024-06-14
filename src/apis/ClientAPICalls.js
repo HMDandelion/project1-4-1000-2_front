@@ -4,8 +4,7 @@ import {
     getMaterialClient,
     getMaterialClients,
     getSalesClient,
-    getSalesClients,
-    getSimpleSalesClients,
+    getSalesClients, getSimpleSalesClients,
     success
 } from "../modules/ClientModules";
 import {statusToastAlert} from "../utils/ToastUtils";
@@ -20,9 +19,12 @@ export const callSimpleSalesClientsAPI = () => {
     }
 }
 
-export const callSalesClientsAPI = ({currentPage = 1}) => {
+export const callSalesClientsAPI = ({currentPage = 1, searchParams, isOrdered}) => {
     return async (dispatch, getState) => {
-        const result = await authRequest.get(`/api/v1/clients?page=${currentPage}`);
+        let queryString = searchParams.searchText ? `&${searchParams.selectedOption}=${searchParams.searchText}` : '';
+        queryString += isOrdered ? `&isOrdered=true` : '';
+
+        const result = await authRequest.get(`/api/v1/clients?page=${currentPage}${queryString}`);
 
         console.log("callSalesClientsAPI result : ", result);
         if(result.status === 200) {

@@ -6,6 +6,7 @@ import store from "./store";
 import theme from "./theme/theme"
 import {ChakraProvider} from "@chakra-ui/react";
 import { createStandaloneToast } from '@chakra-ui/react';
+import {BrowserRouter} from "react-router-dom";
 const { ToastContainer, toast } = createStandaloneToast();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,7 +14,9 @@ root.render(
     <>
         <ChakraProvider theme={theme}>
             <Provider store={store}>
-                <App />
+                <BrowserRouter>
+                    <App/>
+                </BrowserRouter>
             </Provider>
         </ChakraProvider>
         <ToastContainer />
