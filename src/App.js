@@ -2,6 +2,8 @@ import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
 import AdminLayout from "./layouts/AdminLayout";
 import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
+import React from "react";
+import ProtectedRoute from "./components/router/ProtectedRoute";
 import ClientDetail from "./pages/sales/client/ClientDetail";
 import Products from "./pages/inventory/product/Products";
 import Warehouses from "./pages/inventory/warehouse/Warehouses";
@@ -21,12 +23,17 @@ import OrderDetail from "./pages/sales/order/OrderDetail";
 import ProductDetail from "./pages/inventory/product/ProductDetail";
 import Release from "./pages/inventory/release/Release";
 import MaterialUsages from "./pages/production/material/MaterialUsages";
+import WorkOrders from "./pages/Production/workOrder/WorkOrders";
+import Plans from "./pages/Production/plan/Plans";
 import SpecDetail from "./pages/inventory/material/SpecDetail";
 import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
 import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
 import StockDetail from "./pages/inventory/material/StockDetail";
 import Returns from "./pages/sales/return/Returns";
 import ReturnDetail from "./pages/sales/return/ReturnDetail";
+import Products from "./pages/inventory/product/Products";
+import Warehouses from "./pages/inventory/warehouse/Warehouses";
+import MaterialUsages from "./pages/Production/material/MaterialUsages";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {setRedirectPath} from "./modules/NavigationModules";
@@ -108,7 +115,15 @@ function App() {
                           <Route index element={<Release/>}/>
                       </Route>
                   </Route>
-              </Route>
+                  <Route path="production">
+                      <Route path="work-order">
+                          <Route index element={<WorkOrders/>}/>
+                      </Route>
+                      <Route path="plan">
+                          <Route index element={<Plans/>}/>
+                      </Route>
+                  </Route>
+                  </Route>
               <Route path="/login" element={<AuthLayout/>}>
                   <Route index element={<ProtectedRoute loginCheck={false}><LogIn/></ProtectedRoute>}/>
               </Route>
