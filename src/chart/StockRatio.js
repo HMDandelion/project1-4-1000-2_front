@@ -57,7 +57,7 @@ function StockRatio({ products, total, productTotal }) {
                 display: false,
             },
             datalabels: {
-                display: true,
+                display: false,
             },
         },
         scales: {

@@ -15,14 +15,14 @@ import {
 } from "../../../apis/StockAPICalls";
 import "../../../Products.css"
 import {
-    Box,Text,
+    Box, Text,
     Button, Flex, Modal,
     ModalBody,
     ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalHeader, ModalOverlay,
-    useDisclosure, useToast
+    useDisclosure, useToast, Tabs, TabList, Tab
 } from "@chakra-ui/react";
 import ProductSave from "../../../modals/products/ProductSave";
 import StockRatio from "../../../chart/StockRatio";
@@ -174,7 +174,6 @@ function Products() {
 
 // 상품 수정 버튼의 onClick 이벤트 핸들러
     const handleEditClick = (product) => (event) => {
-        console.log("버블링",product);
         event.stopPropagation(); // 이벤트 버블링 방지
         setSelectedProduct(product);
         onEditModalOpen(); // 수정 모달 열기 함수 호출
@@ -241,19 +240,16 @@ function Products() {
         edit: (() => {
             return (
                 <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button colorScheme="orange"size='sm' onClick={handleEditClick(product)} style={{ marginRight: '8px' }}>상품 수정</Button>
+                    <Button colorScheme="orange" size='sm' onClick={handleEditClick(product)} style={{ marginRight: '8px' }}>상품 수정</Button>
                     {product.status === 'in_production' && (
-                        <>
-                        <Button colorScheme="red"size='sm' onClick={handleDeleteClick(product)}>생산 중단</Button>
-                        </>
+                        <Button colorScheme="red" size='sm' onClick={handleDeleteClick(product)} style={{ width: '100px' }}>생산 중단</Button>
                     )}
                     {product.status === 'production_discontinued' && (
-                        <>
-                        <Button colorScheme="green" size='sm' onClick={handleDeleteClick(product)}>재 생산</Button>
-                        </>
-                        )}
+                        <Button colorScheme="green" size='sm' onClick={handleDeleteClick(product)} style={{ width: '100px' }}>재 생산</Button>
+                    )}
                     <ProductUpdate isOpen={isEditModalOpen} onClose={() => { onEditModalClose(); setSelectedProduct(null); }} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
                 </div>
+
             );
         })(),
         clients:(() => {
@@ -316,12 +312,36 @@ function Products() {
         editStock: (() => {
             return (
                 <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative', width: '200px' }}>
-                    <Button colorScheme="orange" size='sm' onClick={handleStockUpdate(stock)} style={{ marginRight: '8px' }}>재고 수정</Button>
-                    <Button colorScheme="green" size='sm' onClick={handleWarehouseAssignment(stock)} style={{ marginRight: '8px', visibility: stock.assignmentStatus !== 'fully_assigned' ? 'visible' : 'hidden' }}>창고 배정</Button>
-                    <Button colorScheme="red" size='sm' onClick={handleStockDelete(stock)} style={{ marginRight: '8px', visibility: stock.assignmentStatus === 'not_assignment' ? 'visible' : 'hidden' }}>재고 삭제</Button>
+                    <div className="status-container" style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative', width: '200px' }}>
+                        <div style={{ flex: '0 0 auto', marginRight: '8px' }}>
+                            <Button colorScheme="orange" size='sm' onClick={handleStockUpdate(stock)}>재고 수정</Button>
+                        </div>
+
+                        <div style={{ flex: '0 0 auto', marginRight: '8px' }}>
+                            {stock.assignmentStatus !== 'fully_assigned' ? (
+                                <Button colorScheme="green" size='sm' onClick={handleWarehouseAssignment(stock)}>창고 배정</Button>
+                            ) : (
+                                <div style={{ color: 'navy', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '32px', width: '75.73px', fontSize: '1.5em', fontWeight: 'bold' }}>-</div>
+                            )}
+                        </div>
+
+                        <div style={{ flex: '0 0 auto', marginRight: '8px' }}>
+                            {stock.assignmentStatus === 'not_assignment' ? (
+                                <Button colorScheme="red" size='sm' onClick={handleStockDelete(stock)}>재고 삭제</Button>
+                            ) : (
+                                <div style={{ color: 'navy', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '32px', width: '75.73px', fontSize: '1.5em', fontWeight: 'bold' }}>-</div>
+                            )}
+                        </div>
+
+                        <StockUpdate isOpen={isStockEditModalOpen} onClose={() => { onStockEditModalClose(); setSelectedStock(null); }} selectedStock={selectedStock} setSelectedStock={setSelectedStock} />
+                        <WarehouseAssignment isOpen={isAssignmentModalOpen} onClose={() => { onAssignmentModalClose(); }} selectedStock={selectedStock} setSelectedStock={setSelectedStock}/>
+                    </div>
+
+
                     <StockUpdate isOpen={isStockEditModalOpen} onClose={() => { onStockEditModalClose(); setSelectedStock(null); }} selectedStock={selectedStock} setSelectedStock={setSelectedStock} />
                     <WarehouseAssignment isOpen={isAssignmentModalOpen} onClose={() => { onAssignmentModalClose(); }} selectedStock={selectedStock} setSelectedStock={setSelectedStock}/>
                 </div>
+
             );
         })(),
         isToday: stock.isToday ? (
@@ -441,7 +461,7 @@ function Products() {
                         )}
                     </Box>
                 </Box>
-                <Flex flex="1" m="100px" alignItems="center">
+                <Flex flex="1" m="50px" alignItems="center">
                     {todayStock && (
                         <Box color="navy" textAlign="left">
                             <Text fontSize="2.65em" fontWeight="bold">{todayStock.data.today}일</Text>
@@ -453,6 +473,7 @@ function Products() {
                                 <Text as="span" color="orange" fontSize="4em" fontWeight="bold">
                                     {todayStock.data.todayQuantity}
                                 </Text>
+                                <br/>
                                 재고 수량이 추가 되었습니다.
                             </Text>
                         </Box>
@@ -460,23 +481,26 @@ function Products() {
                 </Flex>
             </Flex>
             <Box bg="#ffffff" m="10px" p="10px" borderRadius="5px" boxShadow="0 2px 4px rgba(0,0,0,0.1)">
-                <Flex className="tabs" mb="10px">
-                    <Button
-                        onClick={() => setActiveTab('products')}
-                        colorScheme={activeTab === 'products' ? 'orange' : 'gray'}
-                        variant={activeTab === 'products' ? 'solid' : 'outline'}
-                        mr="5px"
-                    >
-                        상품
-                    </Button>
-                    <Button
-                        onClick={() => setActiveTab('inventory')}
-                        colorScheme={activeTab === 'inventory' ? 'orange' : 'gray'}
-                        variant={activeTab === 'inventory' ? 'solid' : 'outline'}
-                    >
-                        재고
-                    </Button>
-                </Flex>
+                <Tabs pb="30px" position="relative">
+                    <TabList>
+                        <Tab
+                            onClick={() => setActiveTab('products')}
+                            color={activeTab === 'products' ? 'orange' : 'gray'}
+                            variant={activeTab === 'products' ? 'solid' : 'outline'}
+                            mr="5px"
+                        >
+                            상품
+                        </Tab>
+                        <Tab
+                            onClick={() => setActiveTab('inventory')}
+                            color={activeTab === 'inventory' ? 'orange' : 'gray'}
+                            variant={activeTab === 'inventory' ? 'solid' : 'outline'}
+                        >
+                            재고
+                        </Tab>
+                    </TabList>
+                </Tabs>
+
 
                 {activeTab === 'products' && (
                     <>

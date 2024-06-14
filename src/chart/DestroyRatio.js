@@ -60,7 +60,7 @@ function DestroyRatio({ totalDestroy,productDestroy }) {
                 display: false,
             },
             datalabels: {
-                display: true,
+                display: false,
             },
         },
         scales: {
