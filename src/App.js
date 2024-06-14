@@ -31,8 +31,8 @@ import MaterialUsages from "./pages/production/material/MaterialUsages";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {setRedirectPath} from "./modules/NavigationModules";
-import Plans from "./pages/production/plan/Plans";
 import WorkOrders from "./pages/production/workOrder/WorkOrders";
+import Plans from "./pages/production/plan/Plans";
 
 function App() {
     const redirectPath = useSelector(state => state.navigationReducer);
@@ -46,6 +46,7 @@ function App() {
     }, [redirectPath, dispatch, navigate]);
 
     return (
+
           <Routes>
               <Route path="/" element={<AdminLayout/>}>
                   <Route index element={<ProtectedRoute loginCheck={true}><TestPage/></ProtectedRoute>}/> {/* 나중에 Main 컴포넌트 만들면 그걸로 바꿔주삼 */}
