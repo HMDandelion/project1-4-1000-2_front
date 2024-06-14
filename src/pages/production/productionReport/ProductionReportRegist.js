@@ -15,6 +15,8 @@ import {useState} from "react";
 import ProductionReportForm from "./ProductionReportForm";
 import ProductionDetailForm from "./ProductionDetailForm";
 import DefectDetailForm from "./DefectDetailForm";
+import {useDispatch} from "react-redux";
+import {callProductionReportReigstAPI} from "../../../apis/ProductionAPICalls";
 
 function ProductionReportRegist({isOpen, onClose}) {
     const [reportData, setReportData] = useState({
@@ -24,31 +26,8 @@ function ProductionReportRegist({isOpen, onClose}) {
         startAt: '',
         completedAt: '',
         productionFile: null,
-        productionStatus: ''
-    });
-
-    const [detailData, setDetailData] = useState({
-        productionDetailCode: '',
-        workOrderCode: '',
-        lineName: '',
-        employeeName: '',
-        productName: '',
-        orderedQuantity: 0,
-        productionQuantity: 0,
-        defectQuantity: 0,
-        completelyQuantity: 0,
-        inspectionDate: '',
-        inspectionStatusType: '',
-        productionMemo: '',
-        productionStatusType: ''
-    });
-
-    const [defectData, setDefectData] = useState({
-        productionDetailCode: '',
-        defectCode: '',
-        defectFile: null,
-        defectReason: '',
-        defectStatus: ''
+        productionStatus: '대기중',
+        productionDetails: [] // 보고서에 속하는 생산 상세 목록
     });
 
     const handleReportDataChange = (updatedData) => {
@@ -56,26 +35,64 @@ function ProductionReportRegist({isOpen, onClose}) {
         setReportData({...reportData, ...updatedData});
     };
 
-    const handleDetailDataChange = (updatedData) => {
-        setDetailData({...detailData, ...updatedData});
+    const handleDetailDataChange = (index, updatedData) => {
+        const updatedProductionDetails = [...reportData.productionDetails];
+        updatedProductionDetails[index] = {...updatedProductionDetails[index], ...updatedData};
+        setReportData({...reportData, productionDetails: updatedProductionDetails});
     };
 
-    const handleDefectDataChange = (updatedData) => {
-        setDefectData({...defectData, ...updatedData});
+    const handleDefectDataChange = (detailIndex, defectIndex, updatedData) => {
+        const updatedProductionDetails = [...reportData.productionDetails];
+        updatedProductionDetails[detailIndex].defectDetails[defectIndex] = {...updatedProductionDetails[detailIndex].defectDetails[defectIndex], ...updatedData};
+        setReportData({...reportData, productionDetails: updatedProductionDetails});
     };
+
+    const addProductionDetail = () => {
+        setReportData({
+            ...reportData,
+            productionDetails: [...reportData.productionDetails, {
+                workOrderCode: '',
+                lineName: '',
+                employeeName: '',
+                productName: '',
+                orderedQuantity: 0,
+                productionQuantity: 0,
+                defectQuantity: 0,
+                completelyQuantity: 0,
+                inspectionDate: '',
+                inspectionStatusType: '검수 전',
+                productionMemo: '',
+                productionStatusType: '대기중',
+                defectDetails: []
+            }]
+        });
+    };
+
+    const addDefectDetail = (productionDetailIndex) => {
+        const updatedProductionDetails = [...reportData.productionDetails];
+        updatedProductionDetails[productionDetailIndex].defectDetails.push({
+            productionDetailCode: '',
+            defectCode: '',
+            defectFile: null,
+            defectReason: '',
+            defectStatus: '처리 시작'
+        });
+        setReportData({
+            ...reportData,
+            productionDetails: updatedProductionDetails
+        });
+    };
+
+    const dispatch = useDispatch();
 
     const handleSave = () => {
-
+        dispatch(callProductionReportReigstAPI({reportRequest: reportData}));
         console.log('Report Data:', reportData);
-        console.log('Detail Data:', detailData);
-        console.log('Defect Data:', defectData);
         onClose();
     };
 
     return (
         <ChakraProvider>
-
-
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay/>
                 <ModalContent maxW="80vw">
@@ -86,21 +103,28 @@ function ProductionReportRegist({isOpen, onClose}) {
                             <GridItem colSpan={1} rowSpan={1}>
                                 <ProductionReportForm productionReport={reportData} setForm={handleReportDataChange}/>
                             </GridItem>
-                            <GridItem colSpan={1} rowSpan={1}>
-                                <DefectDetailForm defectDetail={defectData} setForm={handleDefectDataChange}/>
-                            </GridItem>
-                            <GridItem colSpan={2} rowSpan={1}>
-                                <ProductionDetailForm productionDetail={detailData} setForm={handleDetailDataChange}/>
-                            </GridItem>
+                            {reportData.productionDetails.map((detail, index) => (
+                                <GridItem key={index} colSpan={2} rowSpan={1}>
+                                    <ProductionDetailForm
+                                        productionDetail={detail}
+                                        setForm={(updatedDetail) => handleDetailDataChange(index, updatedDetail)}
+                                    />
+                                    {detail.defectDetails.map((defect, defectIndex) => (
+                                        <DefectDetailForm
+                                            key={defectIndex}
+                                            defectDetail={defect}
+                                            setForm={(updatedDefect) => handleDefectDataChange(index, defectIndex, updatedDefect)}
+                                        />
+                                    ))}
+                                    <Button onClick={() => addDefectDetail(index)}>불량 추가</Button>
+                                </GridItem>
+                            ))}
+                            <Button onClick={addProductionDetail}>생산 상세 추가</Button>
                         </Grid>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={onClose}>
-                            닫기
-                        </Button>
-                        <Button variant="ghost" onClick={handleSave}>
-                            저장
-                        </Button>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>닫기</Button>
+                        <Button variant="ghost" onClick={handleSave}>저장</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
@@ -109,6 +133,7 @@ function ProductionReportRegist({isOpen, onClose}) {
 }
 
 export default ProductionReportRegist;
+
 
 
 // import React, { useEffect, useState } from "react";

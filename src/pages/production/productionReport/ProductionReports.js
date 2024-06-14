@@ -1,12 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import { callProductionReportsAPI } from "../../../apis/ProductionAPICalls";
-import { Button, HStack, useDisclosure } from "@chakra-ui/react";
+import {
+    callProductionReportDeleteAPI,
+    callProductionReportsAPI,
+    deleteProductionReportAPI
+} from "../../../apis/ProductionAPICalls";
+import { Button, HStack, Flex, Center, useDisclosure, Checkbox } from "@chakra-ui/react";
 import SelectMenu from "../../../components/common/SelectMenu";
 import ComplexTable from "../../../components/table/NewComplexTable";
 import DropDownMenu from "../../../components/common/DropDownMenu";
 import { useNavigate } from "react-router-dom";
 import PagingBar from "../../../components/common/PagingBar";
+
 const RegistProductionReportModal = lazy(() => import("./ProductionReportRegist"));
 
 function ProductionReports() {
@@ -17,6 +22,7 @@ function ProductionReports() {
 
     const [statusType, setStatusType] = useState('type1');
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedReports, setSelectedReports] = useState([]);
 
     useEffect(() => {
         dispatch(callProductionReportsAPI({ currentPage }));
@@ -35,6 +41,16 @@ function ProductionReports() {
     const menuList = searchOptions[statusType];
 
     const columns = [
+        {
+            Header: '선택',
+            accessor: 'select',
+            Cell: ({ row }) => (
+                <Checkbox
+                    isChecked={selectedReports.includes(row.original.productionStatusCode)}
+                    onChange={(e) => handleSelectReport(e, row.original.productionStatusCode)}
+                />
+            )
+        },
         { Header: '코드', accessor: 'productionStatusCode' },
         { Header: '생산 상품', accessor: 'stylizationName' },
         { Header: '총 지시 수량', accessor: 'totalOrderedQuantity' },
@@ -54,30 +70,46 @@ function ProductionReports() {
     };
 
     const handleDeleteReport = () => {
+        selectedReports.forEach((reportId) => {
+            dispatch(callProductionReportDeleteAPI(reportId));
+        });
+        setSelectedReports([]);
+        dispatch(callProductionReportsAPI({ currentPage }));
+    };
 
+    const handleSelectReport = (e, reportId) => {
+        if (e.target.checked) {
+            setSelectedReports([...selectedReports, reportId]);
+        } else {
+            setSelectedReports(selectedReports.filter((id) => id !== reportId));
+        }
     };
 
     return (
         productionReports &&
-        <>
-            <HStack justifyContent="space-between" mb="20px">
-                <HStack spacing='10px'>
+        <Flex direction="column" align="center" w="100%">
+            <HStack justifyContent="space-between" mb="20px" w="100%">
+                <HStack spacing="10px">
                     <DropDownMenu dropDownList={searchOptions.type1} setValue={searchHandler} mr="20px" />
                     <SelectMenu onSearch={searchHandler} menuList={menuList} />
                 </HStack>
-                <HStack size='sm'>
+                <HStack size="sm">
                     <Button colorScheme="orange" onClick={handleAddReport}>등록</Button>
-                    <Button colorScheme="red" onClick={handleDeleteReport}>삭제</Button>
+                    <Button colorScheme="red" onClick={handleDeleteReport} isDisabled={selectedReports.length === 0}>삭제</Button>
                 </HStack>
             </HStack>
-            {productionReports && (
-                <ComplexTable columnsData={columns} tableData={productionReports.data} onRowClick={handleRowClick} />
-            )}
-            <PagingBar pageInfo={productionReports.pageInfo} setCurrentPage={setCurrentPage}/>
+            <Center w="100%">
+                {productionReports && (
+                    <ComplexTable columnsData={columns} tableData={productionReports.data} onRowClick={handleRowClick} />
+                )}
+            </Center>
+            <Center w="100%" mt="20px">
+                <PagingBar pageInfo={productionReports.pageInfo} setCurrentPage={setCurrentPage} />
+            </Center>
             <Suspense fallback={<div>Loading...</div>}>
                 <RegistProductionReportModal isOpen={isOpen} onClose={onClose} />
             </Suspense>
-        </>
+        </Flex>
     );
 }
 

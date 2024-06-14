@@ -45,7 +45,7 @@ export const callProductionReportsAPI = ({ currentPage }) => {
         }
     }
 
-export const callProductionReportReigsAPI = ({reportRequest}) => {
+export const callProductionReportReigstAPI = ({reportRequest}) => {
     return async (dispatch, getState) => {
         try {
             const result = await authRequest.post(`/api/v1/production/reports`, reportRequest);
