@@ -1,6 +1,6 @@
 import {authRequest} from "./api";
 import {getMaterialSpecs} from "../modules/MaterialSpecModules";
-import {getMaterialOrder, getMaterialOrders} from "../modules/MaterialOrderModules";
+import {getMaterialOrder, getMaterialOrders, success} from "../modules/MaterialOrderModules";
 
 
 export const callMaterialOrdersAPI = ({currentPage}) => {
@@ -23,5 +23,16 @@ export const callMaterialOrderAPI = ({orderCode}) => {
             dispatch(getMaterialOrder(result));
         }
 
+    };
+};
+
+export const callMaterialOrderRegistAPI = ({orderRequest}) => {
+    return async (dispatch, getState) => {
+        console.log(orderRequest);
+        const result = await authRequest.post(`api/v1/material/orders`, orderRequest);
+
+        if (result.status === 201) {
+            dispatch(success());
+        }
     };
 };

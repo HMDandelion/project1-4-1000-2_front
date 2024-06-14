@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Badge, Box, Button, Flex, Text, useColorModeValue, useDisclosure, useToast} from "@chakra-ui/react";
+import {
+    Badge,
+    Box,
+    Button,
+    Flex, Tab,
+    TabList,
+    Tabs,
+    Text,
+    useColorModeValue,
+    useDisclosure,
+    useToast
+} from "@chakra-ui/react";
 import {callWarehouseAPI, callWarehousesAPI} from "../../../apis/WarehouseAPICalls";
 import {callCancelAssignmentAPI, callStoragesAPI, callWarehouseMove} from "../../../apis/StorageAPICalls";
 import ColumnsTable from "../../../components/table/ComplexTable";
@@ -15,6 +26,7 @@ import DestroyRegist from "../../../modals/products/DestroyRegist";
 import CancelAssignment from "../../../modals/products/CancelAssignment";
 import PagingBar from "../../../components/common/PagingBar";
 import {statusToastAlert} from "../../../utils/ToastUtils";
+import {callProductsAPI} from "../../../apis/ProductAPICalls";
 
 function Warehouses() {
     const dispatch = useDispatch();
@@ -162,8 +174,8 @@ function Warehouses() {
         setSelectedStorage(storage);
         dispatch(callCancelAssignmentAPI({
             onSuccess: () => {
-                const title = '수정 완료';
-                const desc = '창고 정보가 성공적으로 수정되었습니다.';
+                const title = '취소 완료';
+                const desc = '창고 배정이 성공적으로 취소되었습니다.';
                 statusToastAlert(title, desc, 'success');
                 navigate(`/inventory/warehouse`);
                 handleWarehouseSelect(warehouse);},
@@ -255,22 +267,29 @@ function Warehouses() {
     return (
         <Box p={4}>
             <Box mb={4} display="flex" flexWrap="wrap" borderBottom={`2px solid ${inactiveColor}`}>
-                {warehouses && warehouses.map(warehouse => (
-                    <Button
-                        key={warehouse.warehouseCode}
-                        onClick={() => handleWarehouseSelect(warehouse)}
-                        bg={selectedWarehouse?.warehouseCode === warehouse.warehouseCode ? "blue.500" : "transparent"}
-                        border="none"
-                        borderTop={`2px solid ${selectedWarehouse?.warehouseCode === warehouse.warehouseCode ? activeBorderColor : "transparent"}`}
-                        color={selectedWarehouse?.warehouseCode === warehouse.warehouseCode ? "white" : defaultTextColor}
-                        borderRadius="0"
-                        m={0}
-                        px={4}
-                        py={2}
-                    >
-                        {warehouse.name}
-                    </Button>
-                ))}
+                {warehouses && (
+                    <Tabs pb="30px" position="relative">
+                        <TabList>
+                            {warehouses.map(warehouse => (
+                                <Tab
+                                    key={warehouse.warehouseCode}
+                                    onClick={() => handleWarehouseSelect(warehouse)}
+                                    bg={selectedWarehouse?.warehouseCode === warehouse.warehouseCode ? "orange.500" : "transparent"}
+                                    border="none"
+                                    borderTop={`2px solid ${selectedWarehouse?.warehouseCode === warehouse.warehouseCode ? activeBorderColor : "transparent"}`}
+                                    color={selectedWarehouse?.warehouseCode === warehouse.warehouseCode ? "white" : defaultTextColor}
+                                    borderRadius="0"
+                                    m={0}
+                                    px={4}
+                                    py={2}
+                                >
+                                    {warehouse.name}
+                                </Tab>
+                            ))}
+                        </TabList>
+                    </Tabs>
+                )}
+
                 <Button
                     onClick={handleWarehouseAdd}
                     bg="orange.500"

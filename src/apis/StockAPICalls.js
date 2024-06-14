@@ -1,13 +1,13 @@
-import {request} from "./api";
+import {authRequest, request} from "./api";
 import {getSalesClient, getSalesClients} from "../modules/ClientModules";
 import {getInventoryProducts, success} from "../modules/ProductModules";
 import {getInventoryStocks, getStockWarehouse, getTodayStock, productTotal, total} from "../modules/StockModules";
 import {callProductUpdateStatusAPI} from "./ProductAPICalls";
 
 const DEFAULT_URL = `/api/v1/stock`;
-export const callStocksAPI =({currentPage = 0}) =>{
+export const callStocksAPI =({currentPage = 1, startDate = '', endDate = '' }) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}?page=${currentPage}`);
+        const result = await authRequest.get( `${DEFAULT_URL}?page=${currentPage}&startDate=${startDate}&endDate=${endDate}`);
 
         console.log("result : ", result);
         if(result.status === 200) {
@@ -20,7 +20,7 @@ export const callStocksAPI =({currentPage = 0}) =>{
 export const callTotalStockAPI =() => {
     return async (dispatch, getState) => {
         try {
-            const result = await request('GET', `${DEFAULT_URL}/accumulate`);
+            const result = await authRequest.get( `${DEFAULT_URL}/accumulate`);
             console.log("totalResult : ", result);
             if (result.status === 200) {
                 dispatch(total(result));
@@ -36,7 +36,7 @@ export const callTotalStockAPI =() => {
 export const callStockWarehouseAPI =({stockCode}) => {
     return async (dispatch, getState) => {
         try {
-            const result = await request('GET', `${DEFAULT_URL}/left/${stockCode}`);
+            const result = await authRequest( `${DEFAULT_URL}/left/${stockCode}`);
             console.log("callStockWarehouseAPI : ", result.data);
             if (result.status === 200) {
                 dispatch(getStockWarehouse(result.data));
@@ -52,7 +52,7 @@ export const callStockWarehouseAPI =({stockCode}) => {
 export const callProductTotalAPI =() => {
     return async (dispatch, getState) => {
         try {
-            const result = await request('GET', `${DEFAULT_URL}/product/accumulate`);
+            const result = await authRequest.get( `${DEFAULT_URL}/product/accumulate`);
             console.log("productTotalResult : ", result);
             if (result.status === 200) {
                 dispatch(productTotal(result));
@@ -68,7 +68,7 @@ export const callProductTotalAPI =() => {
 export const callStockTodayAPI =() => {
     return async (dispatch, getState) => {
         try {
-            const result = await request('GET', `${DEFAULT_URL}/today`);
+            const result = await authRequest.get( `${DEFAULT_URL}/today`);
             console.log("callStockTodayAPI : ", result);
             if (result.status === 200) {
                 dispatch(getTodayStock(result));
@@ -85,7 +85,7 @@ export const callStockUpdateAPI = ({ updateRequest,onSuccess,stockCode }) => {
 
     return async (dispatch, getState) => {
         try {
-            const result = await request('PUT',`${DEFAULT_URL}/${stockCode}`,{'Content-Type':'application/json'}, JSON.stringify(updateRequest));
+            const result = await authRequest.put(`${DEFAULT_URL}/${stockCode}`,updateRequest);
             console.log('callStockUpdateAPI result : ',result);
 
             if(result.status === 201) {
@@ -105,7 +105,7 @@ export const callStockDeleteAPI = ({ onSuccess,selectedStock }) => {
 
     return async (dispatch, getState) => {
         try {
-            const result = await request('DELETE',`${DEFAULT_URL}/${selectedStock}`,{'Content-Type':'application/json'});
+            const result = await authRequest.delete(`${DEFAULT_URL}/${selectedStock}`);
             console.log('callStockDeleteAPI result : ',result);
 
             if(result.status === 204) {

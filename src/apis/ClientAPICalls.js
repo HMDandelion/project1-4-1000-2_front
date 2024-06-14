@@ -125,3 +125,45 @@ export const callMaterialClientAPI = ({clientCode}) => {
         }
     };
 };
+export const callMaterialClientRegistAPI = ({materialClientCreateRequest}) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.post('api/v1/material/clients',materialClientCreateRequest)
+
+        if (result.status === 201) {
+            dispatch(success());
+        }
+    };
+};
+
+export const callMaterialClientModifyAPI = ({clientCode,clientRequest}) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.put(`api/v1/material/clients/${clientCode}`, clientRequest);
+
+        if (result.status === 201) {
+            dispatch(success());
+        }
+
+    };
+};
+export const callMaterialClientDeleteAPI = ({code}) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.delete(`api/v1/material/clients?clientCode=${code}`);
+
+        if (result.status === 204) {
+            dispatch(deleted());
+        }
+
+    };
+};
+
+export const callSimpleMaterialClientsAPI = () => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`api/v1/material/clients?page=1&size=1000`);
+        console.log("callSimpleMaterialClientsAPI result : ", result);
+
+        if (result.status === 200) {
+            dispatch(getSimpleSalesClients(result));
+        }
+
+    };
+};

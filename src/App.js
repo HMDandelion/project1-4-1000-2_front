@@ -6,10 +6,8 @@ import React from "react";
 import ProtectedRoute from "./components/router/ProtectedRoute";
 import ClientDetail from "./pages/sales/client/ClientDetail";
 import Products from "./pages/inventory/product/Products";
-import Warehouses from "./pages/inventory/warehouse/Warehouses";
 import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
-import ProtectedRoute from "./components/router/ProtectedRoute";
 import InventoryMaterailAnalyze from "./pages/inventory/material/InventoryMaterailAnalyze";
 import Specs from "./pages/inventory/material/Specs";
 import MaterialInStock from "./pages/inventory/material/MaterialInStock";
@@ -22,21 +20,19 @@ import Orders from "./pages/sales/order/Orders";
 import OrderDetail from "./pages/sales/order/OrderDetail";
 import ProductDetail from "./pages/inventory/product/ProductDetail";
 import Release from "./pages/inventory/release/Release";
-import MaterialUsages from "./pages/production/material/MaterialUsages";
-import WorkOrders from "./pages/Production/workOrder/WorkOrders";
-import Plans from "./pages/Production/plan/Plans";
 import SpecDetail from "./pages/inventory/material/SpecDetail";
 import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
 import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
 import StockDetail from "./pages/inventory/material/StockDetail";
 import Returns from "./pages/sales/return/Returns";
 import ReturnDetail from "./pages/sales/return/ReturnDetail";
-import Products from "./pages/inventory/product/Products";
 import Warehouses from "./pages/inventory/warehouse/Warehouses";
-import MaterialUsages from "./pages/Production/material/MaterialUsages";
+import MaterialUsages from "./pages/production/material/MaterialUsages";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {setRedirectPath} from "./modules/NavigationModules";
+import WorkOrders from "./pages/production/workOrder/WorkOrders";
+import Plans from "./pages/production/plan/Plans";
 
 function App() {
     const redirectPath = useSelector(state => state.navigationReducer);
@@ -85,11 +81,11 @@ function App() {
                           <Route path="in-stock" element={<MaterialInStock/>}/>
                           <Route path="Specs">
                               <Route index element={<Specs/>}/>
-                              <Route path=":specCode" element={<SpecDetail/>}/>
+                              <Route path=":id" element={<SpecDetail/>}/>
                           </Route>
                           <Route path="stocks" >
                               <Route index element={<MaterialStocks/>}/>
-                              <Route path=":stockCode" element={<StockDetail/>}/>
+                              <Route path=":id" element={<StockDetail/>}/>
                           </Route>
                       </Route>
                   </Route>
@@ -97,11 +93,11 @@ function App() {
                       <Route path="material">
                           <Route path="orders" >
                               <Route index element={<MaterialOrders/>}/>
-                              <Route path=":orderCode" element={<MaterialOrderDetail/>}/>
+                              <Route path=":id" element={<MaterialOrderDetail/>}/>
                           </Route>
                           <Route path="clients" >
                               <Route index element={<MaterialClients/>}/>
-                              <Route path=":clientCode" element={<MaterialClientDetail/>}/>
+                              <Route path=":id" element={<MaterialClientDetail/>}/>
                           </Route>
                       </Route>
                   </Route>
