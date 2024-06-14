@@ -19,6 +19,7 @@ import EstimateDetail from "./pages/sales/estimate/EstimateDetail";
 import Orders from "./pages/sales/order/Orders";
 import OrderDetail from "./pages/sales/order/OrderDetail";
 import ProductDetail from "./pages/inventory/product/ProductDetail";
+import Release from "./pages/inventory/release/Release";
 import MaterialUsages from "./pages/production/material/MaterialUsages";
 import SpecDetail from "./pages/inventory/material/SpecDetail";
 import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
@@ -88,6 +89,11 @@ function App() {
                   <Route path="production">
                       <Route path="material">
                           <Route path="usage" element={<MaterialUsages/>}/>
+                      </Route>
+                  </Route>
+                  <Route path="circulation">
+                      <Route path="release">
+                          <Route index element={<Release/>}/>
                       </Route>
                   </Route>
               </Route>

@@ -5,7 +5,7 @@ import {callWarehouseAPI, callWarehousesAPI} from "../../../apis/WarehouseAPICal
 import {callCancelAssignmentAPI, callStoragesAPI, callWarehouseMove} from "../../../apis/StorageAPICalls";
 import ColumnsTable from "../../../components/table/ComplexTable";
 import { useNavigate } from 'react-router-dom';
-import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
+import CustomizedTable from "../../../components/table/product/CustomizedTable";
 import '../../../Products.css'
 import StockUpdate from "../../../modals/products/StockUpdate";
 import WarehouseUpdate from "../../../modals/products/WarehouseUpdate";

@@ -33,7 +33,7 @@ import PagingBar from "../../../components/common/PagingBar";
 import {useNavigate} from "react-router-dom";
 
 import ProductUpdate from "../../../modals/products/ProductUpdate";
-import CustomizedTable from "../../../components/table/productTable/CustomizedTable";
+import CustomizedTable from "../../../components/table/product/CustomizedTable";
 import ProductClient from "../../../modals/products/ProductClient";
 import StockUpdate from "../../../modals/products/StockUpdate";
 import WarehouseAssignment from "../../../modals/products/WarehouseAssignment";

@@ -5,6 +5,7 @@ import stockReducer from "./StockModules";
 import warehouseReducer from "./WarehouseModules";
 import storageReducer from "./StorageModules";
 import authReducer from "./AuthModules";
+import releaseReducer from "./ReleaseModules";
 import estimateReducer from "./EstimateModules";
 import orderReducer from "./OrderModules";
 import materialSpecReducer from "./MaterialSpecModules";
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     stockReducer,
     warehouseReducer,
     storageReducer,
+    releaseReducer,
 
     //한결
     materialDropReducer,
@@ -35,7 +37,6 @@ const rootReducer = combineReducers({
     materialSpecReducer,
     materialStockReducer,
     materialUsageReducer
-
 });
 
 export default rootReducer;
