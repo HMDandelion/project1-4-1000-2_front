@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
 import AdminLayout from "./layouts/AdminLayout";
 import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
@@ -27,10 +27,22 @@ import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
 import StockDetail from "./pages/inventory/material/StockDetail";
 import Returns from "./pages/sales/return/Returns";
 import ReturnDetail from "./pages/sales/return/ReturnDetail";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {setRedirectPath} from "./modules/NavigationModules";
 
 function App() {
-  return (
-      <BrowserRouter>
+    const redirectPath = useSelector(state => state.navigationReducer);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (redirectPath) {
+            navigate(redirectPath);
+            dispatch(setRedirectPath(null));
+        }
+    }, [redirectPath, dispatch, navigate]);
+
+    return (
           <Routes>
               <Route path="/" element={<AdminLayout/>}>
                   <Route index element={<ProtectedRoute loginCheck={true}><TestPage/></ProtectedRoute>}/> {/* 나중에 Main 컴포넌트 만들면 그걸로 바꿔주삼 */}
@@ -102,7 +114,7 @@ function App() {
               </Route>
               <Route path="*" element={ <TestPage/> }/> {/* Error 컴포넌트 만들면 그걸로 바꿔주삼 */}
           </Routes>
-      </BrowserRouter>
+
   );
 }
 

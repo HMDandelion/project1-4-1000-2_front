@@ -1,10 +1,12 @@
 import axios from "axios";
 import {getAccessTokenHeader, getRefreshTokenHeader, removeToken, saveToken} from "../utils/TokenUtils";
+import {statusToastAlert} from "../utils/ToastUtils";
+import store from "../store";
+import {setRedirectPath} from "../modules/NavigationModules";
 
 const SERVER_IP = `${process.env.REACT_APP_RESTAPI_SERVER_IP}`;
 const SERVER_PORT = `${process.env.REACT_APP_RESTAPI_SERVER_PORT}`;
 const DEFAULT_URL = `http://${SERVER_IP}:${SERVER_PORT}`;
-
 
 export const request = async (method, url, headers, data) => {
     return await axios({
@@ -37,6 +39,7 @@ authRequest.interceptors.response.use(
             response : { status }
         } = error;
 
+
         if(status === 401) {
             const originRequest = config;
 
@@ -46,13 +49,18 @@ authRequest.interceptors.response.use(
             if(response.status === 200) {
                 saveToken(response.headers);
                 originRequest.headers['Access-Token'] = getAccessTokenHeader();
-                return axios(originRequest);
+                return axios(originRequest)
+                    .catch(e => {
+                        statusToastAlert(e.response.data.code, e.response.data.message, 'error');
+                    });
             } else {
                 removeToken();
-                window.location.replace('/');
+                store.dispatch(setRedirectPath('/login'));
             }
+        } else if(status === 403) {
+            store.dispatch(setRedirectPath(-1));
+            return statusToastAlert(error.response.data.code, error.response.data.message, 'error');
         }
-
         return Promise.reject(error);
     });
 
