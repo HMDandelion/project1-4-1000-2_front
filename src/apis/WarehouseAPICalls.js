@@ -7,7 +7,7 @@ import {getInventoryWarehouse, getInventoryWarehouses} from "../modules/Warehous
 const DEFAULT_URL = `/api/v1/warehouse`;
 export const callWarehousesAPI =() =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}`);
+        const result = await authRequest.get( `${DEFAULT_URL}`);
 
         console.log("callWarehousesAPI : ", result);
         if(result.status === 200) {
@@ -19,7 +19,7 @@ export const callWarehousesAPI =() =>{
 export const callWarehouseUpdateAPI = ({ updateRequest, onSuccess, warehouseCode }) => {
     return async (dispatch, getState) => {
         try {
-            const result = await request('PUT', `/api/v1/warehouse/${warehouseCode}`, { 'Content-Type': 'application/json' }, JSON.stringify(updateRequest));
+            const result = await authRequest.put( `/api/v1/warehouse/${warehouseCode}`, updateRequest);
             console.log('callWarehouseUpdateAPI result : ', result);
 
             if (result && result.status === 201) {
@@ -39,7 +39,7 @@ export const callWarehouseUpdateAPI = ({ updateRequest, onSuccess, warehouseCode
 export const callWarehouseSaveAPI = ({ updateRequest, onSuccess }) => {
     return async (dispatch, getState) => {
         try {
-            const result = await request('POST', `${DEFAULT_URL}`, { 'Content-Type': 'application/json' }, JSON.stringify(updateRequest));
+            const result = await authRequest.post( `${DEFAULT_URL}`, updateRequest);
             console.log('callWarehouseSaveAPI result : ', result);
 
             if (result && result.status === 201) {
@@ -58,7 +58,7 @@ export const callWarehouseSaveAPI = ({ updateRequest, onSuccess }) => {
 
 export const callWarehouseAPI =({warehouseCode}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/${warehouseCode}`);
+        const result = await authRequest.get( `${DEFAULT_URL}/${warehouseCode}`);
 
         console.log("callWarehouseAPI : ", result);
         if(result.status === 200) {

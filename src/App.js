@@ -6,7 +6,6 @@ import React from "react";
 import ProtectedRoute from "./components/router/ProtectedRoute";
 import ClientDetail from "./pages/sales/client/ClientDetail";
 import Products from "./pages/inventory/product/Products";
-import Warehouses from "./pages/inventory/warehouse/Warehouses";
 import AuthLayout from "./layouts/AuthLayout";
 import LogIn from "./pages/auth/LogIn";
 import InventoryMaterailAnalyze from "./pages/inventory/material/InventoryMaterailAnalyze";
@@ -26,11 +25,12 @@ import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail
 import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
 import StockDetail from "./pages/inventory/material/StockDetail";
 import Returns from "./pages/sales/return/Returns";
-import ReturnDetail from "./pages/sales/return/ReturnDetail"
+import ReturnDetail from "./pages/sales/return/ReturnDetail";
+import Warehouses from "./pages/inventory/warehouse/Warehouses";
+import MaterialUsages from "./pages/production/material/MaterialUsages";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {setRedirectPath} from "./modules/NavigationModules";
-import MaterialUsages from "./pages/production/material/MaterialUsages";
 import WorkOrders from "./pages/production/workOrder/WorkOrders";
 import Plans from "./pages/production/plan/Plans";
 
