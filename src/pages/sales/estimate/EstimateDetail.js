@@ -6,20 +6,12 @@ import {
     Flex,
     Button,
     useDisclosure,
-    Divider,
-    AlertDialog,
-    AlertDialogOverlay,
-    AlertDialogContent,
-    Grid,
-    GridItem,
-    Box,
-    AlertDialogHeader,
-    AlertDialogBody, AlertDialogFooter,
+    Divider
 } from "@chakra-ui/react";
 
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
 import DeleteAlertButton from "../../../components/button/DeleteAlertButton";

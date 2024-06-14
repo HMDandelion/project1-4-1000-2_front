@@ -46,8 +46,11 @@ export default function Navbar(props) {
             client: { label: '거래처 관리', isLast: false },
             estimate: { label: '견적 관리', isLast: false },
             order: { label: '주문 관리', isLast: false },
+            return: { label: '반품 관리', isLast: false },
 
         production: { label: '생산·품질', isLast: false },
+            plan: { label: '생산 계획 관리', isLast: false },
+            'work-order':{label: '작업 지시서 관리', isLast: false},
         usage:{label:'사용 관리', isLast: false},
         logistics: { label: '재고·유통', isLast: false },
 

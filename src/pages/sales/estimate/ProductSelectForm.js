@@ -1,5 +1,5 @@
-import {Box, Heading, IconButton, Input, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
-import {AddIcon, MinusIcon} from "@chakra-ui/icons";
+import {Box, Heading, IconButton, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
+import {AddIcon} from "@chakra-ui/icons";
 import React from "react";
 
 function ProductSelectForm({ products, selectedProducts, onProductAdd }) {
@@ -23,7 +23,7 @@ function ProductSelectForm({ products, selectedProducts, onProductAdd }) {
                                 <Td>
                                     <IconButton
                                         icon={<AddIcon />}
-                                        size="sm"
+                                        size="xs"
                                         color='green'
                                         onClick={() => onProductAdd(product)}
                                         isDisabled={selectedProducts.some(p => p.productCode === product.productCode)}

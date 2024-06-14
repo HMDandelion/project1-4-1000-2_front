@@ -8,7 +8,7 @@ import {
 import ClientForm from "./ClientForm";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {callClientModifyAPI, callClientRegistAPI} from "../../../apis/ClientAPICalls";
+import {callClientRegistAPI} from "../../../apis/ClientAPICalls";
 import {useNavigate} from "react-router-dom";
 
 function ClientRegist() {

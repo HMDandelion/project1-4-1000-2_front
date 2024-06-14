@@ -1,7 +1,9 @@
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
 import AdminLayout from "./layouts/AdminLayout";
 import TestPage from "./pages/test";
 import Clients from "./pages/sales/client/Clients";
+import React from "react";
+import ProtectedRoute from "./components/router/ProtectedRoute";
 import ClientDetail from "./pages/sales/client/ClientDetail";
 import Products from "./pages/inventory/product/Products";
 import Warehouses from "./pages/inventory/warehouse/Warehouses";
@@ -21,14 +23,33 @@ import OrderDetail from "./pages/sales/order/OrderDetail";
 import ProductDetail from "./pages/inventory/product/ProductDetail";
 import Release from "./pages/inventory/release/Release";
 import MaterialUsages from "./pages/production/material/MaterialUsages";
+import WorkOrders from "./pages/Production/workOrder/WorkOrders";
+import Plans from "./pages/Production/plan/Plans";
 import SpecDetail from "./pages/inventory/material/SpecDetail";
 import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
 import MaterialOrderDetail from "./pages/purchase/material/MaterialOrderDetail";
 import StockDetail from "./pages/inventory/material/StockDetail";
+import Returns from "./pages/sales/return/Returns";
+import ReturnDetail from "./pages/sales/return/ReturnDetail";
+import Products from "./pages/inventory/product/Products";
+import Warehouses from "./pages/inventory/warehouse/Warehouses";
+import MaterialUsages from "./pages/Production/material/MaterialUsages";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {setRedirectPath} from "./modules/NavigationModules";
 
 function App() {
-  return (
-      <BrowserRouter>
+    const redirectPath = useSelector(state => state.navigationReducer);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (redirectPath) {
+            navigate(redirectPath);
+            dispatch(setRedirectPath(null));
+        }
+    }, [redirectPath, dispatch, navigate]);
+
+    return (
           <Routes>
               <Route path="/" element={<AdminLayout/>}>
                   <Route index element={<ProtectedRoute loginCheck={true}><TestPage/></ProtectedRoute>}/> {/* 나중에 Main 컴포넌트 만들면 그걸로 바꿔주삼 */}
@@ -45,6 +66,10 @@ function App() {
                           <Route index element={<ProtectedRoute loginCheck={true}><Orders/></ProtectedRoute>}/>
                           <Route path="detail" element={<ProtectedRoute loginCheck={true}><OrderDetail/></ProtectedRoute>}/>
                       </Route>
+                      <Route path="return">
+                          <Route index element={<ProtectedRoute loginCheck={true}><Returns/></ProtectedRoute>}/>
+                          <Route path="detail" element={<ProtectedRoute loginCheck={true}><ReturnDetail/></ProtectedRoute>}/>
+                      </Route>
                   </Route>
                   <Route path="inventory">
                       <Route path="product">
@@ -60,11 +85,11 @@ function App() {
                           <Route path="in-stock" element={<MaterialInStock/>}/>
                           <Route path="Specs">
                               <Route index element={<Specs/>}/>
-                              <Route path=":specCode" element={<SpecDetail/>}/>
+                              <Route path=":id" element={<SpecDetail/>}/>
                           </Route>
                           <Route path="stocks" >
                               <Route index element={<MaterialStocks/>}/>
-                              <Route path=":stockCode" element={<StockDetail/>}/>
+                              <Route path=":id" element={<StockDetail/>}/>
                           </Route>
                       </Route>
                   </Route>
@@ -72,11 +97,11 @@ function App() {
                       <Route path="material">
                           <Route path="orders" >
                               <Route index element={<MaterialOrders/>}/>
-                              <Route path=":orderCode" element={<MaterialOrderDetail/>}/>
+                              <Route path=":id" element={<MaterialOrderDetail/>}/>
                           </Route>
                           <Route path="clients" >
                               <Route index element={<MaterialClients/>}/>
-                              <Route path=":clientCode" element={<MaterialClientDetail/>}/>
+                              <Route path=":id" element={<MaterialClientDetail/>}/>
                           </Route>
                       </Route>
                   </Route>
@@ -90,13 +115,21 @@ function App() {
                           <Route index element={<Release/>}/>
                       </Route>
                   </Route>
-              </Route>
+                  <Route path="production">
+                      <Route path="work-order">
+                          <Route index element={<WorkOrders/>}/>
+                      </Route>
+                      <Route path="plan">
+                          <Route index element={<Plans/>}/>
+                      </Route>
+                  </Route>
+                  </Route>
               <Route path="/login" element={<AuthLayout/>}>
                   <Route index element={<ProtectedRoute loginCheck={false}><LogIn/></ProtectedRoute>}/>
               </Route>
               <Route path="*" element={ <TestPage/> }/> {/* Error 컴포넌트 만들면 그걸로 바꿔주삼 */}
           </Routes>
-      </BrowserRouter>
+
   );
 }
 

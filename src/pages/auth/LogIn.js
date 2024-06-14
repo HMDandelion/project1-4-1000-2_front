@@ -16,6 +16,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {callLoginAPI} from "../../apis/AuthAPICalls";
 import {useNavigate} from "react-router-dom";
+import {statusToastAlert} from "../../utils/ToastUtils";
 
 function LogIn() {
     const textColor = useColorModeValue("navy.700", "white");
@@ -24,7 +25,7 @@ function LogIn() {
     const [show, setShow] = useState(false);
 
     const handleClick = () => setShow(!show);
-    const {success} = useSelector(state => state.authReducer);
+    const {success, logout} = useSelector(state => state.authReducer);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [form, setForm] = useState({});
@@ -34,6 +35,12 @@ function LogIn() {
             navigate('/');
         }
     }, [success]);
+
+    useEffect(() => {
+        if(logout === true) {
+            statusToastAlert('성공적으로 로그아웃 되었습니다.', null, 'success');
+        }
+    }, [logout]);
 
     const onChangeHandler = e => {
         setForm({

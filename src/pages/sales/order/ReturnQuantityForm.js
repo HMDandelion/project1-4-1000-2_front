@@ -1,4 +1,10 @@
-import {Box, Heading, IconButton, Input, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
+import {Box, Heading, IconButton, Table, Tbody, Td, Th, Thead, Tr,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
+} from "@chakra-ui/react";
 import {MinusIcon} from "@chakra-ui/icons";
 import React from "react";
 
@@ -12,10 +18,10 @@ function ReturnQuantityForm({ selectedProducts, onQuantityChange, onProductRemov
                         <Tr>
                             <Th w='7%'/>
                             <Th w='13%'>상품코드</Th>
-                            <Th w='30%'>상품명</Th>
-                            <Th w='20%'>주문단가</Th>
+                            <Th w='25%'>상품명</Th>
+                            <Th w='15%'>주문단가</Th>
                             <Th w='15%'>주문수량</Th>
-                            <Th w='15%'>반품수량</Th>
+                            <Th w='20%'>반품수량</Th>
                         </Tr>
                     </Thead>
                     <Tbody sx={{ '& tr > td': { py: 1 } }}>
@@ -24,7 +30,7 @@ function ReturnQuantityForm({ selectedProducts, onQuantityChange, onProductRemov
                                 <Td>
                                     <IconButton
                                         icon={<MinusIcon />}
-                                        size="sm"
+                                        size="xs"
                                         color="red"
                                         onClick={() => onProductRemove(product.productCode)}
                                     />
@@ -34,16 +40,23 @@ function ReturnQuantityForm({ selectedProducts, onQuantityChange, onProductRemov
                                 <Td>{product.price}원</Td>
                                 <Td>{product.quantity}</Td>
                                 <Td>
-                                    <Input
-                                        variant='outline'
-                                        type="number"
-                                        value={product.quantity}
-                                        onChange={(e) => onQuantityChange(product, e.target.value)}
-                                        width='50px'
+                                    <NumberInput
+                                        value={product.returnQuantity}
+                                        max={product.quantity}
+                                        min={1}
+                                        onChange={(value) => onQuantityChange(product, value)}
+                                        width='70px'
                                         size='sm'
                                         mr='3px'
-                                    />
-                                    개
+                                        focusBorderColor='orange.500'
+                                        errorBorderColor='red.500'
+                                    >
+                                        <NumberInputField/>
+                                        <NumberInputStepper>
+                                            <NumberIncrementStepper />
+                                            <NumberDecrementStepper />
+                                        </NumberInputStepper>
+                                    </NumberInput>
                                 </Td>
                             </Tr>
                         ))}

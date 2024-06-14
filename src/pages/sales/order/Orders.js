@@ -1,24 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
-import {Badge, HStack, Text} from "@chakra-ui/react";
+import {HStack, Text} from "@chakra-ui/react";
 import PagingBar from "../../../components/common/PagingBar";
 import SelectMenu from "../../../components/common/SelectMenu";
 import ComplexTable from "../../../components/table/NewComplexTable";
 import {useNavigate} from "react-router-dom";
 import OrderStatusBadge from "../../../components/badge/OrderStatusBadge";
 import {callOrdersAPI} from "../../../apis/OrderAPICalls";
+import {searchOption} from "../../../utils/SearchOptionUtils";
 
 function Orders() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {orders, success} = useSelector(state => state.orderReducer);
-
-    // 페이지네이션
-    const [currentPage, setCurrentPage] = useState(1);
-    useEffect(() => {
-        dispatch(callOrdersAPI({currentPage}));
-    }, [currentPage, success]);
 
     // 검색 옵션
     const menuList = ['상품명', '거래처명'];
@@ -27,7 +22,15 @@ function Orders() {
         searchText : '',
     });
 
+    // 페이지네이션
+    const [currentPage, setCurrentPage] = useState(1);
+    useEffect(() => {
+        dispatch(callOrdersAPI({currentPage, searchParams}));
+    }, [currentPage, success, searchParams]);
+
+
     const handleSearch = (selectedOption, searchText) => {
+        selectedOption = searchOption(selectedOption);
         setSearchParams({ selectedOption, searchText });
     };
 
@@ -65,9 +68,10 @@ function Orders() {
                 return (
                     row.original.status === 'COMPLETED' ?
                         <Text color='green'>완료</Text> :
-                        daysLeft > 0 ?
-                            <Text color={daysLeft < 3 ? 'red' : ''}>{daysLeft}일</Text> :
-                            <Text>마감</Text>
+                        row.original.status === 'CANCELED' || row.original.status === 'RETURNED' ? <Text>-</Text> :
+                            daysLeft > 0 ?
+                                <Text color={daysLeft < 3 ? 'red' : ''}>{daysLeft}일</Text> :
+                                <Text>마감</Text>
                 );
             }
         }

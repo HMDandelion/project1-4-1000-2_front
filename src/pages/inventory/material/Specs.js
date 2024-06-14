@@ -6,6 +6,8 @@ import PagingBar from "../../../components/common/PagingBar";
 import {HStack} from "@chakra-ui/react";
 import SelectMenu from "../../../components/common/SelectMenu";
 import {useNavigate} from "react-router-dom";
+import SpecRegist from "../../../modals/Material/SpecRegist";
+import CategoryModal from "../../../modals/Material/CategoryModal";
 
 function Specs() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -64,6 +66,8 @@ function Specs() {
         <>
             <HStack spacing="10px">
                 <SelectMenu onSearch={searchHandler} menuList={menuList} />
+                <SpecRegist/>
+                <CategoryModal/>
             </HStack>
             <ComplexTable columnsData={columns} tableData={specs.data} onRowClick={handleRowClick}/>
             <PagingBar pageInfo={specs.pageInfo} setCurrentPage={setCurrentPage} />

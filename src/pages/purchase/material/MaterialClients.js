@@ -7,6 +7,7 @@ import ComplexTable from "../../../components/table/NewComplexTable";
 import PagingBar from "../../../components/common/PagingBar";
 import {callMaterialClientsAPI} from "../../../apis/ClientAPICalls";
 import {useNavigate} from "react-router-dom";
+import MaterialClientRegist from "../../../modals/Material/MaterialClientRegist";
 
 function MaterialClients() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -71,6 +72,8 @@ function MaterialClients() {
         <>
             <HStack spacing="10px">
                 <SelectMenu onSearch={searchHandler} menuList={menuList} />
+                <MaterialClientRegist/>
+
             </HStack>
             <ComplexTable columnsData={columns} tableData={clients.data.content} onRowClick={handleRowClick}/>
             <PagingBar pageInfo={clients.pageInfo} setCurrentPage={setCurrentPage} />

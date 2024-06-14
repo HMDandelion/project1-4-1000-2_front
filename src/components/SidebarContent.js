@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 // Custom components
 import Brand from "./SidebarBrand";
-import React from "react";
+import React, {useState} from "react";
 import {CartIcon, GlobeIcon, HomeIcon, RocketIcon, SupportIcon, WalletIcon} from "./icons/Icons";
 import {FaTruck} from "react-icons/fa";
 
@@ -24,6 +24,13 @@ function SidebarContent(props) {
         "secondaryGray.600",
         "secondaryGray.600"
     );
+    const [activeIndex, setActiveIndex] = useState(null);
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleAccordionClick = (index) => {
+        setActiveIndex(prevIndex => prevIndex === index ? null : index);
+        // setIsClicked(!isClicked);
+    };
 
     // SIDEBAR
     return (
@@ -52,9 +59,10 @@ function SidebarContent(props) {
                     </Text>
                     {/* 재고 유통 */}
                     <Accordion allowToggle>
-                        <AccordionItem border="none" color={inactiveColor}>
+                        <AccordionItem border="none" color={inactiveColor} isExpanded={activeIndex === 1}>
                             <h2>
-                                <AccordionButton>
+                                <AccordionButton onClick={() => handleAccordionClick(1)} color={activeIndex === 1 ? activeColor : inactiveColor}
+                                >
                                     <Box flex="1" textAlign="left">
                                         <Text
                                             fontSize={"md"}
@@ -66,7 +74,6 @@ function SidebarContent(props) {
                                         >
                                             <GlobeIcon h="24px" w="24px" pr="5px" />
                                             재고·유통
-
                                         </Text>
                                     </Box>
                                     <AccordionIcon />
@@ -209,12 +216,18 @@ function SidebarContent(props) {
                                 </AccordionButton>
                             </h2>
                             <AccordionPanel pb={4}>
-                                <UnorderedList>
+                                <UnorderedList listStyleType='none'>
                                     <ListItem>
                                         <Link as={NavLink}
                                               to="/sales/order"
                                               _activeLink={{color: activeColor}}
                                         >주문 관리</Link>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Link as={NavLink}
+                                              to="/sales/return"
+                                              _activeLink={{color: activeColor}}
+                                        >반품 관리</Link>
                                     </ListItem>
                                     <ListItem>
                                         <Link as={NavLink}
@@ -322,9 +335,15 @@ function SidebarContent(props) {
                                 <UnorderedList>
                                     <ListItem>
                                         <Link as={NavLink}
-                                              to="/123"
+                                              to="/production/plan"
                                               _activeLink={{color: activeColor}}
-                                        >생산 관리</Link>
+                                        >생산 계획 관리</Link>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Link as={NavLink}
+                                              to="/production/work-order"
+                                              _activeLink={{color: activeColor}}
+                                        >작업 지시서 관리</Link>
                                     </ListItem>
                                     <ListItem>
                                         <Link as={NavLink}

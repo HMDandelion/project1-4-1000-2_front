@@ -8,17 +8,12 @@ import ComplexTable from "../../../components/table/NewComplexTable";
 import {useNavigate} from "react-router-dom";
 import {callEstimatesAPI} from "../../../apis/EstimateAPICalls";
 import EstimateRegist from "./EstimateRegist";
+import {searchOption} from "../../../utils/SearchOptionUtils";
 
 function Estimates() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {estimates, success} = useSelector(state => state.estimateReducer);
-
-    // 페이지네이션
-    const [currentPage, setCurrentPage] = useState(1);
-    useEffect(() => {
-        dispatch(callEstimatesAPI({currentPage}));
-    }, [currentPage, success]);
 
     // 검색 옵션
     const menuList = ['거래처명'];
@@ -27,7 +22,14 @@ function Estimates() {
         searchText : '',
     });
 
+    // 페이지네이션
+    const [currentPage, setCurrentPage] = useState(1);
+    useEffect(() => {
+        dispatch(callEstimatesAPI({currentPage, searchParams}));
+    }, [currentPage, success, searchParams]);
+
     const handleSearch = (selectedOption, searchText) => {
+        selectedOption = searchOption(selectedOption);
         setSearchParams({ selectedOption, searchText });
     };
 
