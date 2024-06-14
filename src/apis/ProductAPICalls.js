@@ -25,12 +25,12 @@ export const callSimpleProductsAPI = () => {
 }
 
 
-export const callProductsAPI =({currentPage = 1}) =>{
-    return async (dispatch, getState) =>{
-        const result = await authRequest.get( `${DEFAULT_URL}?page=${currentPage}`);
+export const callProductsAPI = ({ currentPage = 1, searchText = '' }) => {
+    return async (dispatch, getState) => {
+        const result = await authRequest.get(`${DEFAULT_URL}?page=${currentPage}&productName=${searchText}`);
 
         console.log("result : ", result);
-        if(result.status === 200) {
+        if (result.status === 200) {
             dispatch(getInventoryProducts(result));
         }
     }
@@ -51,7 +51,7 @@ export const callProductRegistAPI = ({ registRequest,onSuccess }) => {
 
     return async (dispatch, getState) => {
         try {
-        const result = await authRequest.post(`${DEFAULT_URL}`,{'Content-Type':'application/json'}, registRequest);
+        const result = await authRequest.post(`${DEFAULT_URL}`,registRequest);
         console.log('callProductRegistAPI result : ',result);
 
         if(result.status === 201) {

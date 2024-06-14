@@ -39,6 +39,8 @@ import StockUpdate from "../../../modals/products/StockUpdate";
 import WarehouseAssignment from "../../../modals/products/WarehouseAssignment";
 import StoreStock from "../../../modals/products/StoreStock";
 import {statusToastAlert} from "../../../utils/ToastUtils";
+import SearchRadioButton from "../../../components/button/SearchRadioButton";
+import SelectMenu from "../../../components/common/SelectMenu";
 
 function Products() {
     const dispatch = useDispatch();
@@ -65,6 +67,13 @@ function Products() {
     const productDestroy = useSelector(state => state.storageReducer.productDestroy);
     const todayStock = useSelector(state => state.stockReducer.todayStock);
 
+    // 검색 옵션
+    const menuList = ['상품명'];
+    const [searchParams, setSearchParams] = useState({
+        selectedOption : menuList[0],
+        searchText : '',
+    });
+
     const toast = useToast();
 
     const productColumns = [
@@ -75,18 +84,17 @@ function Products() {
         {
             Header: '상품명',
             accessor: 'productName'
-        },
-        {
-            Header: '출시일',
-            accessor: 'launchDate'
-        },
-        {
+        }, {
             Header: '가격',
             accessor: 'price'
         },
         {
             Header: '단위',
             accessor: 'unit'
+        },
+        {
+            Header: '출시일',
+            accessor: 'launchDate'
         },
         {
             Header: '생산 상태 변화 일',
@@ -111,6 +119,14 @@ function Products() {
             accessor: 'stockCode'
         },
         {
+            Header: '상품명',
+            accessor: 'productName'
+        },
+        {
+            Header: '종류',
+            accessor: 'type'
+        },
+        {
             Header: '수량',
             accessor: 'quantity'
         },
@@ -125,14 +141,6 @@ function Products() {
         {
             HEADER:'창고 내 재고',
             accessor: 'store'
-        },
-        {
-            Header: '종류',
-            accessor: 'type'
-        },
-        {
-            Header: '상품명',
-            accessor: 'productName'
         },
         {
             Header: '',
@@ -437,6 +445,11 @@ function Products() {
         }
         console.log("재고 페이지정보",stockPageInfo);
     }
+
+    const handleSearch = (selectedOption, searchText) => {
+        setSearchParams({ selectedOption, searchText });
+        dispatch(callProductsAPI({ searchText }));
+    };
     return (
         <>
             <Flex justifyContent="space-between">
@@ -507,7 +520,8 @@ function Products() {
                         <Button colorScheme="orange" size='sm' onClick={handleSaveClick} float="right" ml={5}>상품 등록</Button>
                         <ProductSave isOpen={isSaveModalOpen} onClose={onSaveModalClose} />
                         {products && (
-                            <>
+                            <>{/*<SearchRadioButton isChecked={isChecked} setIsChecked={setIsChecked} text='주문 진행중'/>*/}
+                                <SelectMenu onSearch={handleSearch} menuList={menuList}/>
                                 <CustomizedTable
                                     columnsData={productColumns}
                                     tableData={processedProducts}
