@@ -16,7 +16,7 @@ import {statusToastAlert} from "../utils/ToastUtils";
 const DEFAULT_URL = `/api/v1/release`;
 export const callReleaseOrdersAPI =({currentPage=1}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/orders?page=${currentPage}`);
+        const result = await authRequest.get( `${DEFAULT_URL}/orders?page=${currentPage}`);
 
         console.log("callReleaseOrdersAPI : ", result);
         if(result.status === 200) {
@@ -28,7 +28,7 @@ export const callReleaseOrdersAPI =({currentPage=1}) =>{
 
 export const callReleaseWaitAPI =({currentPage=1}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/wait?page=${currentPage}`);
+        const result = await authRequest.get( `${DEFAULT_URL}/wait?page=${currentPage}`);
 
         console.log("callReleaseWaitAPI : ", result);
         if(result.status === 200) {
@@ -39,7 +39,7 @@ export const callReleaseWaitAPI =({currentPage=1}) =>{
 }
 export const callOrderProduct =({orderCode}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/order/${orderCode}`);
+        const result = await authRequest.get( `${DEFAULT_URL}/order/${orderCode}`);
 
         console.log("callReleaseOrdersAPI : ", result);
         if(result.status === 200) {
@@ -50,7 +50,7 @@ export const callOrderProduct =({orderCode}) =>{
 
 export const callReleaseExpectedAPI =({orderCode}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/storage/${orderCode}`);
+        const result = await authRequest.get( `${DEFAULT_URL}/storage/${orderCode}`);
 
         console.log("callReleaseExpectedAPI : ", result);
         if(result.status === 200) {
@@ -61,7 +61,7 @@ export const callReleaseExpectedAPI =({orderCode}) =>{
 
 export const callReleaseLackAPI =({orderCode}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/order/lack/${orderCode}`);
+        const result = await authRequest.get( `${DEFAULT_URL}/order/lack/${orderCode}`);
 
         console.log("callReleaseLackAPI : ", result);
         if(result.status === 200) {
@@ -74,7 +74,7 @@ export const callReleaseAPI = ({ onSuccess,orderCode }) => {
 
     return async (dispatch, getState) => {
         try {
-            const result = await request('POST',`${DEFAULT_URL}/${orderCode}`,{'Content-Type':'application/json'});
+            const result = await authRequest.post(`${DEFAULT_URL}/${orderCode}`);
             console.log('callReleaseAPI result : ',result);
 
             if(result.status === 201) {
@@ -97,7 +97,7 @@ export const callShippingAPI = ({ onSuccess,orderCode }) => {
 
     return async (dispatch, getState) => {
         try {
-            const result = await request('PUT',`${DEFAULT_URL}/shipping/${orderCode}`,{'Content-Type':'application/json'});
+            const result = await authRequest.put(`${DEFAULT_URL}/shipping/${orderCode}`);
             console.log('callShippingAPI result : ',result);
 
             if(result.status === 201) {
@@ -116,7 +116,7 @@ export const callShippingAPI = ({ onSuccess,orderCode }) => {
 };
 export const callOrderInformation =({orderCode}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `/api/v1/orders/${orderCode}`);
+        const result = await authRequest.get( `/api/v1/orders/${orderCode}`);
 
         console.log("callOrderInformation : ", result);
         if(result.status === 200) {
@@ -126,7 +126,7 @@ export const callOrderInformation =({orderCode}) =>{
 }
 export const callShippingsRelaseAPI =({currentPage=1}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/shipping?page=${currentPage}`);
+        const result = await authRequest.get( `${DEFAULT_URL}/shipping?page=${currentPage}`);
 
         console.log("callShippingsRelaseAPI : ", result);
         if(result.status === 200) {
@@ -137,7 +137,7 @@ export const callShippingsRelaseAPI =({currentPage=1}) =>{
 
 export const callCompletesRelaseAPI =({currentPage=1}) =>{
     return async (dispatch, getState) =>{
-        const result = await request('GET', `${DEFAULT_URL}/complete?page=${currentPage}`);
+        const result = await authRequest.get( `${DEFAULT_URL}/complete?page=${currentPage}`);
 
         console.log("callCompletesRelaseAPI : ", result);
         if(result.status === 200) {
@@ -150,7 +150,7 @@ export const callCompleteAPI = ({ onSuccess,orderCode }) => {
 
     return async (dispatch, getState) => {
         try {
-            const result = await request('PUT',`${DEFAULT_URL}/complete/${orderCode}`,{'Content-Type':'application/json'});
+            const result = await authRequest.put(`${DEFAULT_URL}/complete/${orderCode}`);
             console.log('callCompleteAPI result : ',result);
 
             if(result.status === 201) {
