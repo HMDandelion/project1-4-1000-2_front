@@ -7,6 +7,7 @@ import SelectMenu from "../../../components/common/SelectMenu";
 import ComplexTable from "../../../components/table/NewComplexTable";
 import PagingBar from "../../../components/common/PagingBar";
 import {callMaterialUsagesAPI} from "../../../apis/MaterialUsageAPICalls";
+import materialUsageReducer from "../../../modules/MaterialUsageModules";
 
 function MaterialUsages() {
     const [currentPage, setCurrentPage] = useState(1);
