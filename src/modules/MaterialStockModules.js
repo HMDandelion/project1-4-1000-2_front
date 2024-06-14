@@ -13,14 +13,14 @@ export const { stocks : {getMaterialStocks, getMaterialStock,getMaterialDrop, su
     [GET_MATERIAL_STOCKS] : result => ({ stocks : result.data }),
     [GET_MATERIAL_STOCK] : result => ({ stock : result.data }),
     [SUCCESS] : () => ({success : true}),
-    [DELETED] : () => ({deleted : true})
+    [DELETED] : (state, {payload}) => payload
 });
 
 /* 리듀서 */
 const materialStockReducer = handleActions({
     [GET_MATERIAL_STOCKS] : (state, {payload}) => payload,
     [GET_MATERIAL_STOCK] : (state, {payload}) => payload,
-    [SUCCESS] : (state, {payload}) => payload,
+    [SUCCESS] : () => ({success : true}),
     [DELETED] : (state, {payload}) => payload
 }, initialState);
 

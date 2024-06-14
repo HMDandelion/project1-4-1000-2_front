@@ -1,4 +1,4 @@
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import {callMaterialSpecAPI, callMaterialSpecDeleteAPI} from "../../../apis/MaterialSpecAPICalls";
@@ -7,14 +7,17 @@ import DeleteAlertButton from "../../../components/button/DeleteAlertButton";
 import SetMaterialOrderButton from "../../../components/button/SetMaterialOrderButton";
 import AgGrid from "../../../components/table/AgGrid";
 import Card from "../../../components/card/Card";
+import SpecModify from "../../../modals/Material/SpecModify";
 
 function SpecDetail() {
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const navigate = useNavigate();
 
     const location = useLocation();
-    const specCode = location.state;
-    const { spec } = useSelector(state => state.materialSpecReducer);
+    const {id} = useParams();
+    const specCode = location.state ? location.state : id;
+    const { spec,deleted } = useSelector(state => state.materialSpecReducer);
     const dispatch = useDispatch();
 
     const [columnData, setColumnData] = useState([
@@ -27,8 +30,13 @@ function SpecDetail() {
 
 
     useEffect(() => {
-        dispatch(callMaterialSpecAPI({specCode}));
-        },[]
+        if (!deleted) {
+            dispatch(callMaterialSpecAPI({specCode}));
+        } else {
+            navigate(`/inventory/material/specs`);
+        }
+
+        },[deleted]
     );
     return (
         spec &&
@@ -43,6 +51,7 @@ function SpecDetail() {
                     </Button>
                     <DeleteAlertButton code={specCode} deleteAPI={callMaterialSpecDeleteAPI}/>
                 </div>
+                <SpecModify isOpen={isOpen} onClose={onClose} spec={spec} specCode={specCode}/>
                 {/* <ClientModify isOpen={isOpen} onClose={onClose} client={client}/> */}
             </Flex>
             <Text fontWeight='bold' color={textColor}>

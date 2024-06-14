@@ -9,17 +9,20 @@ import releaseReducer from "./ReleaseModules";
 import estimateReducer from "./EstimateModules";
 import workOrderReducer from "./WorkOrderModules";
 import orderReducer from "./OrderModules";
-import planningReducer from "./PlanningModules";
 import materialSpecReducer from "./MaterialSpecModules";
 import materialStockReducer from "./MaterialStockModules";
 import materialOrderReducer from "./MaterialOrderModules";
 import materialDropReducer from "./MaterialStockDDModules";
 import materialUsageReducer from "./MaterialUsageModules";
 import returnReducer from "./ReturnModules";
-import productionReportReducer from "./ProductionReportModules";
+import navigationReducer from "./NavigationModules";
 import planningOrderReducer from "./PlanningOrderModules";
+import planningReducer from "./PlanningModules";
+import productionReportReducer from "./ProductionReportModules";
 
 const rootReducer = combineReducers({
+
+    navigationReducer,
 
     //예원
     clientReducer,

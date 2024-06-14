@@ -3,7 +3,7 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css";
 
 
-function AgGrid({columnsData, tableData}) {
+function AgGrid({columnsData, tableData , onCellValueChanged}) {
 
     return (
         <>
@@ -14,6 +14,8 @@ function AgGrid({columnsData, tableData}) {
                 <AgGridReact
                     rowData={tableData}
                     columnDefs={columnsData}
+                    onCellValueChanged={onCellValueChanged}
+                    stopEditingWhenCellsLoseFocus={true}
                 />
             </div>
         </>

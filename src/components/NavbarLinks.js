@@ -18,6 +18,7 @@ import { FaEthereum } from 'react-icons/fa';
 import {callEmployeeInfoAPI, callLogoutAPI} from "../apis/AuthAPICalls";
 import {useDispatch, useSelector} from "react-redux";
 import {getEmployeeNo, isLogin} from "../utils/TokenUtils";
+import {setRedirectPath} from "../modules/NavigationModules";
 
 export default function NavbarLinks(props) {
 	const { secondary } = props;
@@ -34,17 +35,10 @@ export default function NavbarLinks(props) {
 		'14px 17px 40px 4px rgba(112, 144, 176, 0.18)',
 		'14px 17px 40px 4px rgba(112, 144, 176, 0.06)'
 	);
-	const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
 
 	const dispatch = useDispatch();
 
-	const { employee, success } = useSelector(state => state.authReducer);
-
-	useEffect(() => {
-		if(success === true) {
-			window.location.replace('/');
-		}
-	}, [success]);
+	const { employee } = useSelector(state => state.authReducer);
 
 	useEffect(() => {
 		isLogin() && dispatch(callEmployeeInfoAPI(getEmployeeNo()));

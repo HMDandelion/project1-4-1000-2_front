@@ -8,17 +8,12 @@ import ComplexTable from "../../../components/table/NewComplexTable";
 import {useNavigate} from "react-router-dom";
 import OrderStatusBadge from "../../../components/badge/OrderStatusBadge";
 import {callOrdersAPI} from "../../../apis/OrderAPICalls";
+import {searchOption} from "../../../utils/SearchOptionUtils";
 
 function Orders() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {orders, success} = useSelector(state => state.orderReducer);
-
-    // 페이지네이션
-    const [currentPage, setCurrentPage] = useState(1);
-    useEffect(() => {
-        dispatch(callOrdersAPI({currentPage}));
-    }, [currentPage, success]);
 
     // 검색 옵션
     const menuList = ['상품명', '거래처명'];
@@ -27,7 +22,15 @@ function Orders() {
         searchText : '',
     });
 
+    // 페이지네이션
+    const [currentPage, setCurrentPage] = useState(1);
+    useEffect(() => {
+        dispatch(callOrdersAPI({currentPage, searchParams}));
+    }, [currentPage, success, searchParams]);
+
+
     const handleSearch = (selectedOption, searchText) => {
+        selectedOption = searchOption(selectedOption);
         setSearchParams({ selectedOption, searchText });
     };
 
