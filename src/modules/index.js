@@ -9,7 +9,6 @@ import releaseReducer from "./ReleaseModules";
 import estimateReducer from "./EstimateModules";
 import workOrderReducer from "./WorkOrderModules";
 import orderReducer from "./OrderModules";
-import planningReducer from "./PlanningModules";
 import materialSpecReducer from "./MaterialSpecModules";
 import materialStockReducer from "./MaterialStockModules";
 import materialOrderReducer from "./MaterialOrderModules";
