@@ -18,6 +18,7 @@ import returnReducer from "./ReturnModules";
 import navigationReducer from "./NavigationModules";
 import planningOrderReducer from "./PlanningOrderModules";
 import planningReducer from "./PlanningModules";
+import productionReportReducer from "./ProductionReportModules";
 
 const rootReducer = combineReducers({
 
@@ -47,8 +48,10 @@ const rootReducer = combineReducers({
     materialOrderReducer,
     materialSpecReducer,
     materialStockReducer,
-    materialUsageReducer
+    materialUsageReducer,
 
+    //승재
+    productionReportReducer
 });
 
 export default rootReducer;

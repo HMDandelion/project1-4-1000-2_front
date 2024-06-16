@@ -19,6 +19,9 @@ import EstimateDetail from "./pages/sales/estimate/EstimateDetail";
 import Orders from "./pages/sales/order/Orders";
 import OrderDetail from "./pages/sales/order/OrderDetail";
 import ProductDetail from "./pages/inventory/product/ProductDetail";
+import ProductionReports from "./pages/production/productionReport/ProductionReports";
+import ProductionReportDetail from "./pages/production/productionReport/ProductionReportDetail";
+import DefectDetail from "./pages/production/productionReport/DefectDetail";
 import Release from "./pages/inventory/release/Release";
 import SpecDetail from "./pages/inventory/material/SpecDetail";
 import MaterialClientDetail from "./pages/purchase/material/MaterialClientDetail";
@@ -103,6 +106,16 @@ function App() {
                       </Route>
                   </Route>
                   <Route path="production">
+                      <Route path="reports">
+                          <Route index
+                                 element={<ProtectedRoute loginCheck={true}><ProductionReports/></ProtectedRoute>}/>
+                          <Route path=":productionStatusCode/detail" element={<ProtectedRoute
+                              loginCheck={true}><ProductionReportDetail/></ProtectedRoute>}/>
+                          <Route path=":productionDetailCode/defects">
+                              <Route index
+                                     element={<ProtectedRoute loginCheck={true}><DefectDetail/></ProtectedRoute>}/>
+                          </Route>
+                      </Route>
                       <Route path="material">
                           <Route path="usage" element={<MaterialUsages/>}/>
                       </Route>
