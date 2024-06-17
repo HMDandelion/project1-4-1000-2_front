@@ -6,6 +6,9 @@
 ## 배포주소
 [https://project1410002.vercel.app/](https://project1410002.vercel.app/)
 
+## 기술
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
+
 ### 테스트 계정 정보
 
 - **테스트 비밀번호**: `12345678`
