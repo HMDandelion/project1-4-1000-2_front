@@ -81,6 +81,15 @@
 
 ## 화면 구성 🖥️
 
+# 로그인
+![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/de92309a-b686-46ab-a73a-277c6a181c37)
+
+# 대시보드
+![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/08209f7b-1096-4c6d-9bf0-7243cb351e36)
+
+# 거래처 
+<img src="[https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/8b11e045-6162-4e37-b6e0-dcb9ac245fe1](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/6a0f08b2-4058-4956-a688-ee9339693621)" alt="재고관리" width="400">
+
 # 원자재
 
   <img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/8b11e045-6162-4e37-b6e0-dcb9ac245fe1" alt="재고관리" width="400">
