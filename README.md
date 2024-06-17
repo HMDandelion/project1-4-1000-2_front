@@ -2,6 +2,9 @@
 
 ![일사천리 로고2](https://github.com/HMDandelion/project1-4-1000-2_back/assets/154950075/9f5ca9da-10e6-483e-8867-6387d155c029)
 
+## 배포주소
+https://project1410002.vercel.app/
+
 ## 프로젝트 소개
 
 - 일사천리는 생산 및 재고관리 분야에 특화된 ERP 시스템 입니다.
