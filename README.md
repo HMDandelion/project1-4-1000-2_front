@@ -82,15 +82,15 @@
 ## 화면 구성 🖥️
 
 # 원자재
-- 재고관리
+
   <img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/8b11e045-6162-4e37-b6e0-dcb9ac245fe1" alt="재고관리" width="400">
 
 # 생산
-- 생산 보고서
+
   <img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/f6bfa2d9-2bdf-4909-afca-f0a188380d5a" alt="생산 보고서" width="400">
 
 # 생산 계획
-- 생산 계획 관리
+
   <img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/738aead3-90f7-497b-8102-e117689b7373" alt="생산 계획 관리" width="400">
 
 # 재고, 상품
