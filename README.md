@@ -14,7 +14,7 @@
 | ![154950167](https://github.com/HMDandelion/project1-4-1000-2_back/assets/154950075/dd5715e7-9c8d-415f-b137-7f58cb7c36be) | ![99164178](https://github.com/HMDandelion/project1-4-1000-2_back/assets/154950075/a517679d-b114-437b-940d-9e75ccbaf905) | ![154950168](https://github.com/HMDandelion/project1-4-1000-2_back/assets/154950075/151fe6a1-1dc5-416d-a4d8-b5a4f6648535) | ![154950075](https://github.com/HMDandelion/project1-4-1000-2_back/assets/154950075/8c16e8ec-733c-4fb4-b7ad-c220f6bd8ae8) | ![111329365](https://github.com/HMDandelion/project1-4-1000-2_back/assets/154950075/53098962-b3e6-4146-9019-42a8a80b8726) |
 |                                                          계정, 주문                                                           |                                                          생산 계획                                                           |                                                            원자재                                                            |                                                          생산, 품질                                                           |                                                          재고, 출고                                                           |
 
-## Stack
+## Stack⚙️
 
 ### Environment
 
