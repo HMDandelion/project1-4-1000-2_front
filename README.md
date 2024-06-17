@@ -40,7 +40,7 @@
 
 - 일사천리는 생산 및 재고관리 분야에 특화된 ERP 시스템 입니다.
 - 모든 제조 및 유통업계 기업에게 도움을 드리기 위해 최선을 다하고 있습니다.
-- 
+
 
 ## 팀원 소개
 
@@ -74,6 +74,9 @@
 
 ![Notion](https://img.shields.io/badge/Notion-000000?style=flat-square&logo=notion&logoColor=white)
 ![Discord](https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white)
+
+## 사이트 구조도
+![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/56d58ad8-a4d8-4f80-9d28-ec00fcaedf67)
 
 
 ## 화면 구성 🖥️
