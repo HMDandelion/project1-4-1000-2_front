@@ -50,7 +50,7 @@ https://project1410002.vercel.app/
 ## 화면 구성 🖥️
 # 원자재
 - 재고관리
-- ![Uploading 한결1.png…]()
+- ![이미지 설명](C:\Users\eurdr\OneDrive\사진\일사천리 리드미 사진)
 
 
 ## 시연 영상
