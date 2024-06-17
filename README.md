@@ -80,29 +80,28 @@
 
 
 ## 화면 구성 🖥️
+
 # 원자재
 - 재고관리
-  ![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/8b11e045-6162-4e37-b6e0-dcb9ac245fe1)
+  <img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/8b11e045-6162-4e37-b6e0-dcb9ac245fe1" alt="재고관리" width="400">
 
 # 생산
 - 생산 보고서
-  ![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/f6bfa2d9-2bdf-4909-afca-f0a188380d5a)
+  <img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/f6bfa2d9-2bdf-4909-afca-f0a188380d5a" alt="생산 보고서" width="400">
 
 # 생산 계획
 - 생산 계획 관리
-  ![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/738aead3-90f7-497b-8102-e117689b7373)
+  <img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/738aead3-90f7-497b-8102-e117689b7373" alt="생산 계획 관리" width="400">
 
-# 재고,상품
-![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/71c81663-b5ee-42c4-86e0-f58f9086c313)
-![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/caf35cc1-db6e-4f55-8ee4-68af79c89a3b)
+# 재고, 상품
+<img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/71c81663-b5ee-42c4-86e0-f58f9086c313" alt="재고" width="400">
+<img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/caf35cc1-db6e-4f55-8ee4-68af79c89a3b" alt="상품" width="400">
 
 # 창고
-![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/b8ddd26d-3fcf-4996-b701-f1b0b3270aed)
+<img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/b8ddd26d-3fcf-4996-b701-f1b0b3270aed" alt="창고" width="400">
 
 # 출고
-![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/2a21b950-9b00-4937-93ca-a54e76e2b521)
-
-
+<img src="https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/2a21b950-9b00-4937-93ca-a54e76e2b521" alt="출고" width="400">
 
 
 
