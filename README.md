@@ -22,3 +22,7 @@
 ![Notion](https://img.shields.io/badge/Notion-000000?style=flat-square&logo=notion&logoColor=white)
 ![Discord](https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white)
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white)
+
+## 기술 
+
+![React] (https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black)
