@@ -24,7 +24,7 @@
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white)
 
 ### Config
-![NPM](https://img.shields.io/badge/NPM-F05032?style=flat-square&logo=npm&logoColor=white)
+![NPM](https://img.shields.io/badge/NPM-CB3837?style=flat-square&logo=npm&logoColor=white)
 
 ### Development
 
