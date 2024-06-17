@@ -52,7 +52,7 @@
 
 # 화면 구성 🖥️
 # 로그인
-![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/111329365/10cb26dc-9b03-48c6-a6b9-e32b3cbccfaf)
+![image](https://github.com/HMDandelion/project1-4-1000-2_front/assets/154950167/bcc6fdbc-11a6-4fad-8461-4da9896e5a77)
 
 
 # 대시보드
