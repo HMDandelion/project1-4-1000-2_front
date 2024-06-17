@@ -108,5 +108,7 @@
 
 
 ## 시연 영상
-
+<a href="[https://www.youtube.com/watch?v=영상ID](https://youtu.be/Rk2FU0Lydf8)" target="_blank">
+  <img src="썸네일 이미지 URL" alt="영상 제목" width="400">
+</a>
 
